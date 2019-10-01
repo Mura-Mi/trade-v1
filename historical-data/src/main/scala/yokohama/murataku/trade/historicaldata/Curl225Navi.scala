@@ -1,4 +1,4 @@
-package yokohama.murataku.trade.refdata
+package yokohama.murataku.trade.historicaldata
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

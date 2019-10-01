@@ -1,4 +1,4 @@
-val `ref-data` = (project in file("ref-data"))
+val `historical-data` = (project in file("historical-data"))
   .settings(
     libraryDependencies ++=
       Seq(

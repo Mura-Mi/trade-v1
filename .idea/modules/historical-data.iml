@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="historical-data [file:/Users/murakamitakuya/trade/]" external.linked.project.path="$MODULE_DIR$/../../historical-data" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../historical-data/target/scala-2.12/classes" />
+    <output-test url="file://$MODULE_DIR$/../../historical-data/target/scala-2.12/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../historical-data">
+      <sourceFolder url="file://$MODULE_DIR$/../../historical-data/src/main/scala" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../historical-data/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe-log_2.12:19.9.9.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-collection-compat_2.12:2.1.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.12.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.jsoup:jsoup:1.12.1:jar" level="project" />
+  </component>
+</module>

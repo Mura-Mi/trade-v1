@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ref-data.iml" filepath="$PROJECT_DIR$/.idea/modules/ref-data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />
     </modules>
