@@ -1,5 +1,7 @@
 package yokohama.murataku.trade.refdata
 
-object Curl225Navi extends App {
-  println("running")
+import wvlet.log.LogSupport
+
+object Curl225Navi extends App with LogSupport {
+  info("running")
 }
