@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter
 import com.twitter.util.{Await, Future}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import wvlet.log.LogSupport
+import yokohama.murataku.support.StandardBatch
 
 import scala.collection.JavaConverters._
 
-object Curl225Navi extends App with LogSupport {
+object Curl225Navi extends StandardBatch {
   case class DataSource(productName: String, url: String)
 
   val nk225Large = DataSource("NK225", "http://225navi.com/data/")
