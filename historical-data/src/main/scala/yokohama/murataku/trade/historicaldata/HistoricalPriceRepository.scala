@@ -28,4 +28,6 @@ class HistoricalPriceRepository {
           )
       )
     }
+
+  def store(date: )
 }

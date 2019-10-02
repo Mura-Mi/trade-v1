@@ -2,43 +2,55 @@ package yokohama.murataku.trade.historicaldata
 
 import java.io.BufferedOutputStream
 import java.net.URL
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import better.files.Dsl._
 import better.files.File
+import wvlet.airframe.codec.MessageCodec
 import yokohama.murataku.support.StandardBatch
+import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
 
 object CurlJpxOptionReport extends StandardBatch {
 
-  def now = LocalDateTime.now
+  override def main(args: Array[String]): Unit = {
 
-  val is = new URL(
-    "https://www.jpx.co.jp/markets/derivatives/option-price/data/ose20190722tp.zip")
-    .openConnection()
-    .getInputStream
+    val today = args.headOption.map(LocalDate.parse(_)).getOrElse(LocalDate.now)
 
-  val tmp = File.newTemporaryFile(suffix = now.toString)
-  info(tmp.path.toAbsolutePath.toUri.toString)
+    val is = new URL(
+      s"https://www.jpx.co.jp/markets/derivatives/option-price/data/ose${today.formatted("yyyyMMdd")}tp.zip")
+      .openConnection()
+      .getInputStream
 
-  val wri = new BufferedOutputStream(tmp.newFileOutputStream())
+    val tmp = File.newTemporaryFile()
+    info(tmp.path.toAbsolutePath.toUri.toString)
 
-  Stream
-    .continually(is.read()) //
-    .takeWhile(_ != -1) //
-    .foreach(wri.write)
+    val wri = new BufferedOutputStream(tmp.newFileOutputStream())
 
-  wri.flush()
+    Stream
+      .continually(is.read()) //
+      .takeWhile(_ != -1) //
+      .foreach(wri.write)
 
-  val unzipDir = File.newTemporaryDirectory()
-  info(unzipDir.path.toUri)
-  unzip(tmp)(unzipDir)
+    wri.flush()
 
-  tmp.delete()
+    val unzipDir = File.newTemporaryDirectory()
+    info(unzipDir.path.toUri)
+    unzip(tmp)(unzipDir)
 
-  unzipDir.children
-    .find(f => {
-      info(f.pathAsString)
-      f.isRegularFile && f.extension.contains(".csv")
-    })
-    .map(_.lines.foreach(info(_)))
+    tmp.delete()
+
+    import kantan.csv._
+    import kantan.csv.ops._
+    import kantan.csv.generic._
+
+    unzipDir.children
+      .find(f => {
+        info(f.pathAsString)
+        f.isRegularFile && f.extension.contains(".csv")
+      })
+      .map(
+        _.url
+          .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
+          .foreach(info(_)))
+  }
 }
