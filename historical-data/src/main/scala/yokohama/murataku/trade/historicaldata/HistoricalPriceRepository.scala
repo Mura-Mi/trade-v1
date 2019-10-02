@@ -17,8 +17,15 @@ class HistoricalPriceRepository {
             close: BigDecimal): Future[Long] =
     run {
       quote(
-        query[LatestFuturePrice].insert(
-          lift(LatestFuturePrice(productName, date, open, high, low, close)))
+        query[LatestFuturePrice]
+          .insert(
+            lift(LatestFuturePrice(productName, date, open, high, low, close)))
+          .onConflictUpdate(_.productName, _.date)(
+            (t, e) => t.open -> e.open,
+            (t, e) => t.high -> e.high,
+            (t, e) => t.low -> e.low,
+            (t, e) => t.close -> e.close
+          )
       )
     }
 }

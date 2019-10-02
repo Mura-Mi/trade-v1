@@ -8,38 +8,49 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import wvlet.log.LogSupport
 
-import scala.collection.JavaConverters
+import scala.collection.JavaConverters._
 
 object Curl225Navi extends App with LogSupport {
-  val doc: Document = Jsoup.connect("http://225navi.com/data/").get()
+  case class DataSource(productName: String, url: String)
 
-  import JavaConverters._
+  val nk225Large = DataSource("NK225", "http://225navi.com/data/")
+  val nk225Mini = DataSource("NK225-mini", "http://225navi.com/data/data3/")
+  val dataSources = Seq(nk225Large, nk225Mini)
 
   val repo = new HistoricalPriceRepository
 
-  Await.result {
-    Future.collect {
-      doc
-        .select(".sc_table tr")
-        .asScala //
-        .drop(2) // drop headers
-        .map { row =>
-          val date = row.select("th").asScala.head.text()
-          val data = row.select("td").asScala
-          val open = data.head.text()
-          val high = data(1).text()
-          val low = data(2).text()
-          val close = data(3).text()
+  dataSources.map { source =>
+    val doc: Document = Jsoup.connect(source.url).get()
 
-          val p = DateTimeFormatter.ofPattern("yyyy/M/d")
+    val count = Await.result {
+      val count = Future
+        .collect {
+          doc
+            .select(".sc_table tr")
+            .asScala //
+            .drop(2) // drop headers
+            .map { row =>
+              val date = row.select("th").asScala.head.text()
+              val data = row.select("td").asScala
+              val open = data.head.text()
+              val high = data(1).text()
+              val low = data(2).text()
+              val close = data(3).text()
 
-          repo.store("product",
-                     LocalDate.parse(date, p),
-                     BigDecimal(open),
-                     BigDecimal(high),
-                     BigDecimal(low),
-                     BigDecimal(close))
+              val p = DateTimeFormatter.ofPattern("yyyy/M/d")
+
+              repo.store(source.productName,
+                         LocalDate.parse(date, p),
+                         BigDecimal(open),
+                         BigDecimal(high),
+                         BigDecimal(low),
+                         BigDecimal(close))
+            }
         }
+        .map(_.sum)
+      count
     }
+
+    info(s"${source.productName}: $count")
   }
 }

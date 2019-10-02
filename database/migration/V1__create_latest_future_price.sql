@@ -4,5 +4,6 @@ create table latest_future_price(
   open DECIMAL(20,10),
   high DECIMAL(20,10),
   low DECIMAL(20,10),
-  close DECIMAL(20,10)
+  close DECIMAL(20,10),
+  CONSTRAINT date_product_unique UNIQUE (product_name, date)
 );
