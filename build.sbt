@@ -14,7 +14,8 @@ val `historical-data` = (project in file("historical-data"))
         "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
         "org.jsoup" % "jsoup" % "1.12.1",
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1"
+        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
+        "com.beachape" %% "enumeratum" % "1.5.13"
       )
   )
 

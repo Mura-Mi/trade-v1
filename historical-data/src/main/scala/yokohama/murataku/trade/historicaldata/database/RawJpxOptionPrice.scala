@@ -23,7 +23,7 @@ case class RawJpxOptionPrice(
     underlyingClose: BigDecimal,
     underlyingBaseVolatility: BigDecimal
 ) {
-  def toDatabaseObject(date: LocalDate, poc: PutOrCall) = {
+  def toDatabaseObject(date: LocalDate, poc: PutOrCall): JpxOptionPrice = {
     JpxOptionPrice(
       date = date,
       putOrCall = poc,

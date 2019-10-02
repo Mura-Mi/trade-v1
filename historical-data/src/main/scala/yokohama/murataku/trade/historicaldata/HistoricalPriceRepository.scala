@@ -4,11 +4,20 @@ import java.time.LocalDate
 
 import com.twitter.util.Future
 import io.getquill.{FinaglePostgresContext, SnakeCase}
-import yokohama.murataku.trade.historicaldata.database.LatestFuturePrice
+import yokohama.murataku.trade.historicaldata.database.{
+  JpxOptionPrice,
+  LatestFuturePrice
+}
 
 class HistoricalPriceRepository {
   val ctx = new FinaglePostgresContext(SnakeCase, "ctx")
   import ctx._
+
+  implicit val a: MappedEncoding[String, PutOrCall] =
+    MappedEncoding[String, PutOrCall](PutOrCall.withValue)
+  implicit val b: MappedEncoding[PutOrCall, String] =
+    MappedEncoding[PutOrCall, String](_.value)
+
   def store(productName: String,
             date: LocalDate,
             open: BigDecimal,
@@ -29,5 +38,12 @@ class HistoricalPriceRepository {
       )
     }
 
-  def store(date: )
+  def store(jpxOptionPrice: JpxOptionPrice): Future[Long] =
+    run {
+      quote {
+        query[JpxOptionPrice]
+          .insert(lift(jpxOptionPrice))
+          .onConflictIgnore(_.productCode, _.date)
+      }
+    }
 }

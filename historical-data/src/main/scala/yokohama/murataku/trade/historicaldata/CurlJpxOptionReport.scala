@@ -3,54 +3,78 @@ package yokohama.murataku.trade.historicaldata
 import java.io.BufferedOutputStream
 import java.net.URL
 import java.time.{LocalDate, LocalDateTime}
+import java.time.format.DateTimeFormatter
 
 import better.files.Dsl._
 import better.files.File
-import wvlet.airframe.codec.MessageCodec
+import com.twitter.util.{Await, Future}
 import yokohama.murataku.support.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
 
 object CurlJpxOptionReport extends StandardBatch {
 
-  override def main(args: Array[String]): Unit = {
+  val today = args.headOption
+    .map(LocalDate.parse(_))
+    .getOrElse(LocalDateTime.now.minusHours(18).toLocalDate) // 多分ここまでには発表されてるはず
 
-    val today = args.headOption.map(LocalDate.parse(_)).getOrElse(LocalDate.now)
+  val repo = new HistoricalPriceRepository
 
-    val is = new URL(
-      s"https://www.jpx.co.jp/markets/derivatives/option-price/data/ose${today.formatted("yyyyMMdd")}tp.zip")
-      .openConnection()
-      .getInputStream
+  val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
 
-    val tmp = File.newTemporaryFile()
-    info(tmp.path.toAbsolutePath.toUri.toString)
+  val is = new URL(
+    s"https://www.jpx.co.jp/markets/derivatives/option-price/data/ose${fmt.format(today)}tp.zip")
+    .openConnection()
+    .getInputStream
 
-    val wri = new BufferedOutputStream(tmp.newFileOutputStream())
+  val tmp = File.newTemporaryFile()
+  info(tmp.path.toAbsolutePath.toUri.toString)
 
-    Stream
-      .continually(is.read()) //
-      .takeWhile(_ != -1) //
-      .foreach(wri.write)
+  val wri = new BufferedOutputStream(tmp.newFileOutputStream())
 
-    wri.flush()
+  Stream
+    .continually(is.read()) //
+    .takeWhile(_ != -1) //
+    .foreach(wri.write)
 
-    val unzipDir = File.newTemporaryDirectory()
-    info(unzipDir.path.toUri)
-    unzip(tmp)(unzipDir)
+  wri.flush()
 
-    tmp.delete()
+  val unzipDir = File.newTemporaryDirectory()
+  info(unzipDir.path.toUri)
+  unzip(tmp)(unzipDir)
 
-    import kantan.csv._
-    import kantan.csv.ops._
-    import kantan.csv.generic._
+  tmp.delete()
 
-    unzipDir.children
-      .find(f => {
-        info(f.pathAsString)
-        f.isRegularFile && f.extension.contains(".csv")
-      })
-      .map(
-        _.url
-          .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
-          .foreach(info(_)))
+  import kantan.csv._
+  import kantan.csv.ops._
+  import kantan.csv.generic._
+
+  val futs = unzipDir.children
+    .find(f => {
+      info(f.pathAsString)
+      f.isRegularFile && f.extension.contains(".csv")
+    })
+    .map(e =>
+      e.url
+        .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
+        .map {
+          case Right(raw) =>
+            PutOrCall.both.map { poc =>
+              raw.toDatabaseObject(today, poc)
+            }
+          case Left(e) =>
+            error(e)
+            Nil
+        }
+        .flatten)
+    .getOrElse {
+      error("csv file is not found")
+      Nil
+    }
+    .map { option =>
+      repo.store(option)
+    }
+
+  Await.result {
+    Future.collect(futs.toSeq).map(_.sum).onSuccess(c => info(s"Done: $c"))
   }
 }
