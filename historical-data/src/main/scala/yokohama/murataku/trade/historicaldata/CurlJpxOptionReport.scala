@@ -26,55 +26,55 @@ object CurlJpxOptionReport extends StandardBatch {
     .openConnection()
     .getInputStream
 
-  val tmp = File.newTemporaryFile()
-  info(tmp.path.toAbsolutePath.toUri.toString)
+  File.temporaryFile() { tmp =>
+    info(tmp.path.toAbsolutePath.toUri.toString)
 
-  val wri = new BufferedOutputStream(tmp.newFileOutputStream())
+    val wri = new BufferedOutputStream(tmp.newFileOutputStream())
 
-  Stream
-    .continually(is.read()) //
-    .takeWhile(_ != -1) //
-    .foreach(wri.write)
+    Stream
+      .continually(is.read()) //
+      .takeWhile(_ != -1) //
+      .foreach(wri.write)
 
-  wri.flush()
+    wri.flush()
 
-  val unzipDir = File.newTemporaryDirectory()
-  info(unzipDir.path.toUri)
-  unzip(tmp)(unzipDir)
+    File.temporaryDirectory() { unzipDir =>
+      info(unzipDir.path.toUri)
+      unzip(tmp)(unzipDir)
 
-  tmp.delete()
+      import kantan.csv._
+      import kantan.csv.ops._
+      import kantan.csv.generic._
 
-  import kantan.csv._
-  import kantan.csv.ops._
-  import kantan.csv.generic._
-
-  val futs = unzipDir.children
-    .find(f => {
-      info(f.pathAsString)
-      f.isRegularFile && f.extension.contains(".csv")
-    })
-    .map(e =>
-      e.url
-        .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
-        .map {
-          case Right(raw) =>
-            PutOrCall.both.map { poc =>
-              raw.toDatabaseObject(today, poc)
+      val futs = unzipDir.children
+        .find(f => {
+          info(f.pathAsString)
+          f.isRegularFile && f.extension.contains(".csv")
+        })
+        .map(e =>
+          e.url
+            .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
+            .map {
+              case Right(raw) =>
+                PutOrCall.both.map { poc =>
+                  raw.toDatabaseObject(today, poc)
+                }
+              case Left(e) =>
+                error(e)
+                Nil
             }
-          case Left(e) =>
-            error(e)
-            Nil
+            .flatten)
+        .getOrElse {
+          error("csv file is not found")
+          Nil
         }
-        .flatten)
-    .getOrElse {
-      error("csv file is not found")
-      Nil
-    }
-    .map { option =>
-      repo.store(option)
-    }
+        .map { option =>
+          repo.store(option)
+        }
 
-  Await.result {
-    Future.collect(futs.toSeq).map(_.sum).onSuccess(c => info(s"Done: $c"))
+      Await.result {
+        Future.collect(futs.toSeq).map(_.sum).onSuccess(c => info(s"Done: $c"))
+      }
+    }
   }
 }
