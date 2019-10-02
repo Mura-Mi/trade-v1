@@ -2,11 +2,15 @@ enablePlugins(FlywayPlugin)
 
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
+val airframeVersion = "19.9.9.2"
+
 val `historical-data` = (project in file("historical-data"))
   .settings(
     libraryDependencies ++=
       Seq(
-        "org.wvlet.airframe" %% "airframe-log" % "19.9.9.2",
+        "com.github.pathikrit" %% "better-files" % "3.8.0",
+        "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
+        "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
         "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
         "org.jsoup" % "jsoup" % "1.12.1"
       )
