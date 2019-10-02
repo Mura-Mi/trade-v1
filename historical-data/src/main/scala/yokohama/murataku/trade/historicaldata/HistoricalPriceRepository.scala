@@ -1,5 +1,5 @@
 package yokohama.murataku.trade.historicaldata
 
 class HistoricalPriceRepository {
-  def store() = ???
+  def store(productType: ProductType, deliveryLimit: DeliveryLimit) = ???
 }
