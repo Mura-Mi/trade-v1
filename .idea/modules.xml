@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" />
     </modules>
   </component>
 </project>
