@@ -2,3 +2,8 @@ version: '3'
 services:
   db:
     image: postgres
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - 5432:5432
