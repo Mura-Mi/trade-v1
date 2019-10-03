@@ -2,9 +2,9 @@ package yokohama.murataku.trade.holiday
 
 import java.time.{DayOfWeek, LocalDate, Month}
 
-import wvlet.airspec._
+import yokohama.murataku.testutil.MyTestSuite
 
-class YearMonthTest extends AirSpec {
+class YearMonthTest extends MyTestSuite {
   def `allDays returns all days for 2019/7`(): Unit = {
     val allDays = YearMonth(2019, Month.JULY).allDays
     assert(allDays.size == 31)
@@ -12,17 +12,17 @@ class YearMonthTest extends AirSpec {
     assert(allDays.last == LocalDate.of(2019, 7, 31))
   }
 
-  def `can find 2nd Friday of a month`(): Unit = {
+  "can find 2nd Friday of a month" in {
     YearMonth(2019, 9).find(2, DayOfWeek.FRIDAY) shouldBe LocalDate.of(2019,
                                                                        9,
                                                                        13)
   }
 
-  def `format toString`(): Unit = {
+  "format toString" in {
     YearMonth(1989, 4).toString shouldBe "1989/04"
   }
 
-  def `decode from raw string`(): Unit = {
+  "decode from raw string" in {
     YearMonth.decode("1989/04") shouldBe YearMonth(1989, 4)
   }
 }

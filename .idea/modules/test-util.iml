@@ -5,6 +5,7 @@
     <output-test url="file://$MODULE_DIR$/../../test-util/target/scala-2.12/test-classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../test-util">
+      <sourceFolder url="file://$MODULE_DIR$/../../test-util/src/main/scala" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../test-util/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -23,8 +24,9 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-collection-compat_2.12:2.1.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-sbt:test-interface:1.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.wvlet.airframe:airspec_2.12:19.9.9.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.12.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scalactic:scalactic_2.12:3.0.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scalatest:scalatest_2.12:3.0.8:jar" level="project" />
   </component>
 </module>
