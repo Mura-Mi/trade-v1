@@ -1,5 +1,7 @@
 package yokohama.murataku.trade.product
 
+import enumeratum.values.{StringEnum, StringEnumEntry}
+
 import scala.collection.immutable
 
 sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {

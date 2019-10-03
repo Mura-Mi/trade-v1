@@ -4,15 +4,19 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
 val airframeVersion = "19.9.9.2"
 
-val `product-master` = (project in file("product-master"))
+lazy val `product-master` = (project in file("product-master"))
   .settings(
-      libraryDependencies ++=
-        Seq(
-            "com.beachape" %% "enumeratum" % "1.5.13"
-        )
+    libraryDependencies ++=
+      Seq(
+        "com.nrinaudo" %% "kantan.csv" % "0.5.1",
+        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
+        "com.nrinaudo" %% "kantan.csv-java8" % "0.5.1",
+        "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+        "com.beachape" %% "enumeratum" % "1.5.13"
+      )
   ).dependsOn(persistence)
 
-val `historical-data` = (project in file("historical-data"))
+lazy val `historical-data` = (project in file("historical-data"))
   .settings(
     libraryDependencies ++=
       Seq(
@@ -26,7 +30,7 @@ val `historical-data` = (project in file("historical-data"))
       )
   ).dependsOn(`product-master`, persistence)
 
-val persistence = (project in file("historical-data")).settings(
+lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
     Seq(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",

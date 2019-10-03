@@ -6,12 +6,17 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../historical-data">
       <sourceFolder url="file://$MODULE_DIR$/../../historical-data/src/main/scala" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../historical-data/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../persistence/src/main/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../historical-data/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.0.6:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-compiler:2.12.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.propensive:contextual_2.12:1.1.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.nrinaudo:kantan.csv-java8_2.12:0.5.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.nrinaudo:kantan.codecs-java8_2.12:0.5.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.typelevel:macro-compat_2.12:1.1.1:jar" level="project" />
     <orderEntry type="library" name="sbt: com.nrinaudo:kantan.csv-generic_2.12:0.5.1:jar" level="project" />
     <orderEntry type="library" name="sbt: com.nrinaudo:kantan.codecs-shapeless_2.12:0.5.0:jar" level="project" />
@@ -97,5 +102,6 @@
     <orderEntry type="library" name="sbt: com.beachape:enumeratum-macros_2.12:1.5.9:jar" level="project" />
     <orderEntry type="library" name="sbt: com.beachape:enumeratum_2.12:1.5.13:jar" level="project" />
     <orderEntry type="module" module-name="product-master" exported="" />
+    <orderEntry type="module" module-name="persistence" exported="" />
   </component>
 </module>
