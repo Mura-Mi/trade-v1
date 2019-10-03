@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/persistence" />
             <option value="$PROJECT_DIR$/product-master" />
             <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/test-util" />
           </set>
         </option>
         <option name="resolveSbtClassifiers" value="true" />
