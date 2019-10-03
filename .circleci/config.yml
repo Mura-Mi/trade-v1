@@ -42,7 +42,7 @@ jobs:
       - run: cat /dev/null | sbt test:test
 
       - collect_test_report:
-          - command: |
+          command: |
               mkdir test-report
               find ./**/target/*/TEST-*.xml | xargs -I{} cp {} ./test-report
 
