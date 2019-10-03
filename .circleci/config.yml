@@ -40,5 +40,11 @@ jobs:
 
       # run tests!
       - run: cat /dev/null | sbt test:test
+
+      - collect_test_report:
+          - command: |
+              mkdir test-report
+              find ./**/target/*/TEST-*.xml | xargs -I{} cp {} ./test-report
+
       - store_artifacts:
-          path: '*/target'
+          path: test-report
