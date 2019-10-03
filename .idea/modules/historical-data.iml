@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="historical-data [file:/Users/murakamitakuya/trade/]" external.linked.project.path="$MODULE_DIR$/../../historical-data" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="historical-data [file:/Users/murakamitakuya/dev/github.com/Mura-Mi/trade-v1/]" external.linked.project.path="$MODULE_DIR$/../../historical-data" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../historical-data/target/scala-2.12/classes" />
     <output-test url="file://$MODULE_DIR$/../../historical-data/target/scala-2.12/test-classes" />
@@ -12,6 +12,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="module" module-name="product-master" exported="" />
     <orderEntry type="library" name="sbt: com.beachape:enumeratum_2.12:1.5.13:jar" level="project" />
     <orderEntry type="library" name="sbt: com.beachape:enumeratum-macros_2.12:1.5.9:jar" level="project" />
     <orderEntry type="library" name="sbt: org.spire-math:imp_2.12:0.3.0:jar" level="project" />

@@ -4,6 +4,8 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
 val airframeVersion = "19.9.9.2"
 
+val `product-master` = (project in file("product-master"))
+
 val `historical-data` = (project in file("historical-data"))
   .settings(
     libraryDependencies ++=
@@ -17,7 +19,7 @@ val `historical-data` = (project in file("historical-data"))
         "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
         "com.beachape" %% "enumeratum" % "1.5.13"
       )
-  )
+  ).dependsOn(`product-master`)
 
 flywayUrl := "jdbc:postgresql://localhost:5432/dev"
 flywayUser := "dev"
