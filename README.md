@@ -1,0 +1,1 @@
+![](https://github.com/Mura-Mi/trade-v1/workflows/CI/badge.svg)
