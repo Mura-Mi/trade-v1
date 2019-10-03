@@ -40,3 +40,5 @@ jobs:
 
       # run tests!
       - run: cat /dev/null | sbt test:test
+      - store_artifacts:
+          path: target
