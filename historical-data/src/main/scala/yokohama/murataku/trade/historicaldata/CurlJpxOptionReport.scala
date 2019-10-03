@@ -10,6 +10,7 @@ import better.files.File
 import com.twitter.util.{Await, Future}
 import yokohama.murataku.support.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
+import yokohama.murataku.trade.product.PutOrCall
 
 object CurlJpxOptionReport extends StandardBatch {
 

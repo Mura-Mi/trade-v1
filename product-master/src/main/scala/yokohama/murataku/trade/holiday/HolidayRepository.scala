@@ -1,9 +1,9 @@
 package yokohama.murataku.trade.holiday
 
-import com.twitter.util.Future
+import com.twitter.util.{Await, Future}
 import io.getquill.{FinaglePostgresContext, SnakeCase}
 
-class HolidayRepository {
+class HolidayRepository extends Calendar {
 
   val ctx = new FinaglePostgresContext(SnakeCase, "ctx")
   import ctx._
@@ -15,6 +15,14 @@ class HolidayRepository {
   def store(holiday: Holiday): Future[Long] = run {
     quote {
       query[Holiday].insert(lift(holiday)).onConflictIgnore(_.date, _.market)
+    }
+  }
+
+  override val holidays: Seq[Holiday] = Await.result {
+    run {
+      quote {
+        query[Holiday]
+      }
     }
   }
 }
