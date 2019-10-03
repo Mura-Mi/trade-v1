@@ -17,4 +17,12 @@ class YearMonthTest extends AirSpec {
                                                                        9,
                                                                        13)
   }
+
+  def `format toString`(): Unit = {
+    YearMonth(1989, 4).toString shouldBe "1989/04"
+  }
+
+  def `decode from raw string`(): Unit = {
+    YearMonth.decode("1989/04") shouldBe YearMonth(1989, 4)
+  }
 }
