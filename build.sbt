@@ -10,7 +10,7 @@ val `product-master` = (project in file("product-master"))
         Seq(
             "com.beachape" %% "enumeratum" % "1.5.13"
         )
-  )
+  ).dependsOn(persistence)
 
 val `historical-data` = (project in file("historical-data"))
   .settings(
@@ -19,13 +19,18 @@ val `historical-data` = (project in file("historical-data"))
         "com.github.pathikrit" %% "better-files" % "3.8.0",
         "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
         "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
-        "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
         "org.jsoup" % "jsoup" % "1.12.1",
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
         "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
         "com.beachape" %% "enumeratum" % "1.5.13"
       )
-  ).dependsOn(`product-master`)
+  ).dependsOn(`product-master`, persistence)
+
+val persistence = (project in file("historical-data")).settings(
+  libraryDependencies ++=
+    Seq(
+      "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
+    ))
 
 flywayUrl := "jdbc:postgresql://localhost:5432/dev"
 flywayUser := "dev"
