@@ -1,1 +1,1 @@
-![](https://github.com/Mura-Mi/trade-v1/workflows/CI/badge.svg)
+[![CircleCI](https://circleci.com/gh/Mura-Mi/trade-v1.svg?style=svg)](https://circleci.com/gh/Mura-Mi/trade-v1)
