@@ -46,5 +46,5 @@ jobs:
               mkdir test-report
               find ./**/target/*/TEST-*.xml | xargs -I{} cp {} ./test-report
 
-      - store_artifacts:
+      - store_test_results:
           path: test-report
