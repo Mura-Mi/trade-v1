@@ -8,16 +8,32 @@ import yokohama.murataku.trade.holiday.YearMonth
 trait Product
 
 case class Index(id: UUID, name: String)
+case class IndexName(value: String)
 
-case class IndexFuture(indexId: UUID,
-                       productName: String,
+case class IndexFuture(id: UUID,
+                       indexId: UUID,
+                       productName: IndexFutureName,
                        deliveryLimit: YearMonth,
                        deliveryDate: LocalDate)
     extends Product
 
+case class IndexFutureName(value: String) {
+  def this(indexName: IndexName, deliveryLimit: YearMonth) =
+    this(s"${indexName.value}-${deliveryLimit.toString}")
+}
+
 case class IndexOption(indexId: UUID,
-                       productName: String,
+                       productName: IndexOptionName,
                        putOrCall: PutOrCall,
-                       deliveryLimit: String,
+                       deliveryLimit: YearMonth,
+                       deliveryDate: LocalDate,
                        strike: BigDecimal)
     extends Product
+case class IndexOptionName(value: String) {
+  def this(indexName: IndexName,
+           putOrCall: PutOrCall,
+           deliveryLimit: YearMonth,
+           strike: BigDecimal) =
+    this(
+      s"${indexName.value}-${putOrCall.value}-${deliveryLimit.toString}-$strike")
+}
