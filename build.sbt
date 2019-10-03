@@ -5,6 +5,12 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 val airframeVersion = "19.9.9.2"
 
 val `product-master` = (project in file("product-master"))
+  .settings(
+      libraryDependencies ++=
+        Seq(
+            "com.beachape" %% "enumeratum" % "1.5.13"
+        )
+  )
 
 val `historical-data` = (project in file("historical-data"))
   .settings(

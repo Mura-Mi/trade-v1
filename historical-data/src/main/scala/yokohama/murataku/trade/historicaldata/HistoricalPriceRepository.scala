@@ -8,6 +8,7 @@ import yokohama.murataku.trade.historicaldata.database.{
   JpxOptionPrice,
   LatestFuturePrice
 }
+import yokohama.murataku.trade.product.PutOrCall
 
 class HistoricalPriceRepository {
   val ctx = new FinaglePostgresContext(SnakeCase, "ctx")

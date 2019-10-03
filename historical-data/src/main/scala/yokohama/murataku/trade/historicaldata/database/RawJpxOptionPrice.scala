@@ -2,7 +2,7 @@ package yokohama.murataku.trade.historicaldata.database
 
 import java.time.LocalDate
 
-import yokohama.murataku.trade.historicaldata.PutOrCall
+import yokohama.murataku.trade.product.PutOrCall
 
 case class RawJpxOptionPrice(
     productCode: String,

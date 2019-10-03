@@ -1,6 +1,4 @@
-package yokohama.murataku.trade.historicaldata
-
-import enumeratum.values.{StringEnum, StringEnumEntry}
+package yokohama.murataku.trade.product
 
 import scala.collection.immutable
 
