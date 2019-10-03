@@ -1,4 +1,4 @@
-package yokohama.murataku.support
+package yokohama.murataku.trade.lib.batch
 
 import wvlet.log.LogSupport
 

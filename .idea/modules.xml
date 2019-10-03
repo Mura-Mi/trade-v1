@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/persistence.iml" filepath="$PROJECT_DIR$/.idea/modules/persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-master.iml" filepath="$PROJECT_DIR$/.idea/modules/product-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/system-base.iml" filepath="$PROJECT_DIR$/.idea/modules/system-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-util.iml" filepath="$PROJECT_DIR$/.idea/modules/test-util.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />

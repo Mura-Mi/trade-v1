@@ -11,6 +11,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe_2.12:19.9.9.2:jar" level="project" />
+    <orderEntry type="module" module-name="system-base" exported="" />
     <orderEntry type="module" module-name="test-util" exported="" scope="TEST" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-compiler:2.12.10:jar" level="project" />
     <orderEntry type="library" name="sbt: com.propensive:contextual_2.12:1.1.0:jar" level="project" />

@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter
 import com.twitter.util.{Await, Future}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import yokohama.murataku.support.StandardBatch
+import yokohama.murataku.trade.lib.batch.StandardBatch
 
 import scala.collection.JavaConverters._
 

@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 import better.files.Dsl._
 import better.files.File
 import com.twitter.util.{Await, Future}
-import yokohama.murataku.support.StandardBatch
+import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
 import yokohama.murataku.trade.product.PutOrCall
 
