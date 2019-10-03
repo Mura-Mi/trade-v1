@@ -47,34 +47,38 @@ object CurlJpxOptionReport extends StandardBatch {
       import kantan.csv.ops._
       import kantan.csv.generic._
 
-      val futs = unzipDir.children
+      val csvFile: Seq[RawJpxOptionPrice] = unzipDir.children
         .find(f => {
           info(f.pathAsString)
           f.isRegularFile && f.extension.contains(".csv")
         })
-        .map(e =>
-          e.url
-            .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
-            .map {
-              case Right(raw) =>
-                PutOrCall.both.map { poc =>
-                  raw.toDatabaseObject(today, poc)
-                }
-              case Left(e) =>
-                error(e)
-                Nil
-            }
-            .flatten)
+        .map(
+          e =>
+            e.url
+              .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
+              .toSeq
+              .flatMap {
+                case Right(raw) => Option(raw)
+                case Left(e) =>
+                  error(e)
+                  None
+            })
         .getOrElse {
           error("csv file is not found")
           Nil
         }
-        .map { option =>
-          repo.store(option)
-        }
+
+      val futs = Future.collect {
+        csvFile
+          .flatMap(raw =>
+            PutOrCall.both.map { poc =>
+              raw.toDatabaseObject(today, poc)
+          })
+          .map(repo.store)
+      }
 
       Await.result {
-        Future.collect(futs.toSeq).map(_.sum).onSuccess(c => info(s"Done: $c"))
+        futs.map(_.sum).onSuccess(c => info(s"Done: $c"))
       }
     }
   }
