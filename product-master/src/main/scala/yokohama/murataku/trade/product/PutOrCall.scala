@@ -1,8 +1,14 @@
 package yokohama.murataku.trade.product
 
-import enumeratum.values.{StringEnum, StringEnumEntry}
+import enumeratum.values.{
+  StringEnum,
+  StringEnumEntry,
+  ValueEnum,
+  ValueEnumEntry
+}
 
 import scala.collection.immutable
+import scala.reflect.ClassTag
 
 sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
   def isCall: Boolean
@@ -19,4 +25,5 @@ object PutOrCall extends StringEnum[PutOrCall] {
   override def values: immutable.IndexedSeq[PutOrCall] = findValues
 
   val both: Seq[PutOrCall] = Seq(Put, Call)
+
 }

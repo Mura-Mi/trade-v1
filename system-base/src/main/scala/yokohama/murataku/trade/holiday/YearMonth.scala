@@ -2,7 +2,7 @@ package yokohama.murataku.trade.holiday
 
 import java.time.{DayOfWeek, LocalDate, Month}
 
-import com.twitter.util.{Return, Throw, Try}
+import scala.util.{Failure, Success, Try}
 
 case class YearMonth(year: Int, month: Month) {
   def firstDay: LocalDate = LocalDate.of(year, month, 1)
@@ -35,9 +35,9 @@ object YearMonth {
       val month = arr(1).toInt
       YearMonth(year, month)
     } match {
-      case Return(ym)                         => ym
-      case Throw(e: IllegalArgumentException) => throw e
-      case Throw(other)                       => throw new IllegalArgumentException(other)
+      case Success(ym)                          => ym
+      case Failure(e: IllegalArgumentException) => throw e
+      case Failure(other)                       => throw new IllegalArgumentException(other)
     }
   }
 }
