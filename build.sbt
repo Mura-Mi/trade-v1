@@ -17,8 +17,7 @@ lazy val `product-master` = (project in file("product-master"))
       Seq(
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
         "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-java8" % "0.5.1",
-        "com.beachape" %% "enumeratum" % "1.5.13"
+        "com.nrinaudo" %% "kantan.csv-java8" % "0.5.1"
       )
   ).dependsOn(`system-base`, persistence, `test-util` % "test")
 
@@ -31,8 +30,7 @@ lazy val `historical-data` = (project in file("historical-data"))
         "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
         "org.jsoup" % "jsoup" % "1.12.1",
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
-        "com.beachape" %% "enumeratum" % "1.5.13"
+        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1"
       )
   ).dependsOn(`system-base`, `product-master`, persistence, `test-util` % "test")
 
@@ -41,13 +39,15 @@ lazy val persistence = (project in file("persistence")).settings(
     Seq(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
     )
-).dependsOn(`test-util` % "test")
+).dependsOn(`system-base`, `test-util` % "test")
 
 lazy val `system-base` = (project in file("system-base")).settings(
   libraryDependencies ++=
     Seq(
       "org.wvlet.airframe" %% "airframe" % airframeVersion,
-      "org.wvlet.airframe" %% "airframe-log" % airframeVersion
+      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+      "com.chuusai" %% "shapeless" % "2.3.3",
+      "com.beachape" %% "enumeratum" % "1.5.13"
     )
 ).dependsOn(`test-util` % "test")
 

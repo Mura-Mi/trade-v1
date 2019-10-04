@@ -3,12 +3,18 @@ package yokohama.murataku.trade.product
 import java.time.LocalDate
 import java.util.UUID
 
+import shapeless.Generic
 import yokohama.murataku.trade.holiday.YearMonth
 
 trait Product
 
 case class Index(id: UUID, name: String)
 case class IndexName(value: String)
+
+//noinspection TypeAnnotation
+object IndexName {
+  implicit val gen = Generic[IndexName]
+}
 
 case class IndexFuture(id: UUID,
                        indexId: UUID,
@@ -22,6 +28,10 @@ case class IndexFutureName(value: String) {
     this(s"${indexName.value}-${deliveryLimit.toString}")
 }
 
+object IndexFutureName {
+  implicit val gen = Generic[IndexFutureName]
+}
+
 case class IndexOption(indexId: UUID,
                        productName: IndexOptionName,
                        putOrCall: PutOrCall,
@@ -29,9 +39,10 @@ case class IndexOption(indexId: UUID,
                        deliveryDate: LocalDate,
                        strike: BigDecimal)
     extends Product
-case class IndexOptionName(value: String) {}
-
+case class IndexOptionName(value: String)
 object IndexOptionName {
+  //noinspection TypeAnnotation
+  implicit val gen = shapeless.Generic[IndexOptionName]
   def apply(indexName: IndexName,
             putOrCall: PutOrCall,
             deliveryLimit: YearMonth,
