@@ -29,11 +29,13 @@ case class IndexOption(indexId: UUID,
                        deliveryDate: LocalDate,
                        strike: BigDecimal)
     extends Product
-case class IndexOptionName(value: String) {
-  def this(indexName: IndexName,
-           putOrCall: PutOrCall,
-           deliveryLimit: YearMonth,
-           strike: BigDecimal) =
-    this(
+case class IndexOptionName(value: String) {}
+
+object IndexOptionName {
+  def apply(indexName: IndexName,
+            putOrCall: PutOrCall,
+            deliveryLimit: YearMonth,
+            strike: BigDecimal): IndexOptionName =
+    apply(
       s"${indexName.value}-${putOrCall.value}-${deliveryLimit.toString}-$strike")
 }
