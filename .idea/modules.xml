@@ -7,8 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-master.iml" filepath="$PROJECT_DIR$/.idea/modules/product-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/system-base.iml" filepath="$PROJECT_DIR$/.idea/modules/system-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-util.iml" filepath="$PROJECT_DIR$/.idea/modules/test-util.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />
     </modules>
   </component>
 </project>

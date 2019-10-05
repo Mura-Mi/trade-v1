@@ -6,6 +6,8 @@ import enumeratum.values.{
   ValueEnum,
   ValueEnumEntry
 }
+import yokohama.murataku.trade.holiday.Market
+import yokohama.murataku.trade.persistence.EnumUtils
 
 import scala.collection.immutable
 import scala.reflect.ClassTag
@@ -26,4 +28,5 @@ object PutOrCall extends StringEnum[PutOrCall] {
 
   val both: Seq[PutOrCall] = Seq(Put, Call)
 
+  implicit val enumUtils: EnumUtils[String, PutOrCall] = new EnumUtils(this)
 }

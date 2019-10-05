@@ -1,6 +1,7 @@
 package yokohama.murataku.trade.holiday
 
 import com.twitter.util.{Await, Future}
+import io.getquill.{FinaglePostgresContext, SnakeCase}
 import kantan.codecs.strings.java8._
 import kantan.csv.DecodeError.TypeError
 import kantan.csv._
@@ -15,7 +16,8 @@ object HolidaySetup extends StandardBatch {
       case None         => Left(TypeError(s"not found: $f"))
   })
 
-  val holidayRepository = new HolidayRepository
+  val holidayRepository = new HolidayRepository(
+    new FinaglePostgresContext(SnakeCase, "ctx"))
 
   Await.result {
     Future

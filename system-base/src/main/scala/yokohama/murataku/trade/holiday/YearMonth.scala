@@ -30,9 +30,16 @@ object YearMonth {
   @throws[IllegalArgumentException]
   def decode(s: String): YearMonth = {
     Try {
-      val arr = s.split('/')
-      val year = arr.head.toInt
-      val month = arr(1).toInt
+      val maybeYear = s.substring(0, 4)
+      val year = maybeYear.toInt
+
+      val maybeMonth = s.substring(4)
+      val month =
+        (
+          if (maybeMonth.startsWith("/")) maybeMonth.substring(1, 3)
+          else maybeMonth.substring(0, 2)
+        ).toInt
+
       YearMonth(year, month)
     } match {
       case Success(ym)                          => ym

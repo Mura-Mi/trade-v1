@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import com.twitter.util.{Await, Future}
+import io.getquill.{FinaglePostgresContext, SnakeCase}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import yokohama.murataku.trade.lib.batch.StandardBatch
@@ -17,7 +18,9 @@ object Curl225Navi extends StandardBatch {
   val nk225Mini = DataSource("NK225-mini", "http://225navi.com/data/data3/")
   val dataSources = Seq(nk225Large, nk225Mini)
 
-  val repo = new HistoricalPriceRepository
+  val ctx: FinaglePostgresContext[SnakeCase] =
+    new FinaglePostgresContext(SnakeCase, "ctx")
+  val repo = new HistoricalPriceRepository(ctx)
 
   dataSources.map { source =>
     val doc: Document = Jsoup.connect(source.url).get()

@@ -8,9 +8,16 @@ import java.time.format.DateTimeFormatter
 import better.files.Dsl._
 import better.files.File
 import com.twitter.util.{Await, Future}
+import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
-import yokohama.murataku.trade.product.{IndexOptionRepository, PutOrCall}
+import yokohama.murataku.trade.holiday.{HolidayRepository, YearMonth}
+import yokohama.murataku.trade.product.{
+  IndexName,
+  IndexOptionFactory,
+  IndexOptionRepository,
+  PutOrCall
+}
 
 object CurlJpxOptionReport extends StandardBatch {
   val nk225 = "NK225E"
@@ -19,8 +26,11 @@ object CurlJpxOptionReport extends StandardBatch {
     .map(LocalDate.parse(_))
     .getOrElse(LocalDateTime.now.minusHours(18).toLocalDate) // 多分ここまでには発表されてるはず
 
-  val priceRepo = new HistoricalPriceRepository
-  val productRepo = new IndexOptionRepository
+  val ctx: FinaglePostgresContext[SnakeCase] =
+    new FinaglePostgresContext(SnakeCase, "ctx")
+  val priceRepo = new HistoricalPriceRepository(ctx)
+  val productRepo = new IndexOptionRepository(ctx)
+  val calendar = new HolidayRepository(ctx)
 
   val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
 
@@ -65,29 +75,46 @@ object CurlJpxOptionReport extends StandardBatch {
                   error(e)
                   None
               }
-              .filter(_.productCode == nk225)
+              .filter(_.productCode.trim() == nk225)
         )
         .getOrElse {
           error("csv file is not found")
           Nil
         }
 
-//      val productMasterPersistenceResult = Future.collect {
-//        csvFile.flatMap { row =>
-//          }
-//      }
+      info(s"data in csv: ${csvFile.size}")
 
-      val pricePersistenceResult = Future.collect {
-        csvFile
-          .flatMap(raw =>
+      val productMasterPersistenceResult = Future
+        .collect {
+          csvFile.flatMap { row =>
             PutOrCall.both.map { poc =>
-              raw.toDatabaseObject(today, poc)
-          })
-          .map(priceRepo.store)
-      }
+              val delivery: YearMonth = YearMonth.decode(row.deliveryLimit)
+              val option =
+                new IndexOptionFactory(calendar).createNew(IndexName(nk225),
+                                                           poc,
+                                                           delivery,
+                                                           row.strike)
+              productRepo.store(option)
+            }
+          }
+        }
+        .map(_.sum)
+        .onSuccess(num => info(s"Product persistence: $num"))
+
+      val pricePersistenceResult = Future
+        .collect {
+          csvFile
+            .flatMap(raw =>
+              PutOrCall.both.map { poc =>
+                raw.toDatabaseObject(today, poc)
+            })
+            .map(priceRepo.store)
+        }
+        .map(_.sum)
+        .onSuccess(c => info(s"Done: $c"))
 
       Await.result {
-        pricePersistenceResult.map(_.sum).onSuccess(c => info(s"Done: $c"))
+        productMasterPersistenceResult.flatMap(_ => pricePersistenceResult).unit
       }
     }
   }

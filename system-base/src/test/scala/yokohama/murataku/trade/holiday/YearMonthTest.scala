@@ -22,7 +22,11 @@ class YearMonthTest extends MyTestSuite {
     YearMonth(1989, 4).toString shouldBe "1989/04"
   }
 
-  "decode from raw string" in {
+  "decode from raw string with slash" in {
     YearMonth.decode("1989/04") shouldBe YearMonth(1989, 4)
+  }
+
+  "decode from raw string without slash" in {
+    YearMonth.decode("198904") shouldBe YearMonth(1989, 4)
   }
 }

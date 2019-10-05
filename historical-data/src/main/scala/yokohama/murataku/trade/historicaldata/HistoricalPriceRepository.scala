@@ -8,16 +8,11 @@ import yokohama.murataku.trade.historicaldata.database.{
   JpxOptionPrice,
   LatestFuturePrice
 }
-import yokohama.murataku.trade.product.PutOrCall
+import yokohama.murataku.trade.persistence.PersistenceSupport
 
-class HistoricalPriceRepository {
-  val ctx = new FinaglePostgresContext(SnakeCase, "ctx")
+class HistoricalPriceRepository(ctx: FinaglePostgresContext[SnakeCase])
+    extends PersistenceSupport {
   import ctx._
-
-  implicit val a: MappedEncoding[String, PutOrCall] =
-    MappedEncoding[String, PutOrCall](PutOrCall.withValue)
-  implicit val b: MappedEncoding[PutOrCall, String] =
-    MappedEncoding[PutOrCall, String](_.value)
 
   def store(productName: String,
             date: LocalDate,

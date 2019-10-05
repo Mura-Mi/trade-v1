@@ -2,15 +2,12 @@ package yokohama.murataku.trade.holiday
 
 import com.twitter.util.{Await, Future}
 import io.getquill.{FinaglePostgresContext, SnakeCase}
+import yokohama.murataku.trade.persistence.PersistenceSupport
 
-class HolidayRepository extends Calendar {
-
-  val ctx = new FinaglePostgresContext(SnakeCase, "ctx")
+class HolidayRepository(ctx: FinaglePostgresContext[SnakeCase])
+    extends Calendar
+    with PersistenceSupport {
   import ctx._
-  implicit val a: MappedEncoding[String, Market] =
-    MappedEncoding[String, Market](Market.withValue)
-  implicit val b: MappedEncoding[Market, String] =
-    MappedEncoding[Market, String](_.value)
 
   def store(holiday: Holiday): Future[Long] = run {
     quote {
