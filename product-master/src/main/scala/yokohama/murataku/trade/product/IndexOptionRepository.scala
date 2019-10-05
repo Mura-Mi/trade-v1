@@ -1,11 +1,8 @@
 package yokohama.murataku.trade.product
 
-import java.util.UUID
-
 import com.twitter.util.Future
 import io.getquill.{FinaglePostgresContext, SnakeCase}
-import yokohama.murataku.trade.holiday.YearMonth
-import yokohama.murataku.trade.persistence.{GenericEncoding, PersistenceSupport}
+import yokohama.murataku.trade.persistence.PersistenceSupport
 
 class IndexOptionRepository extends PersistenceSupport {
   val ctx = new FinaglePostgresContext(SnakeCase, "ctx")

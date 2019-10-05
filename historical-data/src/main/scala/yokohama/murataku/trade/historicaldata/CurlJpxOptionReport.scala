@@ -10,15 +10,17 @@ import better.files.File
 import com.twitter.util.{Await, Future}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
-import yokohama.murataku.trade.product.PutOrCall
+import yokohama.murataku.trade.product.{IndexOptionRepository, PutOrCall}
 
 object CurlJpxOptionReport extends StandardBatch {
+  val nk225 = "NK225E"
 
   val today = args.headOption
     .map(LocalDate.parse(_))
     .getOrElse(LocalDateTime.now.minusHours(18).toLocalDate) // 多分ここまでには発表されてるはず
 
-  val repo = new HistoricalPriceRepository
+  val priceRepo = new HistoricalPriceRepository
+  val productRepo = new IndexOptionRepository
 
   val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
 
@@ -62,23 +64,30 @@ object CurlJpxOptionReport extends StandardBatch {
                 case Left(e) =>
                   error(e)
                   None
-            })
+              }
+              .filter(_.productCode == nk225)
+        )
         .getOrElse {
           error("csv file is not found")
           Nil
         }
 
-      val futs = Future.collect {
+//      val productMasterPersistenceResult = Future.collect {
+//        csvFile.flatMap { row =>
+//          }
+//      }
+
+      val pricePersistenceResult = Future.collect {
         csvFile
           .flatMap(raw =>
             PutOrCall.both.map { poc =>
               raw.toDatabaseObject(today, poc)
           })
-          .map(repo.store)
+          .map(priceRepo.store)
       }
 
       Await.result {
-        futs.map(_.sum).onSuccess(c => info(s"Done: $c"))
+        pricePersistenceResult.map(_.sum).onSuccess(c => info(s"Done: $c"))
       }
     }
   }
