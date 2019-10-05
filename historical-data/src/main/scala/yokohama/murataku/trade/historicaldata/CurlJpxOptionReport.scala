@@ -2,29 +2,31 @@ package yokohama.murataku.trade.historicaldata
 
 import java.io.BufferedOutputStream
 import java.net.URL
-import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime}
 
 import better.files.Dsl._
 import better.files.File
 import com.twitter.util.{Await, Future}
 import io.getquill.{FinaglePostgresContext, SnakeCase}
-import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
 import yokohama.murataku.trade.holiday.{HolidayRepository, YearMonth}
+import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.product.{
-  IndexName,
+  IndexConstant,
   IndexOptionFactory,
   IndexOptionRepository,
   PutOrCall
 }
 
 object CurlJpxOptionReport extends StandardBatch {
-  val nk225 = "NK225E"
+  val nk225 = IndexConstant.nk225E
 
   val today = args.headOption
     .map(LocalDate.parse(_))
     .getOrElse(LocalDateTime.now.minusHours(18).toLocalDate) // 多分ここまでには発表されてるはず
+
+  info(s"today: $today")
 
   val ctx: FinaglePostgresContext[SnakeCase] =
     new FinaglePostgresContext(SnakeCase, "ctx")
@@ -56,8 +58,8 @@ object CurlJpxOptionReport extends StandardBatch {
       unzip(tmp)(unzipDir)
 
       import kantan.csv._
-      import kantan.csv.ops._
       import kantan.csv.generic._
+      import kantan.csv.ops._
 
       val csvFile: Seq[RawJpxOptionPrice] = unzipDir.children
         .find(f => {
@@ -75,7 +77,7 @@ object CurlJpxOptionReport extends StandardBatch {
                   error(e)
                   None
               }
-              .filter(_.productCode.trim() == nk225)
+              .filter(_.productCode.trim() == nk225.value)
         )
         .getOrElse {
           error("csv file is not found")
@@ -90,7 +92,7 @@ object CurlJpxOptionReport extends StandardBatch {
             PutOrCall.both.map { poc =>
               val delivery: YearMonth = YearMonth.decode(row.deliveryLimit)
               val option =
-                new IndexOptionFactory(calendar).createNew(IndexName(nk225),
+                new IndexOptionFactory(calendar).createNew(nk225,
                                                            poc,
                                                            delivery,
                                                            row.strike)

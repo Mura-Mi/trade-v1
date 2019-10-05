@@ -22,7 +22,8 @@ class IndexOptionFactory(calendar: Calendar) {
       .previousBusinessDay()
 
     IndexOption(
-      indexId = UUID.randomUUID(),
+      id = UUID.randomUUID(),
+      indexName,
       productName = IndexOptionName(indexName, putOrCall, deliveryLimit, strike),
       putOrCall = putOrCall,
       deliveryLimit = deliveryLimit,

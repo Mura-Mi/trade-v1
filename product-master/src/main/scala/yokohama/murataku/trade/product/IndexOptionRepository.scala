@@ -10,7 +10,9 @@ class IndexOptionRepository(ctx: FinaglePostgresContext[SnakeCase])
   def store(indexOption: IndexOption): Future[Long] =
     run {
       quote {
-        query[IndexOption].insert(lift(indexOption))
+        query[IndexOption]
+          .insert(lift(indexOption))
+          .onConflictIgnore(_.indexName, _.putOrCall, _.deliveryLimit, _.strike)
       }
     }
 }

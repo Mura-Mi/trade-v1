@@ -8,7 +8,7 @@ import yokohama.murataku.trade.holiday.YearMonth
 
 trait Product
 
-case class Index(id: UUID, name: String)
+case class Index(name: String)
 case class IndexName(value: String)
 
 //noinspection TypeAnnotation
@@ -17,7 +17,7 @@ object IndexName {
 }
 
 case class IndexFuture(id: UUID,
-                       indexId: UUID,
+                       indexName: IndexName,
                        productName: IndexFutureName,
                        deliveryLimit: YearMonth,
                        deliveryDate: LocalDate)
@@ -32,7 +32,8 @@ object IndexFutureName {
   implicit val gen = Generic[IndexFutureName]
 }
 
-case class IndexOption(indexId: UUID,
+case class IndexOption(id: UUID,
+                       indexName: IndexName,
                        productName: IndexOptionName,
                        putOrCall: PutOrCall,
                        deliveryLimit: YearMonth,
