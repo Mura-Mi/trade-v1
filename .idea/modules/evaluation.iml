@@ -6,6 +6,8 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../evaluation">
       <sourceFolder url="file://$MODULE_DIR$/../../evaluation/src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../evaluation/src/test/scala" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../evaluation/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../evaluation/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -8,12 +8,17 @@ import enumeratum.values.{
 }
 import yokohama.murataku.trade.holiday.Market
 import yokohama.murataku.trade.persistence.EnumUtils
+import yokohama.murataku.trade.product.PutOrCall.{Call, Put}
 
 import scala.collection.immutable
 import scala.reflect.ClassTag
 
 sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
   def isCall: Boolean
+  def factor: Int = this match {
+    case Call => 1
+    case Put  => -1
+  }
 }
 
 object PutOrCall extends StringEnum[PutOrCall] {
