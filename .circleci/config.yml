@@ -44,7 +44,10 @@ jobs:
       - run:
           command: |
               mkdir test-report
+              ls -l test-report
               find ./**/target/*/TEST-*.xml | xargs -I{} cp {} ./test-report
+              echo "done"
+              ls -l test-report
 
       - store_test_results:
           path: test-report
