@@ -2,4 +2,6 @@ package yokohama.murataku.trade.lib.batch
 
 import wvlet.log.LogSupport
 
-trait StandardBatch extends App with LogSupport {}
+trait StandardBatch extends App with LogSupport {
+  wvlet.airframe.log.init
+}

@@ -7,6 +7,7 @@ val airframeVersion = "19.9.9.2"
 lazy val `test-util` = (project in file("test-util"))
   .settings(
     libraryDependencies ++= Seq(
+      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
       "org.scalatest" %% "scalatest" % "3.0.8"
     )
   )
