@@ -11,6 +11,14 @@ lazy val `test-util` = (project in file("test-util"))
     )
   )
 
+lazy val `evaluation` = (project in file("evaluation")).settings(
+  libraryDependencies ++= Seq()
+).dependsOn(
+  `system-base`,
+  `product-master`,
+  `test-util` % "test"
+)
+
 lazy val `product-master` = (project in file("product-master"))
   .settings(
     libraryDependencies ++=
