@@ -12,7 +12,9 @@ lazy val `test-util` = (project in file("test-util"))
   )
 
 lazy val `evaluation` = (project in file("evaluation")).settings(
-  libraryDependencies ++= Seq()
+  libraryDependencies ++= Seq(
+    "org.apache.commons" % "commons-math3" % "3.6.1"
+  )
 ).dependsOn(
   `system-base`,
   `product-master`,
