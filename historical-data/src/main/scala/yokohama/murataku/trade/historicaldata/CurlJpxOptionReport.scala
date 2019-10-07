@@ -10,7 +10,11 @@ import better.files.File
 import com.twitter.util.{Await, Future}
 import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
-import yokohama.murataku.trade.holiday.{HolidayRepository, YearMonth}
+import yokohama.murataku.trade.holiday.{
+  HolidayAdjustMethod,
+  HolidayRepository,
+  YearMonth
+}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.product.{
   IndexConstant,
@@ -20,19 +24,25 @@ import yokohama.murataku.trade.product.{
 }
 
 object CurlJpxOptionReport extends StandardBatch {
+  val ctx: FinaglePostgresContext[SnakeCase] =
+    new FinaglePostgresContext(SnakeCase, "ctx")
   val nk225 = IndexConstant.nk225E
+  val calendar = new HolidayRepository(ctx)
+
+  import calendar._
 
   val today = args.headOption
     .map(LocalDate.parse(_))
-    .getOrElse(LocalDateTime.now.minusHours(18).toLocalDate) // 多分ここまでには発表されてるはず
+    .getOrElse(
+      LocalDateTime.now
+        .minusHours(18)
+        .toLocalDate
+        .adjust(HolidayAdjustMethod.Preceding)) // 多分ここまでには発表されてるはず
 
   info(s"today: $today")
 
-  val ctx: FinaglePostgresContext[SnakeCase] =
-    new FinaglePostgresContext(SnakeCase, "ctx")
   val priceRepo = new HistoricalPriceRepository(ctx)
   val productRepo = new IndexOptionRepository(ctx)
-  val calendar = new HolidayRepository(ctx)
 
   val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
 
@@ -78,6 +88,17 @@ object CurlJpxOptionReport extends StandardBatch {
                   None
               }
               .filter(_.productCode.trim() == nk225.value)
+              .map(a =>
+                a.copy(
+                  productCode = a.productCode.trim(),
+                  productType = a.productType.trim(),
+                  deliveryLimit = a.deliveryLimit.trim(),
+                  note1 = a.note1.trim(),
+                  putProductCode = a.putProductCode.trim(),
+                  putSpare = a.putSpare.trim(),
+                  callProductCode = a.callProductCode.trim(),
+                  callSpare = a.callSpare.trim()
+              ))
         )
         .getOrElse {
           error("csv file is not found")

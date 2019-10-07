@@ -12,6 +12,21 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="test-util" exported="" scope="TEST" />
+    <orderEntry type="library" name="sbt: com.beachape:enumeratum_2.12:1.5.13:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.beachape:enumeratum-macros_2.12:1.5.9:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:macro-compat_2.12:1.1.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.chuusai:shapeless_2.12:2.3.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: javax.annotation:javax.annotation-api:1.3.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.12.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.12.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-collection-compat_2.12:2.1.2:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.2.0:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalactic:scalactic_2.12:3.0.8:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest_2.12:3.0.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe-log_2.12:19.9.9.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe-surface_2.12:19.9.9.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe_2.12:19.9.9.2:jar" level="project" />
     <orderEntry type="module-library">
       <library name="sbt: unmanaged-sources-and-docs">
         <CLASSES />
@@ -25,20 +40,5 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe_2.12:19.9.9.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe-surface_2.12:19.9.9.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.wvlet.airframe:airframe-log_2.12:19.9.9.2:jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest_2.12:3.0.8:jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="sbt: org.scalactic:scalactic_2.12:3.0.8:jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-collection-compat_2.12:2.1.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.12.10:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.12.10:jar" level="project" />
-    <orderEntry type="library" name="sbt: javax.annotation:javax.annotation-api:1.3.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.chuusai:shapeless_2.12:2.3.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.typelevel:macro-compat_2.12:1.1.1:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.beachape:enumeratum-macros_2.12:1.5.9:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.beachape:enumeratum_2.12:1.5.13:jar" level="project" />
   </component>
 </module>
