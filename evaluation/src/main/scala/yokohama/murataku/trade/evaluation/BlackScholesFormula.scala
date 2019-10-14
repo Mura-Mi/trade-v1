@@ -22,11 +22,15 @@ object BlackScholesFormula extends LogSupport {
     val `T-t`: Double = (expiry.toEpochDay - today.toEpochDay).toDouble / `365`
     val `log(s/x)` = log(`s/x`)
 
+    implicit class NumOps(org: Double) {
+      def ^(exponent: Double): Double = pow(org, exponent)
+    }
+
     debug(s"log(s/x): ${`log(s/x)`}")
 
-    val d1 = (`log(s/x)` + pow(vol.toDouble, 2) / 2 * `T-t`) /
+    val d1 = (`log(s/x)` + (vol.toDouble ^ 2 / 2 * `T-t`)) /
       (vol * sqrt(`T-t`))
-    val d2 = (`log(s/x)` - pow(vol.toDouble, 2) / 2 * `T-t`) /
+    val d2 = (`log(s/x)` - (vol.toDouble ^ 2 / 2 * `T-t`)) /
       (vol * sqrt(`T-t`))
 
     debug(s"d1: $d1")
