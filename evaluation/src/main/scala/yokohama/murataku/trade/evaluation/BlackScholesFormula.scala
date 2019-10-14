@@ -13,12 +13,12 @@ object BlackScholesFormula extends LogSupport {
   private val nd = new NormalDistribution()
 
   def price(putOrCall: PutOrCall,
-            underlying: BigDecimal,
-            strike: BigDecimal,
+            underlying: Double,
+            strike: Double,
             vol: Double,
             expiry: LocalDate,
             today: LocalDate): Double = {
-    val `s/x`: Double = underlying.toDouble / strike.toDouble
+    val `s/x`: Double = underlying / strike
     val `T-t`: Double = (expiry.toEpochDay - today.toEpochDay).toDouble / `365`
     val `log(s/x)` = log(`s/x`)
 
@@ -28,10 +28,8 @@ object BlackScholesFormula extends LogSupport {
 
     debug(s"log(s/x): ${`log(s/x)`}")
 
-    val d1 = (`log(s/x)` + (vol.toDouble ^ 2 / 2 * `T-t`)) /
-      (vol * sqrt(`T-t`))
-    val d2 = (`log(s/x)` - (vol.toDouble ^ 2 / 2 * `T-t`)) /
-      (vol * sqrt(`T-t`))
+    val d1 = (`log(s/x)` + (vol ^ 2) / 2 * `T-t`) / (vol * sqrt(`T-t`))
+    val d2 = (`log(s/x)` - (vol ^ 2) / 2 * `T-t`) / (vol * sqrt(`T-t`))
 
     debug(s"d1: $d1")
     debug(s"d2: $d2")
@@ -39,8 +37,14 @@ object BlackScholesFormula extends LogSupport {
     val N: Double => Double = nd.cumulativeProbability
 
     val factor = putOrCall.factor
-    val former = N(factor * d1) * underlying.toDouble
-    val latter = N(factor * d2) * strike.toDouble * exp(0 * -`T-t`)
+    val `N(d1)` = N(factor * d1)
+    val `N(d2)` = N(factor * d2)
+
+    debug(s"N(d1): ${`N(d1)`}")
+    debug(s"N(d2): ${`N(d2)`}")
+
+    val former = `N(d1)` * underlying
+    val latter = `N(d2)` * strike * exp(0 * -`T-t`)
 
     debug(s"former: $former")
     debug(s"latter: $latter")
