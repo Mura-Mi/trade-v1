@@ -45,6 +45,15 @@ lazy val `historical-data` = (project in file("historical-data"))
       )
   ).dependsOn(`system-base`, `product-master`, persistence, `test-util` % "test")
 
+lazy val `position-analysis` = (project in file("position-analysis"))
+  .settings()
+  .dependsOn(
+    `system-base`,
+    `product-master`,
+    `historical-data`,
+    `test-util` % "test"
+  )
+
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
     Seq(
