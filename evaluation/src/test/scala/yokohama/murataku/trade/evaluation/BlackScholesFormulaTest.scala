@@ -2,7 +2,7 @@ package yokohama.murataku.trade.evaluation
 
 import java.time.LocalDate
 
-import wvlet.log.Logger
+import wvlet.log.{LogLevel, Logger}
 import yokohama.murataku.testutil.MyTestSuite
 import yokohama.murataku.trade.product.PutOrCall
 
@@ -12,6 +12,7 @@ class BlackScholesFormulaTest extends MyTestSuite {
   val today = LocalDate.of(2019, 1, 1)
 
   "result including time value" in {
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
     BlackScholesFormula
       .price(PutOrCall.Call,
              110,
@@ -36,6 +37,31 @@ class BlackScholesFormulaTest extends MyTestSuite {
                                         today)
 
     call - put shouldBe 5.0 +- 1e-10
+  }
+
+  "test" in {
+    println(
+      BlackScholesFormula.impliedVol(
+        PutOrCall.Put,
+        underlying = 21410.20,
+        strike = 21875,
+        expiry = LocalDate.of(2019, 10, 10),
+        today = LocalDate.of(2019, 10, 4),
+        price = 565
+      )
+      /*
+      BlackScholesFormula.price(
+//        PutOrCall.Put,
+        PutOrCall.Call,
+        underlying = 21410.20,
+        strike = 21875,
+//        vol = 0.227249,
+        vol = 0.139447,
+        expiry = LocalDate.of(2019, 10, 10),
+        today = LocalDate.of(2019, 10, 4)
+      )
+     */
+    )
   }
 
 }

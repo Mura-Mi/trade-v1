@@ -46,7 +46,6 @@ lazy val `historical-data` = (project in file("historical-data"))
   ).dependsOn(`system-base`, `product-master`, persistence, `test-util` % "test")
 
 lazy val `position-analysis` = (project in file("position-analysis"))
-  .settings()
   .dependsOn(
     `system-base`,
     `product-master`,
