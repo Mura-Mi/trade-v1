@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/evaluation.iml" filepath="$PROJECT_DIR$/.idea/modules/evaluation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/evaluation-function.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/persistence.iml" filepath="$PROJECT_DIR$/.idea/modules/persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/position-analysis.iml" filepath="$PROJECT_DIR$/.idea/modules/position-analysis.iml" />

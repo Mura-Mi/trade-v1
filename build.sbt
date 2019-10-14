@@ -12,7 +12,7 @@ lazy val `test-util` = (project in file("test-util"))
     )
   )
 
-lazy val `evaluation` = (project in file("evaluation")).settings(
+lazy val `evaluation-function` = (project in file("evaluation-function")).settings(
   libraryDependencies ++= Seq(
     "org.apache.commons" % "commons-math3" % "3.6.1"
   )
@@ -50,6 +50,7 @@ lazy val `position-analysis` = (project in file("position-analysis"))
     `system-base`,
     `product-master`,
     `historical-data`,
+    `evaluation-function`,
     `test-util` % "test"
   )
 

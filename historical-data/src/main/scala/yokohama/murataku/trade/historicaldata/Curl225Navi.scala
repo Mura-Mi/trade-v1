@@ -8,6 +8,7 @@ import io.getquill.{FinaglePostgresContext, SnakeCase}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import yokohama.murataku.trade.lib.batch.StandardBatch
+import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 
 import scala.collection.JavaConverters._
 
@@ -18,8 +19,7 @@ object Curl225Navi extends StandardBatch {
   val nk225Mini = DataSource("NK225-mini", "http://225navi.com/data/data3/")
   val dataSources = Seq(nk225Large, nk225Mini)
 
-  val ctx: FinaglePostgresContext[SnakeCase] =
-    new FinaglePostgresContext(SnakeCase, "ctx")
+  val ctx = PersistenceContextProvider.getContext
   val repo = new HistoricalPriceRepository(ctx)
 
   dataSources.map { source =>

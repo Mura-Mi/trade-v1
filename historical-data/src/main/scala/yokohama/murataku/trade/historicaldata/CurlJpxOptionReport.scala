@@ -16,6 +16,7 @@ import yokohama.murataku.trade.holiday.{
   YearMonth
 }
 import yokohama.murataku.trade.lib.batch.StandardBatch
+import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 import yokohama.murataku.trade.product.{
   IndexConstant,
   IndexOptionFactory,
@@ -24,8 +25,7 @@ import yokohama.murataku.trade.product.{
 }
 
 object CurlJpxOptionReport extends StandardBatch {
-  val ctx: FinaglePostgresContext[SnakeCase] =
-    new FinaglePostgresContext(SnakeCase, "ctx")
+  val ctx = PersistenceContextProvider.getContext
   val nk225 = IndexConstant.nk225E
   val calendar = new HolidayRepository(ctx)
 

@@ -9,9 +9,11 @@ import yokohama.murataku.trade.historicaldata.database.{
   LatestFuturePrice
 }
 import yokohama.murataku.trade.persistence.PersistenceSupport
+import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
-class HistoricalPriceRepository(ctx: FinaglePostgresContext[SnakeCase])
+class HistoricalPriceRepository(ctx: TmtPersistenceContext)
     extends PersistenceSupport {
+
   import ctx._
 
   def store(productName: String,
@@ -37,4 +39,21 @@ class HistoricalPriceRepository(ctx: FinaglePostgresContext[SnakeCase])
           .onConflictIgnore(_.productCode, _.date)
       }
     }
+
+  def fetchFuturePrice(productName: String,
+                       from: LocalDate = null,
+                       to: LocalDate = null): Future[Seq[LatestFuturePrice]] = {
+    val actFrom = Option(from).getOrElse(LocalDate.of(2000, 1, 1))
+    val actTo = Option(to).getOrElse(LocalDate.of(2100, 12, 31))
+
+    run {
+      quote {
+        query[LatestFuturePrice]
+          .filter(_.productName == lift(productName))
+        // TODO うまく行かないので一旦全フェッチ
+//          .filter(_.date >= lift(actFrom))
+//          .filter(_.date <= lift(actTo))
+      }
+    }
+  }
 }

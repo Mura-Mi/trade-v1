@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/evaluation" />
+            <option value="$PROJECT_DIR$/evaluation-function" />
             <option value="$PROJECT_DIR$/historical-data" />
             <option value="$PROJECT_DIR$/persistence" />
             <option value="$PROJECT_DIR$/position-analysis" />

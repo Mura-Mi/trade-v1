@@ -4,6 +4,6 @@
     <profile name="sbt 1" modules="murakamitakuya.trade,trade-v1_805">
       <option name="higherKinds" value="true" />
     </profile>
-    <profile name="sbt 2" modules="evaluation,historical-data,persistence,position-analysis,product-master,system-base,test-util,trade,trade-v1" />
+    <profile name="sbt 2" modules="evaluation,evaluation-function,historical-data,persistence,position-analysis,product-master,system-base,test-util,trade,trade-v1" />
   </component>
 </project>
