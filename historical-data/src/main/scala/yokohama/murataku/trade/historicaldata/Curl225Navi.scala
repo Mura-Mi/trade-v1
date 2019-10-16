@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import com.twitter.util.{Await, Future}
-import io.getquill.{FinaglePostgresContext, SnakeCase}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import yokohama.murataku.trade.lib.batch.StandardBatch

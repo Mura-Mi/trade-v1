@@ -9,13 +9,15 @@ import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
 import yokohama.murataku.trade.lib.date._
 import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 
-class CalculateHistoricalVolatilityUseCase extends LogSupport {
+class CalculateHistoricalVolatilityUseCase(
+    persistenceProvider: PersistenceContextProvider
+) extends LogSupport {
 
   def extract(productName: String,
               since: LocalDate,
               to: LocalDate): Future[Seq[(LocalDate, Double)]] = {
 
-    val ctx = PersistenceContextProvider.getContext
+    val ctx = persistenceProvider.getContext
 
     val priceRepo = new HistoricalPriceRepository(ctx)
 

@@ -46,6 +46,10 @@ lazy val `historical-data` = (project in file("historical-data"))
   ).dependsOn(`system-base`, `product-master`, persistence, `test-util` % "test")
 
 lazy val `position-analysis` = (project in file("position-analysis"))
+  .settings(
+    libraryDependencies ++=
+      Seq("org.wvlet.airframe" %% "airframe" % airframeVersion)
+  )
   .dependsOn(
     `system-base`,
     `product-master`,
@@ -58,6 +62,7 @@ lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
     Seq(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
+      "org.wvlet.airframe" %% "airframe" % airframeVersion
     )
 ).dependsOn(`system-base`, `test-util` % "test")
 

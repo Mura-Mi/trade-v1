@@ -1,9 +1,9 @@
 package yokohama.murataku.trade.persistence.finagle
 
-import io.getquill.{FinaglePostgresContext, SnakeCase}
+import io.getquill.SnakeCase
 
 trait PersistenceContextProvider {
-  def getContext: FinaglePostgresContext[SnakeCase]
+  def getContext: TmtPersistenceContext
 }
 
 object PersistenceContextProvider extends PersistenceContextProvider {
