@@ -5,7 +5,7 @@ import java.time.{DayOfWeek, LocalDate, Month}
 import yokohama.murataku.testutil.MyTestSuite
 
 class YearMonthTest extends MyTestSuite {
-  def `allDays returns all days for 2019/7`(): Unit = {
+  "allDays returns all days for 2019/7" in {
     val allDays = YearMonth(2019, Month.JULY).allDays
     assert(allDays.size == 31)
     assert(allDays.head == LocalDate.of(2019, 7, 1))
