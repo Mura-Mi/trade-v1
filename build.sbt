@@ -2,7 +2,7 @@ enablePlugins(FlywayPlugin)
 
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
-val airframeVersion = "19.9.9.2"
+val airframeVersion = "19.10.1"
 
 lazy val `test-util` = (project in file("test-util"))
   .settings(
@@ -57,6 +57,13 @@ lazy val `position-analysis` = (project in file("position-analysis"))
     `evaluation-function`,
     `test-util` % "test"
   )
+
+lazy val `http-service` = (project in file("http-service")).settings(
+  libraryDependencies ++=
+    Seq("org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion)
+).dependsOn(
+  `position-analysis`
+)
 
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=

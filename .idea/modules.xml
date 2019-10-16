@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/evaluation-function.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-service.iml" filepath="$PROJECT_DIR$/.idea/modules/http-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/persistence.iml" filepath="$PROJECT_DIR$/.idea/modules/persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/position-analysis.iml" filepath="$PROJECT_DIR$/.idea/modules/position-analysis.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-master.iml" filepath="$PROJECT_DIR$/.idea/modules/product-master.iml" />
