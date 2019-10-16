@@ -60,7 +60,10 @@ lazy val `position-analysis` = (project in file("position-analysis"))
 
 lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
-    Seq("org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion)
+    Seq(
+      "org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion,
+      "com.lihaoyi" %% "scalatags" % "0.7.0"
+    )
 ).dependsOn(
   `position-analysis`
 )
