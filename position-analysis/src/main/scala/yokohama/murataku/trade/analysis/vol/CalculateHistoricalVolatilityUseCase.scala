@@ -22,8 +22,6 @@ class CalculateHistoricalVolatilityUseCase(
     val futureHistory =
       priceRepo.fetchFuturePrice(productName, since.minusMonths(3), to)
 
-    info(futureHistory)
-
     for {
       history <- futureHistory
     } yield {
