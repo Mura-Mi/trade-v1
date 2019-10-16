@@ -2,24 +2,22 @@ package yokohama.murataku.trade.analysis.vol
 
 import java.time.LocalDate
 
-import com.twitter.util.{Await, Future}
+import com.twitter.util.Future
 import wvlet.log.LogSupport
 import yokohama.murataku.trade.evaluation.HistoricalVolatilityCalculator
 import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
 import yokohama.murataku.trade.lib.date._
-import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
+import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
 class CalculateHistoricalVolatilityUseCase(
-    persistenceProvider: PersistenceContextProvider
+    persistenceContext: TmtPersistenceContext
 ) extends LogSupport {
 
   def extract(productName: String,
               since: LocalDate,
-              to: LocalDate): Future[Seq[(LocalDate, Double)]] = {
+              to: LocalDate): Future[Seq[DailyVolatility]] = {
 
-    val ctx = persistenceProvider.getContext
-
-    val priceRepo = new HistoricalPriceRepository(ctx)
+    val priceRepo = new HistoricalPriceRepository(persistenceContext)
 
     val futureHistory =
       priceRepo.fetchFuturePrice(productName, since.minusMonths(3), to)
@@ -34,13 +32,14 @@ class CalculateHistoricalVolatilityUseCase(
         .filter(_.isAfter(since))
         .map(date => {
           val volSourceStart = date.minusMonths(3)
-          date -> HistoricalVolatilityCalculator.from(
+          val vol = HistoricalVolatilityCalculator.from(
             history
               .filter(_.date.isBetween(volSourceStart, date))
               .map(_.close.toDouble)
           )
+          DailyVolatility(date, vol)
         })
-        .sortBy(_._1.toEpochDay)
+        .sorted
     }
   }
 }
