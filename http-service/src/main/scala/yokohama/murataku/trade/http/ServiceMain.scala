@@ -9,6 +9,8 @@ import wvlet.airframe.http.finagle._
 import wvlet.log.LogSupport
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
 
+import scala.util.control.NonFatal
+
 object ServiceMain extends StandardHttpService {
   val router = Router
     .add[HealthCheckRouting]
@@ -22,10 +24,22 @@ object ServiceMain extends StandardHttpService {
             request: Request,
             service: Service[Request, Response]): Future[Response] = {
           info(s"${request.method} ${request.uri}")
-          service.apply(request)
+          service.apply(request).rescue {
+            case NonFatal(e) =>
+              error(e)
+              Future.exception(e)
+          }
         }
 
-      } andThen finagleRouter andThen FinagleServer.notFound
+      } andThen finagleRouter andThen (new SimpleFilter[Request, Response]
+      with LogSupport {
+        override def apply(
+            request: Request,
+            service: Service[Request, Response]): Future[Response] = {
+          warn(s"NOT FOUND ${request.method} ${request.uri}")
+          service.apply(request)
+        }
+      } andThen FinagleServer.notFound)
   }
 
   val design =
