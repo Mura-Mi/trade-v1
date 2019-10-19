@@ -23,40 +23,7 @@ class ShowHistoricalVolPage(vols: Seq[DailyVolatility]) {
           src := "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"),
         script(
           src := "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"),
-        script(
-          s"""
-|const ctx = document.getElementById('mychart').getContext('2d');
-|const vols=${vols
-               .map(
-                 vol => s"{x: '${vol.date.toString}', y: ${vol.vol}}"
-//                 vol.vol.toString //
-               )
-               .mkString("[", ",", "]")};
-|var ch = new Chart(ctx, {
-|  type: 'line',
-|  data: {
-|    datasets: [
-|    {
-|      label: 'vol',
-|      data: vols
-|    }
-|  ]},
-|  options: {
-|    scales: {
-|      xAxes: [
-|        {
-|          type: 'time',
-|          distribution: 'series',
-|          time: {
-|            parser: 'YYYY-MM-DD'
-|          }
-|        }
-|      ]
-|    }
-|  }
-|});
-|""".stripMargin
-        )
+        script(src := "http://localhost:8080/static/js/vol/show.js")
       )
     ).render
   }

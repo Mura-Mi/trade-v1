@@ -62,6 +62,8 @@ lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
     Seq(
       "org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion,
+      "org.wvlet.airframe" %% "airframe-json" % airframeVersion,
+      "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
       "com.lihaoyi" %% "scalatags" % "0.7.0"
     )
 ).dependsOn(
