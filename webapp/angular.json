@@ -28,8 +28,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass",
-              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
+              "src/styles.sass"
             ],
             "scripts": []
           },
@@ -94,8 +93,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass",
-              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
+              "src/styles.sass"
             ],
             "scripts": []
           }
@@ -126,7 +124,6 @@
           }
         }
       }
-    }
-  },
+    }},
   "defaultProject": "webapp"
 }
