@@ -10,8 +10,13 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-master.iml" filepath="$PROJECT_DIR$/.idea/modules/product-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/system-base.iml" filepath="$PROJECT_DIR$/.idea/modules/system-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-util.iml" filepath="$PROJECT_DIR$/.idea/modules/test-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.evaluation-function.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.http-service.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.http-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.position-analysis.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.position-analysis.iml" />
     </modules>
   </component>
 </project>
