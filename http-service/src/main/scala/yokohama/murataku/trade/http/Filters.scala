@@ -10,7 +10,7 @@ import scala.util.control.NonFatal
 object Filters {
   object TmtNotFound extends Service[Request, Response] with LogSupport {
     override def apply(request: Request): Future[Response] = {
-      info(s"NOT FOUND ${request.method} ${request.uri}")
+      debug(s"NOT FOUND ${request.method} ${request.uri}")
       Future.value(Response(Status.NotFound))
     }
   }
@@ -25,10 +25,11 @@ object Filters {
           case NonFatal(e) =>
             error(e)
             Future.exception(e)
-        }.onSuccess(_ => {
+        }.onSuccess(resp => {
           val stop = Stopwatch.systemMillis()
           info(
-            s"${request.method} ${request.uri} ${BigDecimal(stop - start) / BigDecimal(1000)}(sec)")
+            s"${request.method} ${request.uri} ${BigDecimal(stop - start) / BigDecimal(
+              1000)}(sec) ${resp.status.code}")
         })
     }
   }

@@ -7,7 +7,7 @@ import wvlet.log.{LogLevel, Logger}
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
 
 object ServiceMain extends StandardHttpService {
-  Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  Logger.scheduleLogLevelScan
   val router = Router
     .add[HealthCheckRouting]
     .add[AnalysisRouting]
