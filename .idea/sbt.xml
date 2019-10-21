@@ -8,9 +8,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/evaluation" />
+            <option value="$PROJECT_DIR$/domain/market-data" />
+            <option value="$PROJECT_DIR$/domain/product" />
             <option value="$PROJECT_DIR$/evaluation-function" />
             <option value="$PROJECT_DIR$/historical-data" />
             <option value="$PROJECT_DIR$/http-service" />
+            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib/enum" />
             <option value="$PROJECT_DIR$/persistence" />
             <option value="$PROJECT_DIR$/position-analysis" />
             <option value="$PROJECT_DIR$/product-master" />

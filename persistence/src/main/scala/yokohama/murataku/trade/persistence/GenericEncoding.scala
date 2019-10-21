@@ -1,13 +1,9 @@
 package yokohama.murataku.trade.persistence
 
-import enumeratum.values.{
-  StringEnum,
-  StringEnumEntry,
-  ValueEnum,
-  ValueEnumEntry
-}
+import enumeratum.values.{StringEnum, StringEnumEntry, ValueEnumEntry}
 import io.getquill.MappedEncoding
 import shapeless._
+import yokohama.murataku.trade.lib.enum.EnumUtils
 
 trait GenericEncoding {
   implicit def stringDecoding[T, C](
@@ -30,9 +26,4 @@ trait GenericEncoding {
   implicit def enumDecoding[E <: ValueEnumEntry[V], V](
       implicit u: EnumUtils[V, E]): MappedEncoding[E, V] =
     MappedEncoding(v => u.toRaw(v))
-}
-
-class EnumUtils[V, E <: ValueEnumEntry[V]](self: ValueEnum[V, E]) {
-  def toRaw(e: E): V = e.value
-  def toEnum(v: V): E = self.withValue(v)
 }
