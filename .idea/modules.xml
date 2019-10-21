@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain-market-data.iml" filepath="$PROJECT_DIR$/.idea/modules/domain-market-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain-product.iml" filepath="$PROJECT_DIR$/.idea/modules/domain-product.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domainRoot.iml" filepath="$PROJECT_DIR$/.idea/modules/domainRoot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/evaluation-function.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-service.iml" filepath="$PROJECT_DIR$/.idea/modules/http-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-enum.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-enum.iml" />

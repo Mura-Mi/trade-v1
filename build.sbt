@@ -6,7 +6,6 @@ lazy val root = (project in file(".")).aggregate(
   persistence,
   `product-master`,
   `position-analysis`,
-  `evaluation-function`,
   `http-service`
 )
 
@@ -21,14 +20,6 @@ lazy val `test-util` = (project in file("test-util"))
       "org.scalatest" %% "scalatest" % "3.0.8"
     )
   )
-
-lazy val `evaluation-function` = (project in file("evaluation-function")).settings(
-).dependsOn(
-  `domain-evaluation`,
-  `system-base`,
-  `product-master`,
-  `test-util` % "test"
-)
 
 lazy val `product-master` = (project in file("product-master"))
   .settings(
@@ -62,7 +53,6 @@ lazy val `position-analysis` = (project in file("position-analysis"))
     `system-base`,
     `product-master`,
     `historical-data`,
-    `evaluation-function`,
     `domain-evaluation`,
     `test-util` % "test"
   )

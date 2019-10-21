@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$/domain/evaluation" />
             <option value="$PROJECT_DIR$/domain/market-data" />
             <option value="$PROJECT_DIR$/domain/product" />
-            <option value="$PROJECT_DIR$/evaluation-function" />
             <option value="$PROJECT_DIR$/historical-data" />
             <option value="$PROJECT_DIR$/http-service" />
             <option value="$PROJECT_DIR$/lib" />
