@@ -1,6 +1,6 @@
-package yokohama.murataku.trade.evaluation
+package yokohama.murataku.trade.evaluation.formula
 
-case object HistoricalVolatilityCalculator {
+case object HistoricalVolatilityFormula {
   def from(prices: Seq[Double]): Double = {
     val priceChangeRatio = prices.zip(prices.drop(1)).map {
       case (before, after) => (after - before) / before

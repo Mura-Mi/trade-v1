@@ -14,11 +14,12 @@ import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
 import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
-import yokohama.murataku.trade.analysis.vol.{
+import yokohama.murataku.trade.analysis.vol.DailyVolatility
+import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
+import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
   DailyVolatility
 }
-import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 
 @Endpoint(path = "")
 trait AnalysisRouting {

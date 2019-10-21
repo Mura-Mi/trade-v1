@@ -1,4 +1,4 @@
-package yokohama.murataku.trade.analysis.vol
+package yokohama.murataku.trade.volatility
 
 import java.time.LocalDate
 
