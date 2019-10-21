@@ -2,6 +2,8 @@ package yokohama.murataku.trade.holiday
 
 import java.time.LocalDate
 
+import yokohama.murataku.testutil.MyTestSuite
+
 //noinspection AccessorLikeMethodIsUnit
 class CalendarTest extends MyTestSuite {
   private val sut = new Calendar {
