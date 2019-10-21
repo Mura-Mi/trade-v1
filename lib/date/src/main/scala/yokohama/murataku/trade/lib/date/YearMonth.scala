@@ -1,4 +1,4 @@
-package yokohama.murataku.trade.holiday
+package yokohama.murataku.trade.lib.date
 
 import java.time.{DayOfWeek, LocalDate, Month}
 

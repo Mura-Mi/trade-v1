@@ -10,12 +10,9 @@ import better.files.File
 import com.twitter.util.{Await, Future}
 import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
-import yokohama.murataku.trade.holiday.{
-  HolidayAdjustMethod,
-  HolidayRepository,
-  YearMonth
-}
+import yokohama.murataku.trade.holiday.{HolidayAdjustMethod, HolidayRepository}
 import yokohama.murataku.trade.lib.batch.StandardBatch
+import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 import yokohama.murataku.trade.product.{
   IndexConstant,

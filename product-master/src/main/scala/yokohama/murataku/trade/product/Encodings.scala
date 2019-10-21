@@ -1,7 +1,7 @@
 package yokohama.murataku.trade.product
 
 import io.getquill.MappedEncoding
-import yokohama.murataku.trade.holiday.YearMonth
+import yokohama.murataku.trade.lib.date.YearMonth
 
 trait Encodings {
 

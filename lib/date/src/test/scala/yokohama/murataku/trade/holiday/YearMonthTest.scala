@@ -3,6 +3,7 @@ package yokohama.murataku.trade.holiday
 import java.time.{DayOfWeek, LocalDate, Month}
 
 import yokohama.murataku.testutil.MyTestSuite
+import yokohama.murataku.trade.lib.date.YearMonth
 
 class YearMonthTest extends MyTestSuite {
   "allDays returns all days for 2019/7" in {

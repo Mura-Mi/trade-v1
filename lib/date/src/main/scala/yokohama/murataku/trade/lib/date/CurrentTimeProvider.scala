@@ -1,8 +1,8 @@
-package yokohama.murataku.trade.lib
+package yokohama.murataku.trade.lib.date
 
 import java.time.{Clock, LocalDateTime, ZoneId, ZonedDateTime}
 
-import yokohama.murataku.trade.lib.CurrentTimeProvider.zone
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider.zone
 
 trait CurrentTimeProvider {
   protected def baseClock: Clock

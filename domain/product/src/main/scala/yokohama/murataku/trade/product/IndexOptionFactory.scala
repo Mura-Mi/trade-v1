@@ -3,11 +3,8 @@ package yokohama.murataku.trade.product
 import java.time.DayOfWeek
 import java.util.UUID
 
-import yokohama.murataku.trade.holiday.{
-  Calendar,
-  HolidayAdjustMethod,
-  YearMonth
-}
+import yokohama.murataku.trade.holiday.{Calendar, HolidayAdjustMethod}
+import yokohama.murataku.trade.lib.date.YearMonth
 
 class IndexOptionFactory(calendar: Calendar) {
   import calendar._

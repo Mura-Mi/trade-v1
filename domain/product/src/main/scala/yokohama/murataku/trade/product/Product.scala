@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 import shapeless.Generic
-import yokohama.murataku.trade.holiday.YearMonth
+import yokohama.murataku.trade.lib.date.YearMonth
 
 trait Product
 
