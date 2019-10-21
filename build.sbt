@@ -50,6 +50,7 @@ lazy val `position-analysis` = (project in file("position-analysis"))
       Seq("org.wvlet.airframe" %% "airframe" % airframeVersion)
   )
   .dependsOn(
+    `lib-date`,
     `system-base`,
     `product-master`,
     `historical-data`,
@@ -83,7 +84,7 @@ lazy val domainCommonSettings = Seq(
 
 lazy val `domain-product` = (project in new File(domain, "product"))
   .settings(domainCommonSettings)
-  .dependsOn(`lib-enum`, `test-util` % "test")
+  .dependsOn(`lib-enum`, `lib-date`, `test-util` % "test")
 lazy val `domain-market-data` = (project in new File(domain, "market-data"))
   .settings(domainCommonSettings)
   .dependsOn(`domain-product`, `test-util` % "test")
@@ -108,6 +109,7 @@ lazy val `lib-enum` = (project in new File(lib, "enum")).settings(
     "com.beachape" %% "enumeratum" % "1.5.13"
   )
 )
+lazy val `lib-date` = (project in new File(lib, "date")).dependsOn(`test-util` % "test")
 
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
