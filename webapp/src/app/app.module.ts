@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VolatilityComponent } from './volatility/volatility.component';
 import {HttpClientModule} from "@angular/common/http";
-import { ChartModule, AccumulationChartModule, RangeNavigatorModule, SparklineModule, SmithchartModule, StockChartModule } from '@syncfusion/ej2-angular-charts';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,7 @@ import { ChartModule, AccumulationChartModule, RangeNavigatorModule, SparklineMo
   imports: [
     HttpClientModule,
     BrowserModule,
-    AppRoutingModule,
-    ChartModule, AccumulationChartModule, RangeNavigatorModule, SparklineModule, SmithchartModule, StockChartModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
