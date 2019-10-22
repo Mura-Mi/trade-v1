@@ -45,7 +45,7 @@ jobs:
           command: |
               mkdir test-report
               ls -l test-report
-              find ./**/target/*/TEST-*.xml | xargs -I{} cp {} ./test-report
+              find . | grep TEST- | xargs -I{} cp {} ./test-report
               echo "done"
               ls -l test-report
 
