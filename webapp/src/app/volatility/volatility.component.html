@@ -1,9 +1,12 @@
-<p>volatility works!</p>
-<table>
-  <div *ngFor="let v of vol">
-    <tr>
-      <td>{{v.date}}</td>
-      <td>{{v.vol}}</td>
-    </tr>
+<div class="flex">
+  <div class="flex-item">
+    <div style="display: block;" *ngIf="vol">
+      <canvas baseChart width="400" height="400"
+              [datasets]="vol"
+              [chartType]="'line'"
+              [labels]="labels"
+      >
+      </canvas>
+    </div>
   </div>
-</table>
+</div>
