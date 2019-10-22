@@ -78,16 +78,17 @@ object BlackScholesFormula extends LogSupport {
       .iterate(0.0)(_ + bin)
       .takeWhile(_ <= 1)
       .take((1 / bin).toInt + 1)
-      .map(
-        v =>
-          (v,
-           this.innerPrice(putOrCall = putOrCall,
-                           underlying = underlying,
-                           strike = strike,
-                           vol = v,
-                           expiry = expiry,
-                           today = today,
-                           logLevel = LogLevel.TRACE)))
+      .map(v => {
+        val c = this.innerPrice(putOrCall = putOrCall,
+                                underlying = underlying,
+                                strike = strike,
+                                vol = v,
+                                expiry = expiry,
+                                today = today,
+                                logLevel = LogLevel.TRACE)
+        logAt(LogLevel.TRACE, c)
+        (v, c)
+      })
       .minBy { case (_, calcPrice) => abs(calcPrice - price) }
       ._1
   }

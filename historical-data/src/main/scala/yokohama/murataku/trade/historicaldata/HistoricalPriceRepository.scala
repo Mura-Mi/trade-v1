@@ -8,8 +8,10 @@ import yokohama.murataku.trade.historicaldata.database.{
   JpxOptionPrice,
   LatestFuturePrice
 }
+import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
+import yokohama.murataku.trade.product.PutOrCall
 
 class HistoricalPriceRepository(ctx: TmtPersistenceContext)
     extends PersistenceSupport {
@@ -51,9 +53,27 @@ class HistoricalPriceRepository(ctx: TmtPersistenceContext)
         query[LatestFuturePrice]
           .filter(_.productName == lift(productName))
         // TODO うまく行かないので一旦全フェッチ
-//          .filter(_.date >= lift(actFrom))
-//          .filter(_.date <= lift(actTo))
+        //          .filter(_.date >= lift(actFrom))
+        //          .filter(_.date <= lift(actTo))
       }
     }
+  }
+
+  def fetchOptionPrice(date: LocalDate,
+                       putOrCall: PutOrCall,
+                       deliveryLimit: YearMonth,
+                       optionProductCode: String,
+                       strike: BigDecimal): Future[JpxOptionPrice] = {
+    run {
+      quote {
+        query[JpxOptionPrice].filter(
+          row =>
+            row.date == lift(date)
+              && row.putOrCall == lift(putOrCall)
+              && row.deliveryLimit == lift(deliveryLimit.toStringWithoutSlash)
+              && row.optionProductCode == lift(optionProductCode)
+              && row.strike == lift(strike))
+      }
+    }.map(_.head)
   }
 }

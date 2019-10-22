@@ -3,7 +3,7 @@ package yokohama.murataku.trade.http
 import wvlet.airframe.http.Router
 import wvlet.airframe.http.finagle.FinagleServer.FinagleService
 import wvlet.airframe.http.finagle._
-import wvlet.log.{LogLevel, Logger}
+import wvlet.log.Logger
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
 
 object ServiceMain extends StandardHttpService {

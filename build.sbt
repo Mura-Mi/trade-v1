@@ -58,12 +58,16 @@ lazy val `position-analysis` = (project in file("position-analysis"))
     `test-util` % "test"
   )
 
+val circeVersion = "0.11.1"
+
 lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
     Seq(
       "org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion,
       "org.wvlet.airframe" %% "airframe-json" % airframeVersion,
-      "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
+      "io.circe" %% "circe-core" % circeVersion,
+      "io.circe" %% "circe-generic" % circeVersion,
+      "io.circe" %% "circe-parser" % circeVersion,
       "com.lihaoyi" %% "scalatags" % "0.7.0"
     )
 ).dependsOn(

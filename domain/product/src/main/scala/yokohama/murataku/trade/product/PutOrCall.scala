@@ -8,6 +8,7 @@ import scala.collection.immutable
 
 sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
   def isCall: Boolean
+
   def factor: Int = this match {
     case Call => 1
     case Put  => -1
@@ -15,9 +16,16 @@ sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
 }
 
 object PutOrCall extends StringEnum[PutOrCall] {
+  def of(poc: String): PutOrCall = withValueOpt(poc).getOrElse(
+    if (poc.equalsIgnoreCase("Put")) Put
+    else if (poc.equalsIgnoreCase("Call")) Call
+    else throw new IllegalArgumentException(s"$poc is not found")
+  )
+
   case object Put extends PutOrCall("P") {
     override def isCall: Boolean = false
   }
+
   case object Call extends PutOrCall("C") {
     override def isCall: Boolean = true
   }

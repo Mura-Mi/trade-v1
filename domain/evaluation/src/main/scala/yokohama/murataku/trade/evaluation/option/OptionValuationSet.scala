@@ -4,6 +4,11 @@ import java.time.LocalDate
 import java.util.UUID
 
 import enumeratum.values.{StringEnum, StringEnumEntry}
+import yokohama.murataku.trade.evaluation.option.GreeksFormula.{
+  Delta,
+  Theta,
+  Vega
+}
 
 import scala.collection.immutable
 
@@ -11,8 +16,22 @@ case class OptionValuationSet(
     subjectId: UUID,
     valuationBaseDate: LocalDate,
     price: BigDecimal,
-    greeks: Seq[OptionGreeks]
+    greeks: GreeksSet
 )
+
+case class GreeksSet(values: Seq[OptionGreeks]) {
+  def delta: Option[OptionGreeks] = values.collectFirst {
+    case e @ OptionGreeks(Delta(_, _), _) => e
+  }
+
+  def vega: Option[OptionGreeks] = values.collectFirst {
+    case e @ OptionGreeks(Vega(_, _), _) => e
+  }
+
+  def theta: Option[OptionGreeks] = values.collectFirst {
+    case e @ OptionGreeks(Theta(_, _), _) => e
+  }
+}
 
 case class OptionGreeks(
     formula: GreeksFormula,

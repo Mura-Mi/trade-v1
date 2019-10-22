@@ -1,14 +1,23 @@
 package yokohama.murataku.trade.product
 
 import com.twitter.util.Future
-import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.persistence.PersistenceSupport
+import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
-class IndexOptionRepository(ctx: FinaglePostgresContext[SnakeCase])
+class IndexOptionRepository(ctx: TmtPersistenceContext)
     extends PersistenceSupport
     with Encodings {
 
   import ctx._
+
+  def find(productName: IndexOptionName): Future[IndexOption] =
+    run {
+      quote {
+        query[IndexOption].filter(_.productName == lift(productName))
+      }
+    }.map(_.headOption.getOrElse(
+      throw new IllegalArgumentException(productName.value)))
+
   def store(indexOption: IndexOption): Future[Long] =
     run {
       quote {

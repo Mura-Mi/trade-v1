@@ -1,10 +1,10 @@
 package yokohama.murataku.trade.holiday
 
 import com.twitter.util.{Await, Future}
-import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.persistence.PersistenceSupport
+import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
-class HolidayRepository(ctx: FinaglePostgresContext[SnakeCase])
+class HolidayRepository(ctx: TmtPersistenceContext)
     extends Calendar
     with PersistenceSupport {
   import ctx._

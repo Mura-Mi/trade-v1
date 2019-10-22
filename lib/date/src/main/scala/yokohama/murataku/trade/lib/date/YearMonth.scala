@@ -18,10 +18,13 @@ case class YearMonth(year: Int, month: Month) {
       .drop(nth - 1)
       .headOption
       .getOrElse(throw new IllegalArgumentException(
-        s"Unsupported: ${nth}th $dow in $this"))
+        s"Unsupported: ${nth}th $dow in $this "))
 
   override def toString: String =
     year.toString + '/' + "%02d".format(month.getValue)
+
+  def toStringWithoutSlash: String =
+    year.toString + "%02d".format(month.getValue)
 }
 
 object YearMonth {
