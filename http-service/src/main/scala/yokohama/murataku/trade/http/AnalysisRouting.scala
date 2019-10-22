@@ -3,26 +3,22 @@ package yokohama.murataku.trade.http
 import java.time.LocalDate
 
 import com.twitter.util.Future
-import wvlet.airframe.http.Endpoint
 import wvlet.airframe._
-import wvlet.airframe.codec.{
-  MessageCodec,
-  MessageCodecFactory,
-  MessageValueCodec
-}
+import wvlet.airframe.codec.{MessageCodecFactory, MessageValueCodec}
+import wvlet.airframe.http.Endpoint
 import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
 import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
-import yokohama.murataku.trade.analysis.vol.{
+import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
+import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
   DailyVolatility
 }
-import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 
 @Endpoint(path = "")
 trait AnalysisRouting {
-  val uc = bind[CalculateHistoricalVolatilityUseCase]
+  private val uc = bind[CalculateHistoricalVolatilityUseCase]
 
   @Endpoint(path = "/vol")
   def vol: Future[String] = {

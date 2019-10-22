@@ -2,21 +2,22 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/evaluation-function.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain-evaluation.iml" filepath="$PROJECT_DIR$/.idea/modules/domain-evaluation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain-market-data.iml" filepath="$PROJECT_DIR$/.idea/modules/domain-market-data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain-product.iml" filepath="$PROJECT_DIR$/.idea/modules/domain-product.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domainRoot.iml" filepath="$PROJECT_DIR$/.idea/modules/domainRoot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/historical-data.iml" filepath="$PROJECT_DIR$/.idea/modules/historical-data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-service.iml" filepath="$PROJECT_DIR$/.idea/modules/http-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-date.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-date.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-enum.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-enum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libRoot.iml" filepath="$PROJECT_DIR$/.idea/modules/libRoot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/persistence.iml" filepath="$PROJECT_DIR$/.idea/modules/persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/position-analysis.iml" filepath="$PROJECT_DIR$/.idea/modules/position-analysis.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-master.iml" filepath="$PROJECT_DIR$/.idea/modules/product-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.iml" filepath="$PROJECT_DIR$/.idea/modules/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root-build.iml" filepath="$PROJECT_DIR$/.idea/modules/root-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/system-base.iml" filepath="$PROJECT_DIR$/.idea/modules/system-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-util.iml" filepath="$PROJECT_DIR$/.idea/modules/test-util.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trade-v1-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.evaluation-function.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.evaluation-function.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.http-service.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.http-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/trade.position-analysis.iml" filepath="$PROJECT_DIR$/.idea/modules/trade.position-analysis.iml" />
     </modules>
   </component>
 </project>

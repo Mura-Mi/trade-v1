@@ -5,7 +5,9 @@ import io.getquill.{FinaglePostgresContext, SnakeCase}
 import yokohama.murataku.trade.persistence.PersistenceSupport
 
 class IndexOptionRepository(ctx: FinaglePostgresContext[SnakeCase])
-    extends PersistenceSupport {
+    extends PersistenceSupport
+    with Encodings {
+
   import ctx._
   def store(indexOption: IndexOption): Future[Long] =
     run {

@@ -22,6 +22,7 @@ object Curl225Navi extends StandardBatch {
   val repo = new HistoricalPriceRepository(ctx)
 
   dataSources.map { source =>
+    info(s"start fetching: ${source.productName}")
     val doc: Document = Jsoup.connect(source.url).get()
 
     val count = Await.result {

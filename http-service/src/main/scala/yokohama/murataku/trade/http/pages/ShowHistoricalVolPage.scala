@@ -1,7 +1,7 @@
 package yokohama.murataku.trade.http.pages
 
 import scalatags.Text.all._
-import yokohama.murataku.trade.analysis.vol.DailyVolatility
+import yokohama.murataku.trade.volatility.DailyVolatility
 
 class ShowHistoricalVolPage(vols: Seq[DailyVolatility]) {
   def toHtml(): String = {
