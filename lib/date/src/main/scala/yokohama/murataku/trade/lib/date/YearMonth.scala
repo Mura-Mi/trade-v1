@@ -30,6 +30,8 @@ case class YearMonth(year: Int, month: Month) {
 object YearMonth {
   def apply(year: Int, month: Int): YearMonth = YearMonth(year, Month.of(month))
 
+  def of(year: Int, month: Int): YearMonth = apply(year,month)
+
   @throws[IllegalArgumentException]
   def decode(s: String): YearMonth = {
     Try {

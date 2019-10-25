@@ -5,6 +5,13 @@
       <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
     </JavaCodeStyleSettings>
     <ScalaCodeStyleSettings>
+      <option name="alwaysUsedImports">
+        <array>
+          <option value="cal._" />
+          <option value="kantan.codecs.strings.java8._" />
+          <option value="kantan.csv.generic._" />
+        </array>
+      </option>
       <option name="classCountToUseImportOnDemand" value="100" />
     </ScalaCodeStyleSettings>
   </code_scheme>

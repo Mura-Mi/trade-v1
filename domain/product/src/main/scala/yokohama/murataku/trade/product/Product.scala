@@ -9,6 +9,7 @@ import yokohama.murataku.trade.lib.date.YearMonth
 trait Product
 
 case class Index(name: String)
+
 case class IndexName(value: String)
 
 //noinspection TypeAnnotation
@@ -21,7 +22,7 @@ case class IndexFuture(id: UUID,
                        productName: IndexFutureName,
                        deliveryLimit: YearMonth,
                        deliveryDate: LocalDate)
-    extends Product
+  extends Product
 
 case class IndexFutureName(value: String) {
   def this(indexName: IndexName, deliveryLimit: YearMonth) =
@@ -40,11 +41,27 @@ case class IndexOption(id: UUID,
                        deliveryLimit: YearMonth,
                        deliveryDate: LocalDate,
                        strike: BigDecimal)
-    extends Product
+  extends Product {
+  def intrinsicValueAt(price: BigDecimal): BigDecimal = {
+    import NumUtil._
+    max((price - strike) * putOrCall.factor, 0)
+  }
+}
+
+trait NumUtil {
+  def max(a: BigDecimal, b: BigDecimal): BigDecimal =
+    if (a > b) a else b
+}
+
+object NumUtil extends NumUtil
+
+
 case class IndexOptionName(value: String)
+
 object IndexOptionName {
   //noinspection TypeAnnotation
   implicit val gen = shapeless.Generic[IndexOptionName]
+
   def apply(indexName: IndexName,
             putOrCall: PutOrCall,
             deliveryLimit: YearMonth,
