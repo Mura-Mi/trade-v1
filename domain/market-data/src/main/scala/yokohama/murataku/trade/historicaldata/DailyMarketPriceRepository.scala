@@ -6,6 +6,7 @@ import com.twitter.util.Future
 import yokohama.murataku.trade.product.ProductType
 
 trait DailyMarketPriceRepository {
+  def store(e: DailyMarketPrice): Future[Long]
   def store(productType: ProductType,
             productName: String,
             date: LocalDate,

@@ -21,6 +21,15 @@ class DailyMarketPriceRepositoryImpl
 
   type Schema = schema.DailyMarketPrice
 
+  override def store(e: DailyMarketPrice): Future[Long] =
+    this.store(e.productType,
+               e.productName,
+               e.date,
+               e.open.orNull,
+               e.high.orNull,
+               e.low.orNull,
+               e.close.orNull)
+
   override def store(productType: ProductType,
                      productName: String,
                      date: LocalDate,

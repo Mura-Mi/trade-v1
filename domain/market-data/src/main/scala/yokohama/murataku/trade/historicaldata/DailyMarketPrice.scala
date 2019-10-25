@@ -8,8 +8,8 @@ case class DailyMarketPrice(
     date: LocalDate,
     productType: ProductType,
     productName: String,
-    open: Option[BigDecimal],
-    high: Option[BigDecimal],
-    low: Option[BigDecimal],
-    close: Option[BigDecimal]
+    open: Option[BigDecimal] = None,
+    high: Option[BigDecimal] = None,
+    low: Option[BigDecimal] = None,
+    close: Option[BigDecimal] = None
 )

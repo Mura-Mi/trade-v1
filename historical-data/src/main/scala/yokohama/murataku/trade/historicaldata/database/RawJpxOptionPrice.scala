@@ -2,6 +2,9 @@ package yokohama.murataku.trade.historicaldata.database
 
 import java.time.LocalDate
 
+import yokohama.murataku.trade.historicaldata.DailyMarketPrice
+import yokohama.murataku.trade.product.ProductType
+import yokohama.murataku.trade.product.ProductType.IndexOption
 import yokohama.murataku.trade.product.indexoption.PutOrCall
 
 case class RawJpxOptionPrice(
@@ -23,22 +26,18 @@ case class RawJpxOptionPrice(
     underlyingClose: BigDecimal,
     underlyingBaseVolatility: BigDecimal
 ) {
-  def toDatabaseObject(date: LocalDate, poc: PutOrCall): JpxOptionPrice = {
-    JpxOptionPrice(
-      date = date,
-      putOrCall = poc,
-      optionProductCode = this.productCode,
-      productCode = if (poc.isCall) callProductCode else putProductCode,
-      productType = productType,
-      deliveryLimit = deliveryLimit,
-      strike = strike,
-      note1 = note1,
-      closePrice = if (poc.isCall) callClosePrice else putClosePrice,
-      spare = if (poc.isCall) callSpare else putSpare,
-      theoreticalPrice =
-        if (poc.isCall) callTheoreticalPrice else putTheoreticalPrice,
-      volatility = if (poc.isCall) callVolatility else putVolatility,
-    )
+  def toDatabaseObject(date: LocalDate,
+                       poc: PutOrCall): Option[DailyMarketPrice] = {
+    Option(if (poc.isCall) callClosePrice else putClosePrice)
+      .filter(_ != BigDecimal(0)).map { price =>
+        DailyMarketPrice(
+          date,
+          productType = ProductType.IndexOption,
+          productName = this.putProductCode,
+          close = Some(price)
+        )
+      }
+
   }
 }
 
