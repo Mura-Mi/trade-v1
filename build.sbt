@@ -107,7 +107,7 @@ lazy val `lib-enum` = (project in new File(lib, "enum")).settings(
 )
 lazy val `lib-date` = (project in new File(lib, "date")).dependsOn(`test-util` % "test")
 lazy val `util` = (project in new File(lib, "util")).dependsOn(`test-util` % "test")
-lazy val `test-util` = (project in new File(lib, "test"))
+lazy val `test-util` = (project in new File(lib, "test-util"))
   .settings(
     libraryDependencies ++= Seq(
       "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
