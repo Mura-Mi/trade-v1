@@ -4,13 +4,11 @@ import java.time.LocalDate
 
 import com.twitter.util.Future
 import wvlet.airframe._
-import yokohama.murataku.trade.evaluation.option.{
-  OptionEvaluationFunction,
-  OptionValuationSet
-}
+import yokohama.murataku.trade.evaluation.option.{OptionEvaluationFunction, OptionValuationSet}
 import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
-import yokohama.murataku.trade.product.{IndexOptionName, IndexOptionRepository}
+import yokohama.murataku.trade.product.IndexOptionRepository
+import yokohama.murataku.trade.product.indexoption.IndexOptionName
 
 trait CalculateOptionGreeksUseCase {
   private val optionRepository = bind[IndexOptionRepository]

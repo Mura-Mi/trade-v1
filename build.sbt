@@ -13,14 +13,6 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
 val airframeVersion = "19.10.1"
 
-lazy val `test-util` = (project in file("test-util"))
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
-      "org.scalatest" %% "scalatest" % "3.0.8"
-    )
-  )
-
 lazy val `product-master` = (project in file("product-master"))
   .settings(
     libraryDependencies ++=
@@ -114,6 +106,14 @@ lazy val `lib-enum` = (project in new File(lib, "enum")).settings(
   )
 )
 lazy val `lib-date` = (project in new File(lib, "date")).dependsOn(`test-util` % "test")
+lazy val `util` = (project in new File(lib, "util")).dependsOn(`test-util` % "test")
+lazy val `test-util` = (project in new File(lib, "test"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+      "org.scalatest" %% "scalatest" % "3.0.8"
+    )
+  )
 
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=

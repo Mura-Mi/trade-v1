@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import org.apache.commons.math3.distribution.NormalDistribution
 import wvlet.log.{LogLevel, LogSupport}
-import yokohama.murataku.trade.product.PutOrCall
+import yokohama.murataku.trade.product.indexoption.PutOrCall
 
 object BlackScholesFormula extends LogSupport {
   val `365`: Double = 365.0d

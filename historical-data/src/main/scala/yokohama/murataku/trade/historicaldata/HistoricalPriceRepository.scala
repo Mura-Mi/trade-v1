@@ -4,14 +4,11 @@ import java.time.LocalDate
 
 import com.twitter.util.Future
 import io.getquill.{FinaglePostgresContext, SnakeCase}
-import yokohama.murataku.trade.historicaldata.database.{
-  JpxOptionPrice,
-  LatestFuturePrice
-}
+import yokohama.murataku.trade.historicaldata.database.{JpxOptionPrice, LatestFuturePrice}
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
-import yokohama.murataku.trade.product.PutOrCall
+import yokohama.murataku.trade.product.indexoption.PutOrCall
 
 class HistoricalPriceRepository(ctx: TmtPersistenceContext)
     extends PersistenceSupport {

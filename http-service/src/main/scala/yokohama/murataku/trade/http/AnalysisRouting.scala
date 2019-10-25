@@ -5,11 +5,7 @@ import java.util.UUID
 
 import com.twitter.util.Future
 import wvlet.airframe._
-import wvlet.airframe.codec.{
-  MessageCodec,
-  MessageCodecFactory,
-  MessageValueCodec
-}
+import wvlet.airframe.codec.{MessageCodec, MessageCodecFactory, MessageValueCodec}
 import wvlet.airframe.http.Endpoint
 import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
@@ -18,12 +14,9 @@ import wvlet.airframe.surface.Surface
 import yokohama.murataku.trade.evaluation.option.OptionValuationSet
 import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
-import yokohama.murataku.trade.product.{IndexName, IndexOptionName, PutOrCall}
-import yokohama.murataku.trade.volatility.{
-  CalculateHistoricalVolatilityUseCase,
-  CalculateOptionGreeksUseCase,
-  DailyVolatility
-}
+import yokohama.murataku.trade.product.IndexName
+import yokohama.murataku.trade.product.indexoption.{IndexOptionName, PutOrCall}
+import yokohama.murataku.trade.volatility.{CalculateHistoricalVolatilityUseCase, CalculateOptionGreeksUseCase, DailyVolatility}
 
 @Endpoint(path = "")
 trait AnalysisRouting {

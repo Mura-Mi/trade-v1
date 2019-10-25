@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import wvlet.log.{LogLevel, Logger}
 import yokohama.murataku.testutil.MyTestSuite
-import yokohama.murataku.trade.product.PutOrCall
+import yokohama.murataku.trade.product.indexoption.PutOrCall
 
 class BlackScholesFormulaTest extends MyTestSuite {
   Logger.scheduleLogLevelScan

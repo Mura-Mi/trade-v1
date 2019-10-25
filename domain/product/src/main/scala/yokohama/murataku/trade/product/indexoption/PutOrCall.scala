@@ -1,8 +1,8 @@
-package yokohama.murataku.trade.product
+package yokohama.murataku.trade.product.indexoption
 
 import enumeratum.values.{StringEnum, StringEnumEntry}
 import yokohama.murataku.trade.lib.enum.EnumUtils
-import yokohama.murataku.trade.product.PutOrCall.{Call, Put}
+import yokohama.murataku.trade.product.indexoption.PutOrCall.{Call, Put}
 
 import scala.collection.immutable
 
@@ -11,7 +11,7 @@ sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
 
   def factor: Int = this match {
     case Call => 1
-    case Put  => -1
+    case Put => -1
   }
 }
 

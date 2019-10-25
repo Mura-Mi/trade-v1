@@ -3,6 +3,7 @@ package yokohama.murataku.trade.product
 import com.twitter.util.Future
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
+import yokohama.murataku.trade.product.indexoption.{IndexOption, IndexOptionName}
 
 class IndexOptionRepository(ctx: TmtPersistenceContext)
     extends PersistenceSupport

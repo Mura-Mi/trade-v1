@@ -1,10 +1,11 @@
-package yokohama.murataku.trade.product
+package yokohama.murataku.trade.product.indexoption
 
 import java.time.LocalDate
 import java.util.UUID
 
 import yokohama.murataku.testutil.MyTestSuite
 import yokohama.murataku.trade.lib.date.YearMonth
+import yokohama.murataku.trade.product.{IndexName, indexoption}
 
 class IndexOptionTest extends MyTestSuite {
   "intrinsic value" when {
@@ -28,7 +29,7 @@ class IndexOptionTest extends MyTestSuite {
       }
     }
     "put option" when {
-      val option = IndexOption(
+      val option = indexoption.IndexOption(
         id=UUID.randomUUID(),
         indexName= IndexName("dummy"),
         productName= IndexOptionName("dummy"),

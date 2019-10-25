@@ -14,12 +14,8 @@ import yokohama.murataku.trade.holiday.{HolidayAdjustMethod, HolidayRepository}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
-import yokohama.murataku.trade.product.{
-  IndexConstant,
-  IndexOptionFactory,
-  IndexOptionRepository,
-  PutOrCall
-}
+import yokohama.murataku.trade.product.indexoption.PutOrCall
+import yokohama.murataku.trade.product.{IndexConstant, IndexOptionFactory, IndexOptionRepository}
 
 object CurlJpxOptionReport extends StandardBatch {
   val ctx = PersistenceContextProvider.getContext
