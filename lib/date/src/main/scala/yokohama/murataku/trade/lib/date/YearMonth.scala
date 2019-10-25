@@ -30,26 +30,36 @@ case class YearMonth(year: Int, month: Month) {
 object YearMonth {
   def apply(year: Int, month: Int): YearMonth = YearMonth(year, Month.of(month))
 
-  def of(year: Int, month: Int): YearMonth = apply(year,month)
+  def of(year: Int, month: Int): YearMonth = apply(year, month)
 
   @throws[IllegalArgumentException]
   def decode(s: String): YearMonth = {
     Try {
-      val maybeYear = s.substring(0, 4)
-      val year = maybeYear.toInt
-
-      val maybeMonth = s.substring(4)
-      val month =
-        (
-          if (maybeMonth.startsWith("/")) maybeMonth.substring(1, 3)
-          else maybeMonth.substring(0, 2)
-        ).toInt
+      val shouldBeSlash = s.charAt(4)
+      if (shouldBeSlash != '/' || s.length != 7)
+        throw new IllegalArgumentException(s"$s must be yyyy/mm")
+      val year = s.substring(0, 4).toInt
+      val month = s.substring(5, 7).toInt
 
       YearMonth(year, month)
     } match {
-      case Success(ym)                          => ym
-      case Failure(e: IllegalArgumentException) => throw e
-      case Failure(other)                       => throw new IllegalArgumentException(other)
+      case Success(ym)                              => ym
+      case Failure(other: IllegalArgumentException) => throw other
+      case Failure(other) =>
+        throw new IllegalArgumentException(s"$s is not able to be parsed",
+                                           other)
     }
   }
+
+  @throws[IllegalArgumentException]
+  def fromSixNum(s: String): YearMonth =
+    Try {
+      val year = s.substring(0, 4).toInt
+      val month = Month.of(s.substring(4, 6).toInt)
+      return YearMonth(year, month)
+    } match {
+      case Success(ym) => ym
+      case Failure(e) =>
+        throw new IllegalArgumentException(s"$s is not able to be parsed", e)
+    }
 }

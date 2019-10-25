@@ -28,6 +28,12 @@ class YearMonthTest extends MyTestSuite {
   }
 
   "decode from raw string without slash" in {
-    YearMonth.decode("198904") shouldBe YearMonth(1989, 4)
+    assertThrows[IllegalArgumentException] {
+      YearMonth.decode("198904") shouldBe YearMonth(1989, 4)
+    }
+  }
+
+  "fromSixNum from raw string without slash" in {
+    YearMonth.fromSixNum("198904") shouldBe YearMonth(1989, 4)
   }
 }

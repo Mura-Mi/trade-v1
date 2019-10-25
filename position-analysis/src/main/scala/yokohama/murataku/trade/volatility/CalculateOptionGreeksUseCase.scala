@@ -4,10 +4,14 @@ import java.time.LocalDate
 
 import com.twitter.util.Future
 import wvlet.airframe._
-import yokohama.murataku.trade.evaluation.option.{OptionEvaluationFunction, OptionValuationSet}
+import yokohama.murataku.trade.evaluation.option.{
+  OptionEvaluationFunction,
+  OptionValuationSet
+}
 import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
 import yokohama.murataku.trade.product.IndexOptionRepository
+import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 import yokohama.murataku.trade.product.indexoption.IndexOptionName
 
 trait CalculateOptionGreeksUseCase {
@@ -25,8 +29,10 @@ trait CalculateOptionGreeksUseCase {
                                                       "NK225E",
                                                       indexOption.strike)
       futurePrice <- priceRepository
-        .fetchFuturePrice("NK225", valuationDate, valuationDate).map(
-          _.filter(_.date == valuationDate).head)
+        .fetchFuturePrice(
+          IndexFutureName("NK225"),
+          valuationDate,
+          valuationDate).map(_.filter(_.date == valuationDate).head)
     } yield {
       implicit val cal: Calendar = holidayRepository
       OptionEvaluationFunction.apply(indexOption,

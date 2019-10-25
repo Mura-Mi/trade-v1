@@ -5,6 +5,7 @@ import java.time.LocalDate
 import com.twitter.util.Await
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
+import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 
 object FutureHistoricalPriceViewer extends StandardBatch {
 
@@ -16,7 +17,9 @@ object FutureHistoricalPriceViewer extends StandardBatch {
 
       Await.result {
         for {
-          volatility <- uc.extract("NK225", volHistStart, today)
+          volatility <- uc.extract(IndexFutureName("NK225"),
+                                   volHistStart,
+                                   today)
         } yield {
           volatility.foreach(info(_))
         }

@@ -15,7 +15,11 @@ import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 import yokohama.murataku.trade.product.indexoption.PutOrCall
-import yokohama.murataku.trade.product.{IndexConstant, IndexOptionFactory, IndexOptionRepository}
+import yokohama.murataku.trade.product.{
+  IndexConstant,
+  IndexOptionFactory,
+  IndexOptionRepository
+}
 
 object CurlJpxOptionReport extends StandardBatch {
   val ctx = PersistenceContextProvider.getContext
@@ -104,7 +108,7 @@ object CurlJpxOptionReport extends StandardBatch {
         .collect {
           csvFile.flatMap { row =>
             PutOrCall.both.map { poc =>
-              val delivery: YearMonth = YearMonth.decode(row.deliveryLimit)
+              val delivery: YearMonth = YearMonth.fromSixNum(row.deliveryLimit)
               val option =
                 new IndexOptionFactory(calendar).createNew(nk225,
                                                            poc,

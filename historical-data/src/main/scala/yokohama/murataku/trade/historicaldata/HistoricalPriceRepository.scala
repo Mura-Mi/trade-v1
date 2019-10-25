@@ -4,10 +4,14 @@ import java.time.LocalDate
 
 import com.twitter.util.Future
 import io.getquill.{FinaglePostgresContext, SnakeCase}
-import yokohama.murataku.trade.historicaldata.database.{JpxOptionPrice, LatestFuturePrice}
+import yokohama.murataku.trade.historicaldata.database.{
+  JpxOptionPrice,
+  LatestFuturePrice
+}
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
+import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 import yokohama.murataku.trade.product.indexoption.PutOrCall
 
 class HistoricalPriceRepository(ctx: TmtPersistenceContext)
@@ -25,7 +29,13 @@ class HistoricalPriceRepository(ctx: TmtPersistenceContext)
       quote(
         query[LatestFuturePrice]
           .insert(
-            lift(LatestFuturePrice(productName, date, open, high, low, close)))
+            lift(
+              LatestFuturePrice(IndexFutureName(productName),
+                                date,
+                                open,
+                                high,
+                                low,
+                                close)))
           .onConflictIgnore(_.productName, _.date)
       )
     }
@@ -39,7 +49,7 @@ class HistoricalPriceRepository(ctx: TmtPersistenceContext)
       }
     }
 
-  def fetchFuturePrice(productName: String,
+  def fetchFuturePrice(productName: IndexFutureName,
                        from: LocalDate = null,
                        to: LocalDate = null): Future[Seq[LatestFuturePrice]] = {
     val actFrom = Option(from).getOrElse(LocalDate.of(2000, 1, 1))

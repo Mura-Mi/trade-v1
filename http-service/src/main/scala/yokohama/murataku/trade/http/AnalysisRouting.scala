@@ -5,7 +5,11 @@ import java.util.UUID
 
 import com.twitter.util.Future
 import wvlet.airframe._
-import wvlet.airframe.codec.{MessageCodec, MessageCodecFactory, MessageValueCodec}
+import wvlet.airframe.codec.{
+  MessageCodec,
+  MessageCodecFactory,
+  MessageValueCodec
+}
 import wvlet.airframe.http.Endpoint
 import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
@@ -15,8 +19,13 @@ import yokohama.murataku.trade.evaluation.option.OptionValuationSet
 import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.product.IndexName
+import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 import yokohama.murataku.trade.product.indexoption.{IndexOptionName, PutOrCall}
-import yokohama.murataku.trade.volatility.{CalculateHistoricalVolatilityUseCase, CalculateOptionGreeksUseCase, DailyVolatility}
+import yokohama.murataku.trade.volatility.{
+  CalculateHistoricalVolatilityUseCase,
+  CalculateOptionGreeksUseCase,
+  DailyVolatility
+}
 
 @Endpoint(path = "")
 trait AnalysisRouting {
@@ -26,7 +35,9 @@ trait AnalysisRouting {
   @Endpoint(path = "/vol")
   def vol: Future[String] = {
     historicalVolUseCase
-      .extract("NK225", LocalDate.now().minusYears(3), LocalDate.now)
+      .extract(IndexFutureName("NK225"),
+               LocalDate.now().minusYears(3),
+               LocalDate.now)
       .map(record => new ShowHistoricalVolPage(record).toHtml())
   }
 
@@ -42,7 +53,7 @@ trait AnalysisRouting {
 
     val codec = f.of[DailyVolatility]
     for {
-      vs <- historicalVolUseCase.extract("NK225",
+      vs <- historicalVolUseCase.extract(IndexFutureName("NK225"),
                                          LocalDate.now().minusYears(3),
                                          LocalDate.now)
     } yield {
@@ -59,7 +70,7 @@ trait AnalysisRouting {
 
     val n = IndexOptionName.apply(IndexName("NK225E"),
                                   PutOrCall.of(poc),
-                                  YearMonth.decode(delivery),
+                                  YearMonth.fromSixNum(delivery),
                                   BigDecimal(strike))
     for {
       gs <- greeksUseCase.run(n, LocalDate.parse(date))

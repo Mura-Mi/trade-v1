@@ -8,12 +8,13 @@ import yokohama.murataku.trade.evaluation.formula.HistoricalVolatilityFormula
 import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
 import yokohama.murataku.trade.lib.date._
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
+import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 
 class CalculateHistoricalVolatilityUseCase(
     persistenceContext: TmtPersistenceContext
 ) extends LogSupport {
 
-  def extract(productName: String,
+  def extract(productName: IndexFutureName,
               since: LocalDate,
               to: LocalDate): Future[Seq[DailyVolatility]] = {
 
