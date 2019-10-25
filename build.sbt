@@ -73,6 +73,7 @@ lazy val domainRoot = (project in new File(domain))
 lazy val domainCommonSettings = Seq(
   libraryDependencies := Seq(
     "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+    "com.twitter" %% "util-core" % "19.10.0",
     "com.chuusai" %% "shapeless" % "2.3.3",
     "com.beachape" %% "enumeratum" % "1.5.13"
   )
