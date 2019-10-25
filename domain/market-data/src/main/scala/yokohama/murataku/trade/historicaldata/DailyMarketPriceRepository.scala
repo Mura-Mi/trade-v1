@@ -12,7 +12,7 @@ trait DailyMarketPriceRepository {
             open: BigDecimal = null,
             high: BigDecimal = null,
             low: BigDecimal = null,
-            close: BigDecimal = null): Future[Unit]
+            close: BigDecimal = null): Future[Long]
 
   def find(productType: ProductType,
            productName: String,

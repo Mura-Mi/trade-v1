@@ -8,10 +8,13 @@ import yokohama.murataku.trade.historicaldata.{
   DailyMarketPrice,
   DailyMarketPriceRepository
 }
+import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 import yokohama.murataku.trade.product.ProductType
 
-class DailyMarketPriceRepositoryImpl extends DailyMarketPriceRepository {
+class DailyMarketPriceRepositoryImpl
+    extends DailyMarketPriceRepository
+    with PersistenceSupport {
   private val ctx = wvlet.airframe.bind[TmtPersistenceContext]
 
   import ctx._
@@ -24,24 +27,25 @@ class DailyMarketPriceRepositoryImpl extends DailyMarketPriceRepository {
                      open: BigDecimal = null,
                      high: BigDecimal = null,
                      low: BigDecimal = null,
-                     close: BigDecimal = null): Future[Unit] =
+                     close: BigDecimal = null): Future[Long] =
     run {
       quote {
         query[Schema]
           .insert(
-            schema.DailyMarketPrice(
-              UUID.randomUUID(),
-              date,
-              productType,
-              productName,
-              Option(open),
-              Option(high),
-              Option(low),
-              Option(close),
-              null
-            )).onConflictIgnore(_.date, _.productType, _.productName)
+            lift(
+              schema.DailyMarketPrice(
+                UUID.randomUUID(),
+                date,
+                productType,
+                productName,
+                Option(open),
+                Option(high),
+                Option(low),
+                Option(close),
+                null
+              ))).onConflictIgnore(_.date, _.productType, _.productName)
       }
-    }.unit
+    }
 
   override def find(productType: ProductType,
                     productName: String,
@@ -60,17 +64,18 @@ class DailyMarketPriceRepositoryImpl extends DailyMarketPriceRepository {
   override def select(productType: ProductType,
                       productName: String,
                       since: LocalDate,
-                      until: LocalDate): Future[Seq[DailyMarketPrice]] =
+                      until: LocalDate): Future[Seq[DailyMarketPrice]] = {
+    import yokohama.murataku.trade.lib.date._
     run {
       quote {
         query[schema.DailyMarketPrice]
-          .filter(
-            row =>
-              row.productName == lift(productName) &&
-                row.productType == lift(productType) &&
-                row.date >= lift(since) &&
-                row.date <= lift(until)
-          ).sortBy(_.date)
+          .filter(row =>
+            row.productName == lift(productName) && row.productType == lift(
+              productType))
+          //          .filter(_.date >= since).filter(_.date <= until)
+          .sortBy(_.date)
       }
-    }.map(_.map(_.toDomain))
+    }.map(_.filter(row => row.date.isBetween(since, until))) // remove when infix comparison works
+      .map(_.map(_.toDomain))
+  }
 }

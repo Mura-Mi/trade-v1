@@ -1,6 +1,6 @@
 package yokohama.murataku.trade.persistence.finagle
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZonedDateTime}
 
 import com.twitter.finagle.postgres.PostgresClient
 import io.getquill.util.LoadConfig
@@ -30,4 +30,8 @@ class TmtPersistenceContext(override val naming: SnakeCase,
     def >(other: LocalDate): Quoted[Boolean] =
       quote(infix"$underlying > $other".as[Boolean])
   }
+
+  implicit val zonedDateTimeEncoding
+    : MappedEncoding[ZonedDateTime, java.util.Date] =
+    MappedEncoding.apply(zdt => java.util.Date.from(zdt.toInstant))
 }
