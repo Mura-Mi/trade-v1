@@ -2,6 +2,7 @@ package yokohama.murataku.trade.historicaldata
 
 import java.time.{LocalDate, LocalDateTime}
 
+import com.twitter.util.Await
 import yokohama.murataku.trade.holiday.{Calendar, HolidayAdjustMethod}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
@@ -22,7 +23,9 @@ object CurlJpxOptionReport extends StandardBatch {
             .adjust(HolidayAdjustMethod.Preceding)) // 多分ここまでには発表されてるはずdesign.build[Calendar] {calendar => {
 
       design.build[CurlJpxOptionReportUseCase] { uc =>
-        uc.run(today)
+        Await.result {
+          uc.run(today)
+        }
       }
     }
   }

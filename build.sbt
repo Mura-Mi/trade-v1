@@ -32,8 +32,8 @@ lazy val `historical-data` = (project in file("historical-data"))
         "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
         "org.jsoup" % "jsoup" % "1.12.1",
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1"
-      )
+        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
+        "com.twitter" %% "finagle-http" % "19.10.0")
   ).dependsOn(`system-base`, `domain-market-data`, `product-master`, persistence, `test-util` % "test")
 
 lazy val `position-analysis` = (project in file("position-analysis"))
