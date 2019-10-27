@@ -6,7 +6,8 @@ import com.twitter.util.Future
 import wvlet.airframe._
 import yokohama.murataku.trade.evaluation.option.{
   OptionEvaluationFunction,
-  OptionValuationSet
+  OptionValuationSet,
+  PayoffDiagramFunction
 }
 import yokohama.murataku.trade.historicaldata.DailyMarketPriceRepository
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
@@ -37,10 +38,18 @@ trait CalculateOptionGreeksUseCase {
         .find(ProductType.IndexFuture, "NK225", valuationDate)
     } yield {
       implicit val cal: Calendar = holidayRepository
-      OptionEvaluationFunction.apply(indexOption,
-                                     optionPrice.flatMap(_.close).get,
-                                     futurePrice.flatMap(_.close).get,
-                                     valuationDate)
+      val underlying = futurePrice.flatMap(_.close).get
+      OptionEvaluationFunction
+        .apply(indexOption,
+               optionPrice.flatMap(_.close).get,
+               underlying,
+               valuationDate).copy(
+          payoff = PayoffDiagramFunction.eval(
+            indexOption,
+            optionPrice.flatMap(_.close).get,
+            futurePrice.flatMap(_.close).get,
+            valuationDate)(underlying * 0.8, underlying * 1.2, 10)
+        )
     }
 
     r.underlying

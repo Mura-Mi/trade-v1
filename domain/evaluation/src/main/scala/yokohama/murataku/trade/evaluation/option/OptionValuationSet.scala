@@ -16,7 +16,8 @@ case class OptionValuationSet(
     subjectId: UUID,
     valuationBaseDate: LocalDate,
     price: BigDecimal,
-    greeks: GreeksSet
+    greeks: GreeksSet,
+    payoff: Seq[OptionPayoff] = Nil
 )
 
 case class GreeksSet(values: Seq[OptionGreeks]) {

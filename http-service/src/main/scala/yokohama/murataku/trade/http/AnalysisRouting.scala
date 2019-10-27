@@ -10,6 +10,7 @@ import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
 import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
+import yokohama.murataku.trade.evaluation.option.OptionPayoff
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.product.ProductType
@@ -69,14 +70,20 @@ trait AnalysisRouting {
       import io.circe.generic.auto._
       import io.circe.syntax._
 
-      Greeks(
-        Some(gs.price),
-        gs.greeks.delta.map(_.value),
-        gs.greeks.vega.map(_.value),
-        gs.greeks.theta.map(_.value)
-      ).asJson.noSpaces
+      OptionValuation(Greeks(
+                        Some(gs.price),
+                        gs.greeks.delta.map(_.value),
+                        gs.greeks.vega.map(_.value),
+                        gs.greeks.theta.map(_.value)
+                      ),
+                      gs.payoff).asJson.noSpaces
     }
   }
+
+  case class OptionValuation(
+      greeks: Greeks,
+      payoff: Seq[OptionPayoff]
+  )
 
   case class Greeks(
       marketPrice: Option[BigDecimal],
