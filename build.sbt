@@ -21,7 +21,7 @@ lazy val `product-master` = (project in file("product-master"))
         "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
         "com.nrinaudo" %% "kantan.csv-java8" % "0.5.1"
       )
-  ).dependsOn(`domain-product`, `system-base`, persistence, `test-util` % "test")
+  ).dependsOn(`domain-product`, `batch-base`, persistence, `test-util` % "test")
 
 
 lazy val `historical-data` = (project in file("historical-data"))
@@ -34,7 +34,7 @@ lazy val `historical-data` = (project in file("historical-data"))
         "com.nrinaudo" %% "kantan.csv" % "0.5.1",
         "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
         "com.twitter" %% "finagle-http" % "19.10.0")
-  ).dependsOn(`system-base`, `domain-market-data`, `product-master`, persistence, `test-util` % "test")
+  ).dependsOn(`batch-base`, `domain-market-data`, `product-master`, persistence, `test-util` % "test")
 
 lazy val `position-analysis` = (project in file("position-analysis"))
   .settings(
@@ -43,7 +43,7 @@ lazy val `position-analysis` = (project in file("position-analysis"))
   )
   .dependsOn(
     `lib-date`,
-    `system-base`,
+    `batch-base`,
     `product-master`,
     `historical-data`,
     `domain-evaluation`,
@@ -122,13 +122,14 @@ lazy val persistence = (project in file("persistence")).settings(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
       "org.wvlet.airframe" %% "airframe" % airframeVersion
     )
-).dependsOn(`system-base`, `test-util` % "test", `lib-enum`)
+).dependsOn(`batch-base`, `test-util` % "test", `lib-enum`)
 
-lazy val `system-base` = (project in file("system-base")).settings(
+lazy val `batch-base` = (project in file("batch-base")).settings(
   libraryDependencies ++=
     Seq(
       "org.wvlet.airframe" %% "airframe" % airframeVersion,
       "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+      "io.monix" %% "monix-eval" % "3.0.0",
     )
 ).dependsOn(`test-util` % "test")
 
