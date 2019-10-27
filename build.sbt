@@ -81,10 +81,10 @@ lazy val domainCommonSettings = Seq(
 
 lazy val `domain-product` = (project in new File(domain, "product"))
   .settings(domainCommonSettings)
-  .dependsOn(`lib-enum`, `lib-date`, `test-util` % "test")
+  .dependsOn(`persistence-typedef`, `lib-enum`, `lib-date`, `test-util` % "test")
 lazy val `domain-market-data` = (project in new File(domain, "market-data"))
   .settings(domainCommonSettings)
-  .dependsOn(`domain-product`, `test-util` % "test")
+  .dependsOn(`persistence-typedef`, `domain-product`, `test-util` % "test")
 lazy val `domain-evaluation` = (project in new File(domain, "evaluation"))
   .settings(domainCommonSettings)
   .settings(
@@ -93,6 +93,7 @@ lazy val `domain-evaluation` = (project in new File(domain, "evaluation"))
     )
   )
   .dependsOn(
+    `persistence-typedef`,
     `domain-product`,
     `domain-market-data`,
     `test-util` % "test"
@@ -115,6 +116,8 @@ lazy val `test-util` = (project in new File(lib, "test-util"))
       "org.scalatest" %% "scalatest" % "3.0.8"
     )
   )
+lazy val `persistence-typedef` = (project in new File(lib, "persistence-typedef"))
+  .dependsOn(`test-util` % "test")
 
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
@@ -122,7 +125,7 @@ lazy val persistence = (project in file("persistence")).settings(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
       "org.wvlet.airframe" %% "airframe" % airframeVersion
     )
-).dependsOn(`batch-base`, `test-util` % "test", `lib-enum`)
+).dependsOn(`persistence-typedef`,`batch-base`, `test-util` % "test", `lib-enum`)
 
 lazy val `batch-base` = (project in file("batch-base")).settings(
   libraryDependencies ++=

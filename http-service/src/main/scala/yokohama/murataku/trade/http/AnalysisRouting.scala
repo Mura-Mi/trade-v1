@@ -1,26 +1,20 @@
 package yokohama.murataku.trade.http
 
 import java.time.LocalDate
-import java.util.UUID
 
 import com.twitter.util.Future
 import wvlet.airframe._
-import wvlet.airframe.codec.{
-  MessageCodec,
-  MessageCodecFactory,
-  MessageValueCodec
-}
+import wvlet.airframe.codec.{MessageCodecFactory, MessageValueCodec}
 import wvlet.airframe.http.Endpoint
 import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
 import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
-import yokohama.murataku.trade.evaluation.option.OptionValuationSet
 import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
-import yokohama.murataku.trade.product.IndexName
+import yokohama.murataku.trade.product.IndexOptionRepository
 import yokohama.murataku.trade.product.indexfuture.IndexFutureName
-import yokohama.murataku.trade.product.indexoption.{IndexOptionName, PutOrCall}
+import yokohama.murataku.trade.product.indexoption.PutOrCall
 import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
   CalculateOptionGreeksUseCase,
@@ -31,6 +25,7 @@ import yokohama.murataku.trade.volatility.{
 trait AnalysisRouting {
   private val historicalVolUseCase = bind[CalculateHistoricalVolatilityUseCase]
   private val greeksUseCase = bind[CalculateOptionGreeksUseCase]
+  private val productRepository = bind[IndexOptionRepository]
 
   @Endpoint(path = "/vol")
   def vol: Future[String] = {
@@ -67,12 +62,11 @@ trait AnalysisRouting {
                  strike: String,
                  poc: String,
                  date: String): Future[String] = {
-
-    val n = IndexOptionName.apply(IndexName("NK225E"),
-                                  PutOrCall.of(poc),
-                                  YearMonth.fromSixNum(delivery),
-                                  BigDecimal(strike))
     for {
+      n <- productRepository
+        .findBy(BigDecimal(strike),
+                PutOrCall.of(poc),
+                YearMonth.fromSixNum(delivery)).map(_.productName)
       gs <- greeksUseCase.run(n, LocalDate.parse(date))
     } yield {
       import io.circe.generic.auto._
