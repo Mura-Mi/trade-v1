@@ -1,15 +1,16 @@
 package yokohama.murataku.trade.historicaldata
 
-import java.nio
+import java.io.BufferedOutputStream
+import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import better.files.Dsl.unzip
 import better.files.File
-import com.twitter.finagle.Http
-import com.twitter.finagle.http.Request
-import com.twitter.io.Buf.ByteBuffer
-import com.twitter.util.Future
+import com.twitter.concurrent.AsyncSemaphore
+import com.twitter.finagle.Service
+import com.twitter.finagle.filter.RequestSemaphoreFilter
+import com.twitter.util.{Future, FuturePool}
 import wvlet.airframe._
 import wvlet.log.LogSupport
 import yokohama.murataku.trade.historicaldata.database.RawJpxOptionPrice
@@ -29,108 +30,113 @@ case class JpxOptionPriceReportFetchResult(
 )
 
 trait JpxOptionPriceReader extends LogSupport {
-  val calendar = bind[Calendar]
-  val finagle = Http.newService("www.jpx.co.jp:80", "jpx-option-price")
-  val indexOptionFactory = new IndexOptionFactory(calendar)
+  private val calendar = bind[Calendar]
+  private val indexOptionFactory = new IndexOptionFactory(calendar)
 
-  val nk225 = IndexName("NK225E")
+  private val nk225 = IndexName("NK225E")
+  private val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
+
+  private val service
+    : Service[LocalDate, Seq[RawJpxOptionPrice]] = new RequestSemaphoreFilter(
+    new AsyncSemaphore(3)) andThen Service.mk(
+    date => {
+      FuturePool.unboundedPool
+        .apply {
+          info(s"start fetching $date")
+          val dateFormat = fmt.format(date)
+          val inputStream = new URL(
+            s"https://www.jpx.co.jp/markets/derivatives/option-price/data/ose${dateFormat}tp.zip")
+            .openConnection()
+            .getInputStream
+
+          File.temporaryFile() {
+            tmp =>
+              val wri = new BufferedOutputStream(tmp.newFileOutputStream())
+
+              Stream
+                .continually(inputStream.read()) //
+                .takeWhile(_ != -1) //
+                .foreach(wri.write)
+
+              wri.flush()
+
+              File.temporaryDirectory() {
+                unzipDir =>
+                  info(unzipDir.path.toUri)
+                  unzip(tmp)(unzipDir)
+
+                  import kantan.csv._
+                  import kantan.csv.generic._
+                  import kantan.csv.ops._
+
+                  unzipDir.children
+                    .find(f => {
+                      info(f.pathAsString)
+                      f.isRegularFile && f.extension.contains(".csv")
+                    })
+                    .map(
+                      e =>
+                        e.url
+                          .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
+                          .toSeq
+                          .flatMap {
+                            case Right(raw) => Option(raw)
+                            case Left(e) =>
+                              error(e)
+                              None
+                          }
+                          .filter(_.productCode.trim() == nk225.value)
+                          .map(a =>
+                            a.copy(
+                              productCode = a.productCode.trim(),
+                              productType = a.productType.trim(),
+                              deliveryLimit = a.deliveryLimit.trim(),
+                              note1 = a.note1.trim(),
+                              putProductCode = a.putProductCode.trim(),
+                              putSpare = a.putSpare.trim(),
+                              callProductCode = a.callProductCode.trim(),
+                              callSpare = a.callSpare.trim()
+                          ))
+                    ).toSeq.flatten
+              }
+          }
+        }.onSuccess(seq => info(s"[date=$date][count=${seq.size}]"))
+    }
+  )
 
   def get(date: LocalDate): Future[JpxOptionPriceReportFetchResult] = {
-    val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
-    finagle
-      .apply(
-        Request(
-          s"/markets/derivatives/option-price/data/ose${fmt.format(date)}tp.zip"
-        )).map(resp => {
-        info(resp.status)
-        val buf = resp.content
-        val twitterByteBuf = ByteBuffer.coerce(buf)
+    val fCsvFile =
+      service(date)
 
-        File.temporaryFile() {
-          tmp =>
-            val byteBuf = nio.ByteBuffer.allocate(twitterByteBuf.length)
-            twitterByteBuf.write(byteBuf)
-            val ch = tmp.newFileOutputStream().getChannel
-            ch.write(byteBuf)
+    for {
+      csvFile <- fCsvFile
+    } yield {
 
-            File.temporaryDirectory() {
-              unzipDir =>
-                info(unzipDir.path.toUri)
-                unzip(tmp)(unzipDir)
-
-                import kantan.csv._
-                import kantan.csv.generic._
-                import kantan.csv.ops._
-
-                val csvFile: Seq[RawJpxOptionPrice] = unzipDir.children
-                  .find(f => {
-                    info(f.pathAsString)
-                    f.isRegularFile && f.extension.contains(".csv")
-                  })
-                  .map(
-                    e =>
-                      e.url
-                        .asCsvReader[RawJpxOptionPrice](rfc.withoutHeader)
-                        .toSeq
-                        .flatMap {
-                          case Right(raw) => Option(raw)
-                          case Left(e) =>
-                            error(e)
-                            None
-                        }
-                        .filter(_.productCode.trim() == nk225.value)
-                        .map(a =>
-                          a.copy(
-                            productCode = a.productCode.trim(),
-                            productType = a.productType.trim(),
-                            deliveryLimit = a.deliveryLimit.trim(),
-                            note1 = a.note1.trim(),
-                            putProductCode = a.putProductCode.trim(),
-                            putSpare = a.putSpare.trim(),
-                            callProductCode = a.callProductCode.trim(),
-                            callSpare = a.callSpare.trim()
-                        ))
-                  )
-                  .getOrElse {
-                    error("csv file is not found")
-                    Nil
-                  }
-
-                info(s"data in csv: ${csvFile.size}")
-
-                val productMaster: Seq[IndexOption] =
-                  csvFile
-                    .flatMap {
-                      row =>
-                        PutOrCall.both
-                          .map { poc =>
-                            val delivery: YearMonth =
-                              YearMonth.fromSixNum(row.deliveryLimit)
-                            val indexOptionName = IndexOptionName(
-                              if (poc.isCall) row.callProductCode
-                              else row.putProductCode)
-                            indexOptionFactory.createNew(nk225,
-                                                         indexOptionName,
-                                                         poc,
-                                                         delivery,
-                                                         row.strike)
-                          }
-                    }
-
-                val price: Seq[DailyMarketPrice] =
-                  csvFile
-                    .flatMap(raw =>
-                      PutOrCall.both.flatMap { poc =>
-                        raw.toDatabaseObject(date, poc)
-                    })
-
-                (productMaster, price)
+      val productMaster: Seq[IndexOption] = csvFile
+        .flatMap { row =>
+          PutOrCall.both
+            .map { poc =>
+              val delivery: YearMonth =
+                YearMonth.fromSixNum(row.deliveryLimit)
+              val indexOptionName = IndexOptionName(
+                if (poc.isCall) row.callProductCode
+                else row.putProductCode)
+              indexOptionFactory.createNew(nk225,
+                                           indexOptionName,
+                                           poc,
+                                           delivery,
+                                           row.strike)
             }
         }
-      }).map {
-        case (productMaster, prices) =>
-          JpxOptionPriceReportFetchResult(date, productMaster, prices)
-      }
 
+      val price: Seq[DailyMarketPrice] =
+        csvFile
+          .flatMap(raw =>
+            PutOrCall.both.flatMap { poc =>
+              raw.toDatabaseObject(date, poc)
+          })
+
+      JpxOptionPriceReportFetchResult(date, productMaster, price)
+    }
   }
 }

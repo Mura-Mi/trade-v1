@@ -2,7 +2,7 @@ package yokohama.murataku.trade.historicaldata
 
 import java.time.LocalDate
 
-import com.twitter.util.{Await, Future}
+import com.twitter.util.Future
 import wvlet.airframe._
 import wvlet.log.LogSupport
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext

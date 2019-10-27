@@ -13,5 +13,8 @@ package object date {
 
     def isBetween(fromInclusive: LocalDate, toInclusive: LocalDate): Boolean =
       fromInclusive <= underlying && underlying <= toInclusive
+
+    def to(other: LocalDate): Seq[LocalDate] =
+      Stream.iterate(underlying)(_.plusDays(1)).takeWhile(u => u <= other)
   }
 }

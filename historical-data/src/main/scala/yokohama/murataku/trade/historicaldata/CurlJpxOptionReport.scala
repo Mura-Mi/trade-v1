@@ -2,7 +2,7 @@ package yokohama.murataku.trade.historicaldata
 
 import java.time.{LocalDate, LocalDateTime}
 
-import com.twitter.util.Await
+import com.twitter.util.{Await, Future}
 import yokohama.murataku.trade.holiday.{Calendar, HolidayAdjustMethod}
 import yokohama.murataku.trade.lib.batch.StandardBatch
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
@@ -14,7 +14,8 @@ object CurlJpxOptionReport extends StandardBatch {
   design.build[Calendar] { calendar =>
     {
       import calendar._
-      val today = args.headOption
+
+      val dayOne = args.headOption
         .map(LocalDate.parse(_))
         .getOrElse(
           LocalDateTime.now
@@ -22,9 +23,19 @@ object CurlJpxOptionReport extends StandardBatch {
             .toLocalDate
             .adjust(HolidayAdjustMethod.Preceding)) // 多分ここまでには発表されてるはずdesign.build[Calendar] {calendar => {
 
+      val maybeDayTwo = args.drop(1).headOption.map(LocalDate.parse(_))
+
       design.build[CurlJpxOptionReportUseCase] { uc =>
+        import yokohama.murataku.trade.lib.date._
+
         Await.result {
-          uc.run(today)
+          (maybeDayTwo match {
+            case None => uc.run(dayOne)
+            case Some(dayTwo) =>
+              Future.collect {
+                (dayOne to dayTwo).filter(calendar.isBusinessDay).map(uc.run)
+              }
+          }).unit
         }
       }
     }
