@@ -1,6 +1,5 @@
 package yokohama.murataku.trade.product.indexoption
 
-import com.twitter.util.Future
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.typedef.TatriaContext
 
