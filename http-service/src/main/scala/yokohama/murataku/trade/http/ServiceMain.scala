@@ -5,6 +5,7 @@ import wvlet.airframe.http.finagle.FinagleServer.FinagleService
 import wvlet.airframe.http.finagle._
 import wvlet.log.Logger
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
+import yokohama.murataku.trade.{historicaldata, product}
 
 object ServiceMain extends StandardHttpService {
   Logger.scheduleLogLevelScan
@@ -21,8 +22,9 @@ object ServiceMain extends StandardHttpService {
 
   val design =
     newFinagleServerDesign(port = 8080, name = "tmt-http", router = router) +
-      ActualPersistenceContextDesign.design
-        .bind[FinagleServerFactory].to[CustomFinagleServerFactory]
+      ActualPersistenceContextDesign.design +
+      product.design + historicaldata.design
+      .bind[FinagleServerFactory].to[CustomFinagleServerFactory]
 
   design.build[FinagleServer] { server =>
     server.waitServerTermination

@@ -15,7 +15,7 @@ case class DailyMarketPrice(
     high: Option[BigDecimal],
     low: Option[BigDecimal],
     close: Option[BigDecimal],
-    createdAt: ZonedDateTime
+    createdAt: Option[ZonedDateTime]
 ) {
   def toDomain: DomainModel =
     DomainModel(date, productType, productName, open, high, low, close)
