@@ -11,15 +11,13 @@ lazy val root = (project in file(".")).aggregate(
 
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.7"
 
-val airframeVersion = "19.10.1"
-
 lazy val `product-master` = (project in file("product-master"))
   .settings(
     libraryDependencies ++=
       Seq(
-        "com.nrinaudo" %% "kantan.csv" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-java8" % "0.5.1"
+        "com.nrinaudo" %% "kantan.csv" % versions.kantanCsv,
+        "com.nrinaudo" %% "kantan.csv-generic" % versions.kantanCsv,
+        "com.nrinaudo" %% "kantan.csv-java8" % versions.kantanCsv
       )
   ).dependsOn(`domain-product`, `batch-base`, persistence, `test-util` % "test")
 
@@ -29,17 +27,17 @@ lazy val `historical-data` = (project in file("historical-data"))
     libraryDependencies ++=
       Seq(
         "com.github.pathikrit" %% "better-files" % "3.8.0",
-        "org.wvlet.airframe" %% "airframe-codec" % airframeVersion,
+        "org.wvlet.airframe" %% "airframe-codec" % versions.airframe,
         "org.jsoup" % "jsoup" % "1.12.1",
-        "com.nrinaudo" %% "kantan.csv" % "0.5.1",
-        "com.nrinaudo" %% "kantan.csv-generic" % "0.5.1",
-        "com.twitter" %% "finagle-http" % "19.10.0")
+        "com.nrinaudo" %% "kantan.csv" % versions.kantanCsv,
+        "com.nrinaudo" %% "kantan.csv-generic" % versions.kantanCsv,
+        "com.twitter" %% "finagle-http" % versions.finagleFamily)
   ).dependsOn(`batch-base`, `domain-market-data`, `product-master`, persistence, `test-util` % "test")
 
 lazy val `position-analysis` = (project in file("position-analysis"))
   .settings(
     libraryDependencies ++=
-      Seq("org.wvlet.airframe" %% "airframe" % airframeVersion)
+      Seq("org.wvlet.airframe" %% "airframe" % versions.airframe)
   )
   .dependsOn(
     `lib-date`,
@@ -50,16 +48,14 @@ lazy val `position-analysis` = (project in file("position-analysis"))
     `test-util` % "test"
   )
 
-val circeVersion = "0.11.1"
-
 lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
     Seq(
-      "org.wvlet.airframe" %% "airframe-http-finagle" % airframeVersion,
-      "org.wvlet.airframe" %% "airframe-json" % airframeVersion,
-      "io.circe" %% "circe-core" % circeVersion,
-      "io.circe" %% "circe-generic" % circeVersion,
-      "io.circe" %% "circe-parser" % circeVersion,
+      "org.wvlet.airframe" %% "airframe-http-finagle" % versions.airframe,
+      "org.wvlet.airframe" %% "airframe-json" % versions.airframe,
+      "io.circe" %% "circe-core" % versions.circe,
+      "io.circe" %% "circe-generic" % versions.circe,
+      "io.circe" %% "circe-parser" % versions.circe,
       "com.lihaoyi" %% "scalatags" % "0.7.0"
     )
 ).dependsOn(
@@ -72,7 +68,7 @@ lazy val domainRoot = (project in new File(domain))
 
 lazy val domainCommonSettings = Seq(
   libraryDependencies := Seq(
-    "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+    "org.wvlet.airframe" %% "airframe-log" % versions.airframe,
     "com.chuusai" %% "shapeless" % "2.3.3",
     "com.beachape" %% "enumeratum" % "1.5.13"
   )
@@ -111,7 +107,7 @@ lazy val `util` = (project in new File(lib, "util")).dependsOn(`test-util` % "te
 lazy val `test-util` = (project in new File(lib, "test-util"))
   .settings(
     libraryDependencies ++= Seq(
-      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+      "org.wvlet.airframe" %% "airframe-log" % versions.airframe,
       "org.scalatest" %% "scalatest" % "3.0.8"
     )
   )
@@ -122,15 +118,15 @@ lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
     Seq(
       "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
-      "org.wvlet.airframe" %% "airframe" % airframeVersion
+      "org.wvlet.airframe" %% "airframe" % versions.airframe
     )
 ).dependsOn(`persistence-typedef`,`batch-base`, `test-util` % "test", `lib-enum`)
 
 lazy val `batch-base` = (project in file("batch-base")).settings(
   libraryDependencies ++=
     Seq(
-      "org.wvlet.airframe" %% "airframe" % airframeVersion,
-      "org.wvlet.airframe" %% "airframe-log" % airframeVersion,
+      "org.wvlet.airframe" %% "airframe" % versions.airframe,
+      "org.wvlet.airframe" %% "airframe-log" % versions.airframe,
       "io.monix" %% "monix-eval" % "3.0.0",
     )
 ).dependsOn(`test-util` % "test")
