@@ -8,36 +8,34 @@ import yokohama.murataku.trade.evaluation.option.{
   OptionEvaluationFunction,
   OptionValuationSet
 }
-import yokohama.murataku.trade.historicaldata.HistoricalPriceRepository
+import yokohama.murataku.trade.historicaldata.DailyMarketPriceRepository
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
-import yokohama.murataku.trade.product.IndexOptionRepository
-import yokohama.murataku.trade.product.indexfuture.IndexFutureName
+import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.product.indexoption.IndexOptionName
+import yokohama.murataku.trade.product.{IndexOptionRepository, ProductType}
 
 trait CalculateOptionGreeksUseCase {
   private val optionRepository = bind[IndexOptionRepository]
-  private val priceRepository = bind[HistoricalPriceRepository]
+  private val priceRepository =
+    bind[DailyMarketPriceRepository[TwFutureTatriaContext]]
   private val holidayRepository = bind[HolidayRepository]
+  private implicit val ct: TwFutureTatriaContext = bind[TwFutureTatriaContext]
 
   def run(productName: IndexOptionName,
           valuationDate: LocalDate): Future[OptionValuationSet] = {
     for {
       indexOption <- optionRepository.find(productName)
-      optionPrice <- priceRepository.fetchOptionPrice(valuationDate,
-                                                      indexOption.putOrCall,
-                                                      indexOption.deliveryLimit,
-                                                      "NK225E",
-                                                      indexOption.strike)
+      optionPrice <- priceRepository
+        .find(ProductType.IndexOption,
+              indexOption.productName.value,
+              valuationDate).underlying
       futurePrice <- priceRepository
-        .fetchFuturePrice(
-          IndexFutureName("NK225"),
-          valuationDate,
-          valuationDate).map(_.filter(_.date == valuationDate).head)
+        .find(ProductType.IndexFuture, "NK225", valuationDate).underlying
     } yield {
       implicit val cal: Calendar = holidayRepository
       OptionEvaluationFunction.apply(indexOption,
-                                     optionPrice.closePrice,
-                                     futurePrice.close,
+                                     optionPrice.flatMap(_.close).get,
+                                     futurePrice.flatMap(_.close).get,
                                      valuationDate)
     }
   }

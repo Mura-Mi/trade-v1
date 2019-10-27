@@ -12,7 +12,7 @@ import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
 import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
-import yokohama.murataku.trade.product.IndexOptionRepository
+import yokohama.murataku.trade.product.{IndexOptionRepository, ProductType}
 import yokohama.murataku.trade.product.indexfuture.IndexFutureName
 import yokohama.murataku.trade.product.indexoption.PutOrCall
 import yokohama.murataku.trade.volatility.{
@@ -30,7 +30,8 @@ trait AnalysisRouting {
   @Endpoint(path = "/vol")
   def vol: Future[String] = {
     historicalVolUseCase
-      .extract(IndexFutureName("NK225"),
+      .extract(ProductType.IndexFuture,
+               "NK225",
                LocalDate.now().minusYears(3),
                LocalDate.now)
       .map(record => new ShowHistoricalVolPage(record).toHtml())
@@ -48,7 +49,8 @@ trait AnalysisRouting {
 
     val codec = f.of[DailyVolatility]
     for {
-      vs <- historicalVolUseCase.extract(IndexFutureName("NK225"),
+      vs <- historicalVolUseCase.extract(ProductType.IndexFuture,
+                                         "NK225",
                                          LocalDate.now().minusYears(3),
                                          LocalDate.now)
     } yield {
@@ -87,4 +89,5 @@ trait AnalysisRouting {
       vega: Option[BigDecimal],
       theta: Option[BigDecimal],
   )
+
 }
