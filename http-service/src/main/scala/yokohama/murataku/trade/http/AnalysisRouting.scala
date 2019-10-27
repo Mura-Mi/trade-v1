@@ -30,7 +30,8 @@ trait AnalysisRouting {
   private val greeksUseCase = bind[CalculateOptionGreeksUseCase]
   private val productRepository =
     bind[IndexOptionRepository[TwFutureTatriaContext]]
-  private implicit val tatriaContext = bind[TwFutureTatriaContext]
+  private implicit val tatriaContext: TwFutureTatriaContext =
+    bind[TwFutureTatriaContext]
 
   @Endpoint(path = "/vol")
   def vol: Future[String] = {
