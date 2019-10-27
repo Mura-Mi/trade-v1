@@ -10,14 +10,13 @@ import wvlet.airframe.json.JSON.JSONArray
 import wvlet.airframe.msgpack.spi.Value
 import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
-import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
+import yokohama.murataku.trade.product.ProductType
 import yokohama.murataku.trade.product.indexoption.{
   IndexOptionRepository,
   PutOrCall
 }
-import yokohama.murataku.trade.product.{IndexOptionRepositoryImpl, ProductType}
 import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
   CalculateOptionGreeksUseCase,
@@ -32,16 +31,6 @@ trait AnalysisRouting {
     bind[IndexOptionRepository[TwFutureTatriaContext]]
   private implicit val tatriaContext: TwFutureTatriaContext =
     bind[TwFutureTatriaContext]
-
-  @Endpoint(path = "/vol")
-  def vol: Future[String] = {
-    historicalVolUseCase
-      .extract(ProductType.IndexFuture,
-               "NK225",
-               LocalDate.now().minusYears(3),
-               LocalDate.now)
-      .map(record => new ShowHistoricalVolPage(record).toHtml())
-  }
 
   @Endpoint(path = "/vol.json")
   def volJson: Future[String] = {

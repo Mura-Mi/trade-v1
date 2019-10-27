@@ -55,8 +55,7 @@ lazy val `http-service` = (project in file("http-service")).settings(
       "org.wvlet.airframe" %% "airframe-json" % versions.airframe,
       "io.circe" %% "circe-core" % versions.circe,
       "io.circe" %% "circe-generic" % versions.circe,
-      "io.circe" %% "circe-parser" % versions.circe,
-      "com.lihaoyi" %% "scalatags" % "0.7.0"
+      "io.circe" %% "circe-parser" % versions.circe
     )
 ).dependsOn(
   `position-analysis`
