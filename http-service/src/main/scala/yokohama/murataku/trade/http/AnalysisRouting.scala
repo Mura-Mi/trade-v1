@@ -12,9 +12,12 @@ import wvlet.airframe.msgpack.spi.Value.StringValue
 import wvlet.airframe.surface.Surface
 import yokohama.murataku.trade.http.pages.ShowHistoricalVolPage
 import yokohama.murataku.trade.lib.date.YearMonth
-import yokohama.murataku.trade.product.{IndexOptionRepository, ProductType}
-import yokohama.murataku.trade.product.indexfuture.IndexFutureName
-import yokohama.murataku.trade.product.indexoption.PutOrCall
+import yokohama.murataku.trade.persistence.TwFutureTatriaContext
+import yokohama.murataku.trade.product.indexoption.{
+  IndexOptionRepository,
+  PutOrCall
+}
+import yokohama.murataku.trade.product.{IndexOptionRepositoryImpl, ProductType}
 import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
   CalculateOptionGreeksUseCase,
@@ -25,7 +28,9 @@ import yokohama.murataku.trade.volatility.{
 trait AnalysisRouting {
   private val historicalVolUseCase = bind[CalculateHistoricalVolatilityUseCase]
   private val greeksUseCase = bind[CalculateOptionGreeksUseCase]
-  private val productRepository = bind[IndexOptionRepository]
+  private val productRepository =
+    bind[IndexOptionRepository[TwFutureTatriaContext]]
+  private implicit val tatriaContext = bind[TwFutureTatriaContext]
 
   @Endpoint(path = "/vol")
   def vol: Future[String] = {
@@ -68,7 +73,7 @@ trait AnalysisRouting {
       n <- productRepository
         .findBy(BigDecimal(strike),
                 PutOrCall.of(poc),
-                YearMonth.fromSixNum(delivery)).map(_.productName)
+                YearMonth.fromSixNum(delivery)).map(_.productName).underlying
       gs <- greeksUseCase.run(n, LocalDate.parse(date))
     } yield {
       import io.circe.generic.auto._

@@ -11,11 +11,15 @@ import yokohama.murataku.trade.evaluation.option.{
 import yokohama.murataku.trade.historicaldata.DailyMarketPriceRepository
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
-import yokohama.murataku.trade.product.indexoption.IndexOptionName
-import yokohama.murataku.trade.product.{IndexOptionRepository, ProductType}
+import yokohama.murataku.trade.product.ProductType
+import yokohama.murataku.trade.product.indexoption.{
+  IndexOptionName,
+  IndexOptionRepository
+}
 
 trait CalculateOptionGreeksUseCase {
-  private val optionRepository = bind[IndexOptionRepository]
+  private val optionRepository =
+    bind[IndexOptionRepository[TwFutureTatriaContext]]
   private val priceRepository =
     bind[DailyMarketPriceRepository[TwFutureTatriaContext]]
   private val holidayRepository = bind[HolidayRepository]
@@ -23,14 +27,14 @@ trait CalculateOptionGreeksUseCase {
 
   def run(productName: IndexOptionName,
           valuationDate: LocalDate): Future[OptionValuationSet] = {
-    for {
+    val r = for {
       indexOption <- optionRepository.find(productName)
       optionPrice <- priceRepository
         .find(ProductType.IndexOption,
               indexOption.productName.value,
-              valuationDate).underlying
+              valuationDate)
       futurePrice <- priceRepository
-        .find(ProductType.IndexFuture, "NK225", valuationDate).underlying
+        .find(ProductType.IndexFuture, "NK225", valuationDate)
     } yield {
       implicit val cal: Calendar = holidayRepository
       OptionEvaluationFunction.apply(indexOption,
@@ -38,5 +42,7 @@ trait CalculateOptionGreeksUseCase {
                                      futurePrice.flatMap(_.close).get,
                                      valuationDate)
     }
+
+    r.underlying
   }
 }

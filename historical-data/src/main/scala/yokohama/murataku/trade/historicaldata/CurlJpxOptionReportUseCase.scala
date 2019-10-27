@@ -6,31 +6,32 @@ import com.twitter.util.{Await, Future}
 import wvlet.airframe._
 import wvlet.log.LogSupport
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
-import yokohama.murataku.trade.product.IndexOptionRepository
+import yokohama.murataku.trade.product.IndexOptionRepositoryImpl
 
 trait CurlJpxOptionReportUseCase extends LogSupport {
+  private implicit val tatriaContext: TwFutureTatriaContext =
+    bind[TwFutureTatriaContext]
   private val jpxOptionPriceReader = bind[JpxOptionPriceReader]
   private val priceRepo =
     bind[DailyMarketPriceRepository[TwFutureTatriaContext]]
-  private val productRepo = bind[IndexOptionRepository]
+  private val productRepo = bind[IndexOptionRepositoryImpl]
 
   def run(today: LocalDate): Future[(Long, Long)] = {
-    implicit val c = new TwFutureTatriaContext
     info(s"today: $today")
     jpxOptionPriceReader
       .get(today).flatMap(
         result => {
           val futPro =
-            Future
-              .collect { result.productMaster.map(productRepo.store) }.map(
+            tatriaContext
+              .collect { result.productMaster.map(productRepo.store(_)) }.map(
                 _.sum).onSuccess(v => info(s"product: $v"))
-          val futPrice = c
+          val futPrice = tatriaContext
             .collect { result.prices.map(priceRepo.store(_)) }.map(_.sum)
 
-          for {
+          (for {
             product <- futPro
-            price <- futPrice.underlying.onSuccess(v => info(s"price: $v"))
-          } yield (product, price)
+            price <- futPrice.onSuccess(v => info(s"price: $v"))
+          } yield (product, price)).underlying
         }
       )
   }
