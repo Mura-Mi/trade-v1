@@ -51,11 +51,7 @@ lazy val `position-analysis` = (project in file("position-analysis"))
 lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
     Seq(
-      "org.wvlet.airframe" %% "airframe-http-finagle" % versions.airframe,
-      "org.wvlet.airframe" %% "airframe-json" % versions.airframe,
-      "io.circe" %% "circe-core" % versions.circe,
-      "io.circe" %% "circe-generic" % versions.circe,
-      "io.circe" %% "circe-parser" % versions.circe
+      "org.wvlet.airframe" %% "airframe-http-finagle" % versions.airframe
     )
 ).dependsOn(
   `position-analysis`
