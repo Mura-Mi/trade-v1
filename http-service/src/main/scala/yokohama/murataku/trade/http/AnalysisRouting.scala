@@ -5,7 +5,7 @@ import java.time.LocalDate
 import com.twitter.util.Future
 import wvlet.airframe._
 import wvlet.airframe.http.Endpoint
-import wvlet.airframe.json.JSON.{JSONArray, JSONObject}
+import wvlet.airframe.json.JSON.JSONArray
 import yokohama.murataku.trade.evaluation.option.OptionPayoff
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
@@ -46,7 +46,7 @@ trait AnalysisRouting extends TatriaCodeFactory {
   def greeksJson(delivery: String,
                  strike: String,
                  poc: String,
-                 date: String): Future[JSONObject] = {
+                 date: String): Future[String] = {
     for {
       n <- productRepository
         .findBy(BigDecimal(strike),
@@ -54,7 +54,7 @@ trait AnalysisRouting extends TatriaCodeFactory {
                 YearMonth.fromSixNum(delivery)).map(_.productName).underlying
       gs <- greeksUseCase.run(n, LocalDate.parse(date))
     } yield {
-      codecOf[OptionValuation].toJSONObject(
+      codecOf[OptionValuation].toJson(
         OptionValuation(Greeks(
                           Some(gs.price),
                           gs.greeks.delta.map(_.value),

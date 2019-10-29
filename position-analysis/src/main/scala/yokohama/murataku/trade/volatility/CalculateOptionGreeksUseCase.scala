@@ -39,6 +39,7 @@ trait CalculateOptionGreeksUseCase {
     } yield {
       implicit val cal: Calendar = holidayRepository
       val underlying = futurePrice.flatMap(_.close).get
+      val strike = indexOption.strike
       OptionEvaluationFunction
         .apply(indexOption,
                optionPrice.flatMap(_.close).get,
@@ -48,7 +49,7 @@ trait CalculateOptionGreeksUseCase {
             indexOption,
             optionPrice.flatMap(_.close).get,
             futurePrice.flatMap(_.close).get,
-            valuationDate)(underlying * 0.8, underlying * 1.2, 10)
+            valuationDate)(strike.toDouble - 1000, strike.toDouble + 1000, 10)
         )
     }
 

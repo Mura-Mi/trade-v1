@@ -1,9 +1,13 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {VolatilityComponent} from "./volatility/volatility.component";
+import {GreeksComponent} from "./greeks/greeks.component";
 
 
-const routes: Routes = [{path: 'vol', component: VolatilityComponent}];
+const routes: Routes = [
+  {path: 'vol', component: VolatilityComponent},
+  {path: 'greeks/:delivery/:strike/:poc/:valuationDate', component: GreeksComponent},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
