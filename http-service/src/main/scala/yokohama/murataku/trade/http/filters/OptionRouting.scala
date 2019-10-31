@@ -1,4 +1,4 @@
-package yokohama.murataku.trade.http
+package yokohama.murataku.trade.http.filters
 
 import wvlet.airframe.http.{Endpoint, HttpMethod}
 

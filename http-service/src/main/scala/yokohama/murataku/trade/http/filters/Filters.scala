@@ -1,4 +1,4 @@
-package yokohama.murataku.trade.http
+package yokohama.murataku.trade.http.filters
 
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.finagle.{Service, SimpleFilter}
