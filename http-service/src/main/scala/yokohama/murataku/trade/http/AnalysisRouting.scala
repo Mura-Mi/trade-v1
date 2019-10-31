@@ -10,14 +10,8 @@ import yokohama.murataku.trade.holiday.Calendar
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.product.ProductType
-import yokohama.murataku.trade.product.indexoption.{
-  IndexOptionRepository,
-  PutOrCall
-}
-import yokohama.murataku.trade.volatility.{
-  CalculateHistoricalVolatilityUseCase,
-  CalculateOptionGreeksUseCase
-}
+import yokohama.murataku.trade.product.indexoption.{IndexOptionRepository, PutOrCall}
+import yokohama.murataku.trade.volatility.{CalculateHistoricalVolatilityUseCase, CalculateOptionGreeksUseCase}
 
 @Endpoint(path = "")
 trait AnalysisRouting extends TatriaCodecFactory {
@@ -39,18 +33,13 @@ trait AnalysisRouting extends TatriaCodecFactory {
   }
 
   @Endpoint(path = "/greeks/:delivery/:strike/:poc")
-  def greeksJson(delivery: String,
-                 strike: String,
-                 poc: String,
-                 date: Option[String]): Future[String] = {
+  def greeksJson(delivery: String, strike: String, poc: String, date: Option[String]): Future[String] = {
     val valuationDate =
       date.map(LocalDate.parse).getOrElse(calendar.latestBusinessDay)
     (
       for {
         n <- productRepository
-          .findBy(BigDecimal(strike),
-                  PutOrCall.of(poc),
-                  YearMonth.fromSixNum(delivery)).map(_.productName).underlying
+          .findBy(BigDecimal(strike), PutOrCall.of(poc), YearMonth.fromSixNum(delivery)).map(_.productName).underlying
         gs <- greeksUseCase.run(n, valuationDate)
       } yield {
         OptionValuation(Greeks(

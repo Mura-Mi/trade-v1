@@ -13,33 +13,31 @@ import {Observable} from "rxjs";
 export class VolatilityComponent implements OnInit {
 
   constructor(private volatilityService: VolatilityService, private formBuilder: FormBuilder) {
-    this.dateRangeForm = this.formBuilder.group({
-      from: '',
-      to: ''
-    })
+    this.dateRangeForm = this.formBuilder.group({ from: '2019-01-01', to: '2019-12-31' })
   }
 
   labels: Label[];
   vol: ChartDataSets[];
   dateRangeForm;
-  from: Observable<string>;
-  to: Observable<string>;
 
   @ViewChild(BaseChartDirective, {static: true}) chart: BaseChartDirective;
 
   ngOnInit() {
-    this.from.pipe(a =>
-      a.subscribe(aa => this.volatilityService.getHistoricalVolatility(aa.from, '2019-09-30'))
-    ).subscribe(vols => {
-        this.vol = [{data: vols.map(d => d.vol), label: 'hoge'}];
-        this.labels = vols.map(d => d.date);
-        this.chart && this.chart.update();
-      }
-    )
+    this.refresh()
+  }
+
+  refresh() {
+    this.volatilityService.getHistoricalVolatility(this.dateRangeForm.value.from, this.dateRangeForm.value.to)
+      .subscribe(vols => {
+          this.vol = [{data: vols.map(d => d.vol), label: 'hoge'}];
+          this.labels = vols.map(d => d.date);
+          this.chart && this.chart.update();
+        }
+      )
   }
 
   onSubmit(v) {
-    console.warn(v)
+    console.warn(v);
+    this.refresh();
   }
-
 }
