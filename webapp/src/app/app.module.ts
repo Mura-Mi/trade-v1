@@ -7,6 +7,7 @@ import {VolatilityComponent} from './volatility/volatility.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ChartsModule} from "ng2-charts";
 import {GreeksComponent} from './greeks/greeks.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {GreeksComponent} from './greeks/greeks.component';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

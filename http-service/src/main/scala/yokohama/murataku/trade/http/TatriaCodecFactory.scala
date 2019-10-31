@@ -2,6 +2,7 @@ package yokohama.murataku.trade.http
 
 import java.time.LocalDate
 
+import com.twitter.util.Future
 import wvlet.airframe.codec.{
   INVALID_DATA,
   MessageCodec,
@@ -16,7 +17,7 @@ import wvlet.airframe.surface.Surface
 
 import scala.reflect.runtime.universe.TypeTag
 
-trait TatriaCodeFactory {
+trait TatriaCodecFactory {
   protected def codecOf[A: TypeTag]: MessageCodec[A] = codecFactory.of[A]
   protected val codecFactory: MessageCodecFactory =
     wvlet.airframe.codec.MessageCodecFactory.defaultFactory.withObjectMapCodec
@@ -65,6 +66,11 @@ trait TatriaCodeFactory {
           }
         )
       )
+
+  implicit class FutureExt[A](future: Future[A]) {
+    def toJsonResponse(implicit typeTag: TypeTag[A]): Future[String] =
+      future.map(codecOf[A].toJson)
+  }
 }
 
-object TatriaCodeFactory {}
+object TatriaCodecFactory {}

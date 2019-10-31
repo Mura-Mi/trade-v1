@@ -15,12 +15,11 @@ import yokohama.murataku.trade.product.indexoption.{
 }
 import yokohama.murataku.trade.volatility.{
   CalculateHistoricalVolatilityUseCase,
-  CalculateOptionGreeksUseCase,
-  DailyVolatility
+  CalculateOptionGreeksUseCase
 }
 
 @Endpoint(path = "")
-trait AnalysisRouting extends TatriaCodeFactory {
+trait AnalysisRouting extends TatriaCodecFactory {
   private val historicalVolUseCase = bind[CalculateHistoricalVolatilityUseCase]
   private val greeksUseCase = bind[CalculateOptionGreeksUseCase]
   private val productRepository =
@@ -28,15 +27,13 @@ trait AnalysisRouting extends TatriaCodeFactory {
   private implicit val tatriaContext: TwFutureTatriaContext =
     bind[TwFutureTatriaContext]
 
-  @Endpoint(path = "/vol.json")
-  def volJson: Future[String] = {
-    val codec = codecOf[Seq[DailyVolatility]]
-    for {
-      vs <- historicalVolUseCase.extract(ProductType.IndexFuture,
-                                         "NK225",
-                                         LocalDate.now().minusYears(3),
-                                         LocalDate.now)
-    } yield { codec.toJson(vs) }
+  @Endpoint(path = "/vol")
+  def vol(from: Option[String], to: Option[String]): Future[String] = {
+    val fromDate =
+      from.map(LocalDate.parse).getOrElse(LocalDate.now().minusYears(3))
+    val toDate = to.map(LocalDate.parse).getOrElse(LocalDate.now())
+    historicalVolUseCase
+      .extract(ProductType.IndexFuture, "NK225", fromDate, toDate).toJsonResponse
   }
 
   @Endpoint(path = "/greeks/:delivery/:strike/:poc/:date")
@@ -44,22 +41,23 @@ trait AnalysisRouting extends TatriaCodeFactory {
                  strike: String,
                  poc: String,
                  date: String): Future[String] = {
-    for {
-      n <- productRepository
-        .findBy(BigDecimal(strike),
-                PutOrCall.of(poc),
-                YearMonth.fromSixNum(delivery)).map(_.productName).underlying
-      gs <- greeksUseCase.run(n, LocalDate.parse(date))
-    } yield {
-      codecOf[OptionValuation].toJson(
+    {
+      for {
+        n <- productRepository
+          .findBy(BigDecimal(strike),
+                  PutOrCall.of(poc),
+                  YearMonth.fromSixNum(delivery)).map(_.productName).underlying
+        gs <- greeksUseCase.run(n, LocalDate.parse(date))
+      } yield {
         OptionValuation(Greeks(
                           Some(gs.price),
                           gs.greeks.delta.map(_.value),
                           gs.greeks.vega.map(_.value),
                           gs.greeks.theta.map(_.value)
                         ),
-                        gs.payoff))
-    }
+                        gs.payoff)
+      }
+    }.toJsonResponse
   }
 
   case class OptionValuation(

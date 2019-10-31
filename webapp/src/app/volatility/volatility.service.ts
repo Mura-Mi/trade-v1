@@ -11,10 +11,11 @@ export class VolatilityService {
   constructor(private http: HttpClient) {
   }
 
-  getHistoricalVolatility(): Observable<DailyVolatility[]> {
+  getHistoricalVolatility(from: String, to:String): Observable<DailyVolatility[]> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    return this.http.get<DailyVolatility[]>("http://localhost:8080/vol.json", httpOptions)
+    return this.http.get<DailyVolatility[]>(`http://localhost:8080/vol?from=${from}&to=${to}`,
+      httpOptions)
   }
 }

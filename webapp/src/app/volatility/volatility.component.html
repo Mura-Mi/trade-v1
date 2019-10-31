@@ -1,3 +1,8 @@
+<form [formGroup]="dateRangeForm" (ngSubmit)="onSubmit(dateRangeForm.value)">
+  <label for="from">From</label><input type="text" id="from" formControlName="from" />
+  <label for="to">To</label><input type="text" id="to" formControlName="to" />
+  <button class="button" type="'submit">Refresh</button>
+</form>
 <div class="flex">
   <div class="flex-item">
     <div style="display: block;" *ngIf="vol">

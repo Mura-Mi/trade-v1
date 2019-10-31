@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from "rxjs";
+import {PutOrCall} from "../model/product/PutOrCall";
 
 @Injectable({
   providedIn: 'root'
