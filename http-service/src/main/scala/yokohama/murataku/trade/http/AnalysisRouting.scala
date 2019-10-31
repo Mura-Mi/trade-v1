@@ -5,7 +5,6 @@ import java.time.LocalDate
 import com.twitter.util.Future
 import wvlet.airframe._
 import wvlet.airframe.http.Endpoint
-import wvlet.airframe.json.JSON.JSONArray
 import yokohama.murataku.trade.evaluation.option.OptionPayoff
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
@@ -31,15 +30,13 @@ trait AnalysisRouting extends TatriaCodeFactory {
 
   @Endpoint(path = "/vol.json")
   def volJson: Future[String] = {
-    val codec = codecOf[DailyVolatility]
+    val codec = codecOf[Seq[DailyVolatility]]
     for {
       vs <- historicalVolUseCase.extract(ProductType.IndexFuture,
                                          "NK225",
                                          LocalDate.now().minusYears(3),
                                          LocalDate.now)
-    } yield {
-      JSONArray(vs.map(codec.toJSONObject).toIndexedSeq).toJSON
-    }
+    } yield { codec.toJson(vs) }
   }
 
   @Endpoint(path = "/greeks/:delivery/:strike/:poc/:date")
