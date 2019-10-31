@@ -30,7 +30,7 @@ trait AnalysisRouting extends TatriaCodeFactory {
     bind[TwFutureTatriaContext]
 
   @Endpoint(path = "/vol.json")
-  def volJson: Future[JSONArray] = {
+  def volJson: Future[String] = {
     val codec = codecOf[DailyVolatility]
     for {
       vs <- historicalVolUseCase.extract(ProductType.IndexFuture,
@@ -38,7 +38,7 @@ trait AnalysisRouting extends TatriaCodeFactory {
                                          LocalDate.now().minusYears(3),
                                          LocalDate.now)
     } yield {
-      JSONArray(vs.map(codec.toJSONObject).toIndexedSeq)
+      JSONArray(vs.map(codec.toJSONObject).toIndexedSeq).toJSON
     }
   }
 
