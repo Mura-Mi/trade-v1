@@ -12,7 +12,6 @@ object ServiceMain extends StandardHttpService {
   val router = Router
     .add[HealthCheckRouting]
     .add[AnalysisRouting]
-    .add[StaticFileRouting]
     .add[OptionRouting]
 
   trait CustomFinagleServerFactory extends FinagleServerFactory {
