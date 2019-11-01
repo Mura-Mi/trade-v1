@@ -20,7 +20,7 @@ export class GreeksService {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     };
     return this.http.get<OptionValuationSet>(
-      `http://localhost:8080/greeks/${delivery}/${strike}/${poc}/${valuationDate}`,
+      `http://localhost:8080/greeks/${delivery}/${strike}/${poc}?date=${valuationDate}`,
       httpOptions)
   }
 }

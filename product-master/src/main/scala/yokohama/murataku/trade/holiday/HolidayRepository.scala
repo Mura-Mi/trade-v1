@@ -1,10 +1,12 @@
 package yokohama.murataku.trade.holiday
 
 import com.twitter.util.{Await, Future}
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
-class HolidayRepository(ctx: TmtPersistenceContext)
+class HolidayRepository(ctx: TmtPersistenceContext,
+                        override currentTimeProvider: CurrentTimeProvider)
     extends Calendar
     with PersistenceSupport {
   import ctx._

@@ -6,11 +6,15 @@ import yokohama.murataku.trade.holiday.HolidayAdjustMethod.{
   Following,
   Preceding
 }
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 
 trait Calendar {
+  protected val currentTimeProvider: CurrentTimeProvider
   private val weekends = Seq(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
 
   def holidays: Seq[Holiday]
+  def latestBusinessDay: LocalDate =
+    currentTimeProvider.now().toLocalDate.adjust(HolidayAdjustMethod.Preceding)
 
   def isBusinessDay(date: LocalDate): Boolean = !isHoliday(date)
 

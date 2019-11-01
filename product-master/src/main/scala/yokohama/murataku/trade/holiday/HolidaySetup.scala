@@ -7,6 +7,7 @@ import kantan.csv._
 import kantan.csv.generic._
 import kantan.csv.ops._
 import yokohama.murataku.trade.lib.batch.StandardBatch
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 import yokohama.murataku.trade.persistence.finagle.PersistenceContextProvider
 
 object HolidaySetup extends StandardBatch {
@@ -18,7 +19,7 @@ object HolidaySetup extends StandardBatch {
 
   val c = PersistenceContextProvider.getContext
 
-  val holidayRepository = new HolidayRepository(c)
+  val holidayRepository = new HolidayRepository(c, CurrentTimeProvider.system())
 
   Await.result {
     Future

@@ -6,6 +6,7 @@ import com.twitter.util.Future
 import wvlet.airframe._
 import wvlet.airframe.http.Endpoint
 import yokohama.murataku.trade.evaluation.option.OptionPayoff
+import yokohama.murataku.trade.holiday.Calendar
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.product.ProductType
@@ -26,6 +27,7 @@ trait AnalysisRouting extends TatriaCodecFactory {
     bind[IndexOptionRepository[TwFutureTatriaContext]]
   private implicit val tatriaContext: TwFutureTatriaContext =
     bind[TwFutureTatriaContext]
+  private val calendar: Calendar = bind[Calendar]
 
   @Endpoint(path = "/vol")
   def vol(from: Option[String], to: Option[String]): Future[String] = {
@@ -36,18 +38,20 @@ trait AnalysisRouting extends TatriaCodecFactory {
       .extract(ProductType.IndexFuture, "NK225", fromDate, toDate).toJsonResponse
   }
 
-  @Endpoint(path = "/greeks/:delivery/:strike/:poc/:date")
+  @Endpoint(path = "/greeks/:delivery/:strike/:poc")
   def greeksJson(delivery: String,
                  strike: String,
                  poc: String,
-                 date: String): Future[String] = {
-    {
+                 date: Option[String]): Future[String] = {
+    val valuationDate =
+      date.map(LocalDate.parse).getOrElse(calendar.latestBusinessDay)
+    (
       for {
         n <- productRepository
           .findBy(BigDecimal(strike),
                   PutOrCall.of(poc),
                   YearMonth.fromSixNum(delivery)).map(_.productName).underlying
-        gs <- greeksUseCase.run(n, LocalDate.parse(date))
+        gs <- greeksUseCase.run(n, valuationDate)
       } yield {
         OptionValuation(Greeks(
                           Some(gs.price),
@@ -57,7 +61,7 @@ trait AnalysisRouting extends TatriaCodecFactory {
                         ),
                         gs.payoff)
       }
-    }.toJsonResponse
+    ).toJsonResponse
   }
 
   case class OptionValuation(

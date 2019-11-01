@@ -3,6 +3,7 @@ package yokohama.murataku.trade.holiday
 import java.time.LocalDate
 
 import yokohama.murataku.testutil.MyTestSuite
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 
 //noinspection AccessorLikeMethodIsUnit
 class CalendarTest extends MyTestSuite {
@@ -11,6 +12,9 @@ class CalendarTest extends MyTestSuite {
       Holiday(LocalDate.of(2019, 9, 16), Market.Jpx, "敬老の日"),
       Holiday(LocalDate.of(2019, 9, 23), Market.Jpx, "秋分の日")
     )
+
+    override protected val currentTimeProvider: CurrentTimeProvider =
+      CurrentTimeProvider.system()
   }
 
   "isBusinessDay can determine business day" in {
