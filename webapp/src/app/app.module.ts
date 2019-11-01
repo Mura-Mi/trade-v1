@@ -8,12 +8,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {ChartsModule} from "ng2-charts";
 import {GreeksComponent} from './greeks/greeks.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {GreeksComposeComponent} from './greeks-compose/greeks-compose.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VolatilityComponent,
-    GreeksComponent
+    GreeksComponent,
+    GreeksComposeComponent
   ],
   imports: [
     HttpClientModule,
