@@ -4,7 +4,9 @@ import wvlet.airframe.http.Router
 import wvlet.airframe.http.finagle.FinagleServer.FinagleService
 import wvlet.airframe.http.finagle._
 import wvlet.log.Logger
+import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
 import yokohama.murataku.trade.http.filters.{Filters, OptionRouting}
+import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
 import yokohama.murataku.trade.{historicaldata, product}
 
@@ -24,6 +26,8 @@ object ServiceMain extends StandardHttpService {
     newFinagleServerDesign(port = 8080, name = "tmt-http", router = router) +
       ActualPersistenceContextDesign.design +
       product.design + historicaldata.design
+      .bind[CurrentTimeProvider].toInstance(CurrentTimeProvider.system())
+      .bind[Calendar].to[HolidayRepository]
       .bind[FinagleServerFactory].to[CustomFinagleServerFactory]
 
   design.build[FinagleServer] { server =>

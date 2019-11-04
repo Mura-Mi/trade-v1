@@ -5,8 +5,7 @@ import yokohama.murataku.trade.lib.date.CurrentTimeProvider
 import yokohama.murataku.trade.persistence.PersistenceSupport
 import yokohama.murataku.trade.persistence.finagle.TmtPersistenceContext
 
-class HolidayRepository(ctx: TmtPersistenceContext,
-                        override currentTimeProvider: CurrentTimeProvider)
+class HolidayRepository(ctx: TmtPersistenceContext, override val currentTimeProvider: CurrentTimeProvider)
     extends Calendar
     with PersistenceSupport {
   import ctx._

@@ -1,1 +1,21 @@
-<p>greeks-compose works!</p>
+<form [formGroup]="form" (ngSubmit)="addOption(form)">
+  <label for="strike">strike</label>
+  <input id="strike" type="string" formControlName="strike">
+
+  <label for="putOrCall">put or call</label>
+  <input id="putOrCall" type="string" formControlName="putOrCall">
+
+  <button class="button" type="submit"></button>
+</form>
+
+<div class="flex">
+  <div class="flex-item">
+    <div style="display: block;" *ngIf="data">
+      <canvas baseChart width="400" height="400"
+              [datasets]="data"
+              [chartType]="'line'"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>
