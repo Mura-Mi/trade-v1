@@ -26,14 +26,13 @@ case class RawJpxOptionPrice(
     underlyingClose: BigDecimal,
     underlyingBaseVolatility: BigDecimal
 ) {
-  def toDatabaseObject(date: LocalDate,
-                       poc: PutOrCall): Option[DailyMarketPrice] = {
+  def toDatabaseObject(date: LocalDate, poc: PutOrCall): Option[DailyMarketPrice] = {
     Option(if (poc.isCall) callClosePrice else putClosePrice)
       .filter(_ != BigDecimal(0)).map { price =>
         DailyMarketPrice(
           date,
           productType = ProductType.IndexOption,
-          productName = this.putProductCode,
+          productName = if (poc.isCall) this.callProductCode else this.putProductCode,
           close = Some(price)
         )
       }
