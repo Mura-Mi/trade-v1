@@ -27,7 +27,6 @@ lazy val `historical-data` = (project in file("historical-data"))
     libraryDependencies ++=
       Seq(
         "com.github.pathikrit" %% "better-files" % "3.8.0",
-        "org.wvlet.airframe" %% "airframe-codec" % versions.airframe,
         "org.jsoup" % "jsoup" % "1.12.1",
         "com.nrinaudo" %% "kantan.csv" % versions.kantanCsv,
         "com.nrinaudo" %% "kantan.csv-generic" % versions.kantanCsv,
@@ -51,7 +50,9 @@ lazy val `position-analysis` = (project in file("position-analysis"))
 lazy val `http-service` = (project in file("http-service")).settings(
   libraryDependencies ++=
     Seq(
-      "org.wvlet.airframe" %% "airframe-http-finagle" % versions.airframe
+      "com.github.finagle" %% "finch-core" % "0.31.0",
+      "com.github.finagle" %% "finch-circe" % "0.31.0",
+      "io.circe" %% "circe-generic" % "0.12.3"
     )
 ).dependsOn(
   `position-analysis`
@@ -113,7 +114,7 @@ lazy val `persistence-typedef` = (project in new File(lib, "persistence-typedef"
 lazy val persistence = (project in file("persistence")).settings(
   libraryDependencies ++=
     Seq(
-      "io.getquill" %% "quill-finagle-postgres" % "3.4.9",
+      "io.getquill" %% "quill-finagle-postgres" % "3.4.10",
       "org.wvlet.airframe" %% "airframe" % versions.airframe
     )
 ).dependsOn(`persistence-typedef`,`batch-base`, `test-util` % "test", `lib-enum`)

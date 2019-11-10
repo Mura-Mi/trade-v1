@@ -4,6 +4,7 @@
     <excluded-names>
       <name>com.sun.activation.registries.LogSupport</name>
       <name>scala.concurrent.Await</name>
+      <name>scala.concurrent.Await</name>
       <name>scala.concurrent.Future</name>
     </excluded-names>
   </component>

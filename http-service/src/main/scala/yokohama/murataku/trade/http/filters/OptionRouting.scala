@@ -1,9 +1,10 @@
 package yokohama.murataku.trade.http.filters
 
-import wvlet.airframe.http.{Endpoint, HttpMethod}
+import io.finch.{Endpoint, _}
+import io.finch.syntax._
 
-@Endpoint(path = "")
-trait OptionRouting {
-  @Endpoint(path = "/*any", method = HttpMethod.OPTIONS)
-  def option(any: String): String = any
+class OptionRouting {
+  val ep: Endpoint[String] = options(*) {
+    Ok("option ok")
+  }
 }

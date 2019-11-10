@@ -1,9 +1,10 @@
 package yokohama.murataku.trade.http
 
-import wvlet.airframe.http.Endpoint
+import io.finch.{Endpoint, _}
+import io.finch.syntax._
 
-@Endpoint(path = "")
-trait HealthCheckRouting {
-  @Endpoint(path = "/hc")
-  def healthCheck(): String = "hello"
+class HealthCheckRouting {
+  val ep: Endpoint[String] = get("hc") {
+    Ok("hello")
+  }
 }

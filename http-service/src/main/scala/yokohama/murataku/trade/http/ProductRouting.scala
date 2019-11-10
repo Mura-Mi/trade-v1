@@ -1,20 +1,19 @@
 package yokohama.murataku.trade.http
 
-import com.twitter.util.Future
-import wvlet.airframe.http.Endpoint
-import yokohama.murataku.trade.product.ListProductForDeliveryUseCase
-import wvlet.airframe._
+import io.finch._
+import io.finch.syntax._
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
+import yokohama.murataku.trade.product.ListProductForDeliveryUseCase
+import yokohama.murataku.trade.product.indexoption.IndexOption
 
-@Endpoint(path = "/products")
-trait ProductRouting extends TatriaCodecFactory {
-  private val listProductForDeliveryUseCase = bind[ListProductForDeliveryUseCase[TwFutureTatriaContext]]
-  private implicit val ctx = bind[TwFutureTatriaContext]
+class ProductRouting(
+    private val listProductForDeliveryUseCase: ListProductForDeliveryUseCase[TwFutureTatriaContext],
+    private implicit val ctx: TwFutureTatriaContext
+) {
 
-  @Endpoint(path = "/:delivery")
-  def listForDelivery(delivery: String): Future[String] = {
+  val ep: Endpoint[List[IndexOption]] = get("products" :: path[String]) { delivery: String =>
     val ym = YearMonth.fromSixNum(delivery)
-    listProductForDeliveryUseCase.run(ym).underlying.toJsonResponse
+    listProductForDeliveryUseCase.run(ym).underlying.map(_.toList).map(Ok)
   }
 }
