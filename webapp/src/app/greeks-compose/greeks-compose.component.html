@@ -5,7 +5,7 @@
   <label for="putOrCall">put or call</label>
   <input id="putOrCall" type="string" formControlName="putOrCall">
 
-  <button class="button" type="submit"></button>
+  <button class="button" type="submit">add</button>
 </form>
 
 <div class="flex">
@@ -18,4 +18,10 @@
       </canvas>
     </div>
   </div>
+</div>
+
+<div *ngFor="let o of optionValuations">
+  {{o.delivery}}
+  {{o.poc}}
+  {{o.strike}}
 </div>

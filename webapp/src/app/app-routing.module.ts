@@ -8,7 +8,7 @@ import {GreeksComposeComponent} from "./greeks-compose/greeks-compose.component"
 const routes: Routes = [
   {path: 'vol', component: VolatilityComponent},
   {path: 'greeks/:delivery/:strike/:poc/:valuationDate', component: GreeksComponent},
-  {path: 'greeks-compose/:delivery/:valuationDate', component: GreeksComposeComponent},
+  {path: 'greeks-compose/:delivery/:date', component: GreeksComposeComponent},
 ];
 
 @NgModule({
