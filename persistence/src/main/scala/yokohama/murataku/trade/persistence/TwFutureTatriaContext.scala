@@ -13,8 +13,7 @@ class TwFutureTatriaContext extends TatriaContext {
   def fromFuture[A](a: Future[A]): Result[Throwable, A] =
     TwFutureTatriaResult(a)
 
-  override def collect[E, A](
-      results: Seq[TwFutureTatriaResult[E, A]]): Result[E, Seq[A]] =
+  override def collect[E, A](results: Seq[TwFutureTatriaResult[E, A]]): Result[E, Seq[A]] =
     TwFutureTatriaResult {
       Future.collect {
         results.map(_.underlying)
@@ -26,13 +25,11 @@ class TwFutureTatriaContext extends TatriaContext {
       result.underlying
     }
 
-  case class TwFutureTatriaResult[+E, +A](underlying: Future[A])
-      extends TatriaResult[TwFutureTatriaResult, E, A] {
+  case class TwFutureTatriaResult[+E, +A](underlying: Future[A]) extends TatriaResult[TwFutureTatriaResult, E, A] {
     override def map[B](f: A => B): TwFutureTatriaResult[E, B] =
       TwFutureTatriaResult(underlying.map(f))
 
-    override def flatMap[B, EE >: E](
-        f: A => TwFutureTatriaResult[EE, B]): TwFutureTatriaResult[EE, B] =
+    override def flatMap[B, EE >: E](f: A => TwFutureTatriaResult[EE, B]): TwFutureTatriaResult[EE, B] =
       TwFutureTatriaResult {
         underlying.flatMap(a => f(a).underlying)
       }
@@ -42,5 +39,4 @@ class TwFutureTatriaContext extends TatriaContext {
         underlying.onSuccess(f)
       }
   }
-
 }

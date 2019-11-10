@@ -7,13 +7,16 @@ import wvlet.log.Logger
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
 import yokohama.murataku.trade.http.filters.{Filters, OptionRouting}
 import yokohama.murataku.trade.lib.date.CurrentTimeProvider
+import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
+import yokohama.murataku.trade.product.ListProductForDeliveryUseCase
 import yokohama.murataku.trade.{historicaldata, product}
 
 object ServiceMain extends StandardHttpService {
   Logger.scheduleLogLevelScan
   val router = Router
     .add[HealthCheckRouting]
+    .add[ProductRouting]
     .add[AnalysisRouting]
     .add[OptionRouting]
 
@@ -29,6 +32,7 @@ object ServiceMain extends StandardHttpService {
       .bind[CurrentTimeProvider].toInstance(CurrentTimeProvider.system())
       .bind[Calendar].to[HolidayRepository]
       .bind[FinagleServerFactory].to[CustomFinagleServerFactory]
+      .bind[ListProductForDeliveryUseCase[TwFutureTatriaContext]].toSingleton
 
   design.build[FinagleServer] { server =>
     server.waitServerTermination

@@ -65,7 +65,8 @@ lazy val domainCommonSettings = Seq(
   libraryDependencies := Seq(
     "org.wvlet.airframe" %% "airframe-log" % versions.airframe,
     "com.chuusai" %% "shapeless" % "2.3.3",
-    "com.beachape" %% "enumeratum" % "1.5.13"
+    "com.beachape" %% "enumeratum" % "1.5.13",
+    "org.typelevel" %% "cats-core" % "2.0.0"
   )
 )
 
