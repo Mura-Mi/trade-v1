@@ -23,14 +23,14 @@ trait CurlJpxOptionReportUseCase extends LogSupport {
         result => {
           val futPro =
             tatriaContext
-              .collect { result.productMaster.map(productRepo.store(_)) }.map(
-                _.sum).onSuccess(v => info(s"product: $v"))
+              .collect { result.productMaster.map(productRepo.store(_)) }.map(_.sum).onSuccess(v =>
+                info(s"product: $v"))
           val futPrice = tatriaContext
             .collect { result.prices.map(priceRepo.store(_)) }.map(_.sum)
 
           (for {
             product <- futPro
-            price <- futPrice.onSuccess(v => info(s"price: $v"))
+            price <- futPrice.onSuccess(v => info(s"price: $v [date=$today]"))
           } yield (product, price)).underlying
         }
       )
