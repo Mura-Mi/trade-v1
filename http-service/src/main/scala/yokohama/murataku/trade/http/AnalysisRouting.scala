@@ -2,23 +2,15 @@ package yokohama.murataku.trade.http
 
 import java.time.LocalDate
 
-import com.twitter.util.Future
-import wvlet.airframe._
-import io.finch.{paramOption, _}
 import io.finch.syntax._
-import io.finch.circe._
-import shapeless.{:+:, CNil}
+import io.finch.{paramOption, _}
 import yokohama.murataku.trade.evaluation.option.OptionPayoff
 import yokohama.murataku.trade.holiday.Calendar
 import yokohama.murataku.trade.lib.date.YearMonth
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.product.ProductType
 import yokohama.murataku.trade.product.indexoption.{IndexOptionRepository, PutOrCall}
-import yokohama.murataku.trade.volatility.{
-  CalculateHistoricalVolatilityUseCase,
-  CalculateOptionGreeksUseCase,
-  DailyVolatility
-}
+import yokohama.murataku.trade.volatility.{CalculateHistoricalVolatilityUseCase, CalculateOptionGreeksUseCase}
 
 class AnalysisRouting(
     private val historicalVolUseCase: CalculateHistoricalVolatilityUseCase,
