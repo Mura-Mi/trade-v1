@@ -47,14 +47,4 @@ object ServiceMain extends StandardHttpService {
       Http.server.serve(":8080", service)
     }
   }
-//  trait CustomFinagleServerFactory extends FinagleServerFactory {
-//    override def newService(finagleRouter: FinagleRouter): FinagleService =
-//      Filters.AccessLogging andThen Filters.HeaderAdding andThen finagleRouter andThen Filters.TmtNotFound
-//  }
-
-//
-//  design.build[FinagleServer] { server =>
-//    server.waitServerTermination
-//  }
-
 }
