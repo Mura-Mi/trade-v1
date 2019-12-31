@@ -33,15 +33,16 @@ class AnalysisRouting(
   implicit def date: DecodeEntity[LocalDate] = s => Try { LocalDate.parse(s) }
   implicit def pocDecoder: DecodeEntity[PutOrCall] = s => Try(PutOrCall.of(s))
   implicit def pathImplicit[A](implicit de: DecodeEntity[A]): DecodePath[A] = s => de.apply(s).toOption
+  implicit def deliveryDecoder: DecodeEntity[YearMonth] = s => Try(YearMonth.fromSixNum(s))
 
   val greeksJson =
     get(paramOption[LocalDate]("date") :: "greeks" :: path[String] :: path[String] :: path[PutOrCall]) {
-      (date: Option[LocalDate], delivery: String, strike: String, poc: PutOrCall) =>
+      (date: Option[LocalDate], delivery: YearMonth, strike: String, poc: PutOrCall) =>
         val valuationDate = date.getOrElse(calendar.latestBusinessDay)
         (
           for {
             n <- productRepository
-              .findBy(BigDecimal(strike), poc, YearMonth.fromSixNum(delivery)).map(_.productName).underlying
+              .findBy(BigDecimal(strike), poc, delivery).map(_.productName).underlying
             gs <- greeksUseCase.run(n, valuationDate)
           } yield {
             OptionValuation(Greeks(
