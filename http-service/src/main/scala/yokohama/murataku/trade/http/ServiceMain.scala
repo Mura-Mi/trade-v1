@@ -2,8 +2,9 @@ package yokohama.murataku.trade.http
 
 import com.twitter.finagle.Http
 import com.twitter.util.Await
+import io.circe.generic.auto._
 import io.circe.{Encoder, Json}
-import shapeless.HNil
+import io.finch.circe._
 import wvlet.log.Logger
 import yokohama.murataku.trade.holiday.{Calendar, HolidayRepository}
 import yokohama.murataku.trade.http.filters.{Filters, OptionRouting}
@@ -30,11 +31,6 @@ object ServiceMain extends StandardHttpService {
     override def apply(a: YearMonth): Json = Json.fromString(a.toString)
   }
 
-  implicit def encoder[T, V](implicit g: shapeless.Generic.Aux[V, T :: HNil], encT: Encoder[T]): Encoder[V] =
-    encT.contramap { v =>
-      g.to(v).head
-    }
-
   class Routes(
       val a: HealthCheckRouting,
       val b: ProductRouting,
@@ -51,14 +47,14 @@ object ServiceMain extends StandardHttpService {
       Http.server.serve(":8080", service)
     }
   }
-  //  trait CustomFinagleServerFactory extends FinagleServerFactory {
-  //    override def newService(finagleRouter: FinagleRouter): FinagleService =
-  //      Filters.AccessLogging andThen Filters.HeaderAdding andThen finagleRouter andThen Filters.TmtNotFound
-  //  }
+//  trait CustomFinagleServerFactory extends FinagleServerFactory {
+//    override def newService(finagleRouter: FinagleRouter): FinagleService =
+//      Filters.AccessLogging andThen Filters.HeaderAdding andThen finagleRouter andThen Filters.TmtNotFound
+//  }
 
-  //
-  //  design.build[FinagleServer] { server =>
-  //    server.waitServerTermination
-  //  }
+//
+//  design.build[FinagleServer] { server =>
+//    server.waitServerTermination
+//  }
 
 }
