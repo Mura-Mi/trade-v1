@@ -31,7 +31,8 @@ class AnalysisRouting(
   }
 
   implicit def date: DecodeEntity[LocalDate] = s => Try { LocalDate.parse(s) }
-  implicit def pocDecoder: DecodePath[PutOrCall] = s => Try(PutOrCall.of(s)).toOption
+  implicit def pocDecoder: DecodeEntity[PutOrCall] = s => Try(PutOrCall.of(s))
+  implicit def pathImplicit[A](implicit de: DecodeEntity[A]): DecodePath[A] = s => de.apply(s).toOption
 
   val greeksJson =
     get(paramOption[LocalDate]("date") :: "greeks" :: path[String] :: path[String] :: path[PutOrCall]) {
