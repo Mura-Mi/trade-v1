@@ -2,6 +2,7 @@ package yokohama.murataku.trade.http
 
 import java.time.LocalDate
 
+import com.twitter.util.Try
 import io.finch.syntax._
 import io.finch.{paramOption, _}
 import yokohama.murataku.trade.evaluation.option.OptionPayoff
@@ -29,11 +30,12 @@ class AnalysisRouting(
         .extract(ProductType.IndexFuture, "NK225", fromDate, toDate).map(Ok)
   }
 
+  implicit def date: DecodeEntity[LocalDate] = s => Try { LocalDate.parse(s) }
+
   val greeksJson =
-    get(paramOption[String]("date") :: "greeks" :: path[String] :: path[String] :: path[String]) {
-      (date: Option[String], delivery: String, strike: String, poc: String) =>
-        val valuationDate =
-          date.map(LocalDate.parse).getOrElse(calendar.latestBusinessDay)
+    get(paramOption[LocalDate]("date") :: "greeks" :: path[String] :: path[String] :: path[String]) {
+      (date: Option[LocalDate], delivery: String, strike: String, poc: String) =>
+        val valuationDate = date.getOrElse(calendar.latestBusinessDay)
         (
           for {
             n <- productRepository
