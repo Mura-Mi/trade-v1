@@ -21,11 +21,10 @@ class AnalysisRouting(
     private val calendar: Calendar
 ) {
 
-  val vol = get("vol" :: paramOption[String]("from") :: paramOption[String]("to")) {
-    (from: Option[String], to: Option[String]) =>
-      val fromDate =
-        from.map(LocalDate.parse).getOrElse(LocalDate.now().minusYears(3))
-      val toDate = to.map(LocalDate.parse).getOrElse(LocalDate.now())
+  val vol = get("vol" :: paramOption[LocalDate]("from") :: paramOption[LocalDate]("to")) {
+    (from: Option[LocalDate], to: Option[LocalDate]) =>
+      val fromDate = from.getOrElse(LocalDate.now().minusYears(3))
+      val toDate = to.getOrElse(LocalDate.now())
       historicalVolUseCase
         .extract(ProductType.IndexFuture, "NK225", fromDate, toDate).map(Ok)
   }
