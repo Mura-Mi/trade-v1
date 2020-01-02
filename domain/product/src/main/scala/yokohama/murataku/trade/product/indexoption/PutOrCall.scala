@@ -8,10 +8,11 @@ import scala.collection.immutable
 
 sealed abstract class PutOrCall(val value: String) extends StringEnumEntry {
   def isCall: Boolean
+  def isPut: Boolean = !isCall
 
   def factor: Int = this match {
     case Call => 1
-    case Put => -1
+    case Put  => -1
   }
 }
 
