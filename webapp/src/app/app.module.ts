@@ -9,13 +9,15 @@ import {ChartsModule} from "ng2-charts";
 import {GreeksComponent} from './greeks/greeks.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {GreeksComposeComponent} from './greeks-compose/greeks-compose.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VolatilityComponent,
     GreeksComponent,
-    GreeksComposeComponent
+    GreeksComposeComponent,
+    MenuComponent
   ],
   imports: [
     HttpClientModule,
