@@ -8,11 +8,13 @@
       <option name="alwaysUsedImports">
         <array>
           <option value="cal._" />
+          <option value="io.circe.generic.extras.semiauto._" />
           <option value="kantan.codecs.strings.java8._" />
           <option value="kantan.csv.generic._" />
         </array>
       </option>
       <option name="classCountToUseImportOnDemand" value="100" />
+      <option name="FORMATTER" value="1" />
     </ScalaCodeStyleSettings>
   </code_scheme>
 </component>
