@@ -11,7 +11,7 @@ import yokohama.murataku.trade.http.filters.{Filters, OptionRouting}
 import yokohama.murataku.trade.lib.date.{CurrentTimeProvider, YearMonth}
 import yokohama.murataku.trade.persistence.TwFutureTatriaContext
 import yokohama.murataku.trade.persistence.finagle.ActualPersistenceContextDesign
-import yokohama.murataku.trade.product.ListProductForDeliveryUseCase
+import yokohama.murataku.trade.product.{IndexName, ListProductForDeliveryUseCase}
 import yokohama.murataku.trade.product.indexoption.PutOrCall
 import yokohama.murataku.trade.{historicaldata, product}
 
